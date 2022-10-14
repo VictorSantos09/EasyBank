@@ -1,6 +1,6 @@
 ﻿namespace EasyBank
 {
-    public class User
+    public class User : Adress
     {
         public int Id { get; set; } //ID
         public int CashbackLevel { get; set; } //NivelCashback
@@ -20,5 +20,6 @@
         public string Country { get; set; } = "Brasil"; //País
         public DateTime DateBorn { get; set; } //DataNascimento
         public bool AutoDebit { get; set; } //DébitoAutomatico
+        public int Age { get; set; }
     }
 }
