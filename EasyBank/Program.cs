@@ -2,6 +2,7 @@
 
 var ProgramStarted = true;
 User user = new User();
+Register register = new Register();
 
 while (ProgramStarted)
 {
@@ -13,7 +14,7 @@ while (ProgramStarted)
 
     if (userInputMainMenu == "1")
     {
-
+        register.UserRegister(user);
     }
     else if (userInputMainMenu == "2")
     {
