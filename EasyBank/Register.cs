@@ -18,11 +18,13 @@ namespace EasyBank
             R_MonthlyIncome(user);
             R_SafetyKey(user);
             R_CreditCard(user);
+            ViewFullUserData(user);
+            Console.ReadKey();
         }
         public void R_Name(User user)
         {
-            Console.Write("Cadastre seu nome: ");
-            user.Name = Console.ReadLine();
+            Console.Write("Cadastre seu nome completo: ");
+            user.Name = Validator.IsValidName(Console.ReadLine());
         }
         public void R_Age_DateBorn(User user) // improve
         {
@@ -41,49 +43,36 @@ namespace EasyBank
 
             Console.WriteLine("Cadastre seus dados de endereço");
             Console.Write("Cidade: ");
-            user.City = Console.ReadLine();
+            user.City = Console.ReadLine().ToUpper();
             Console.Write("Estado: ");
-            user.State = Console.ReadLine();
+            user.State = Console.ReadLine().ToUpper();
             Console.Write("Bairro: ");
-            user.Neiborhood = Console.ReadLine();
+            user.Neiborhood = Console.ReadLine().ToUpper();
             Console.Write("Rua: ");
-            user.Street = Console.ReadLine();
+            user.Street = Console.ReadLine().ToUpper();
             Console.Write("Numero: ");
-            user.HouseNumber = Console.ReadLine();
+            user.HouseNumber = Console.ReadLine().ToUpper();
             Console.Write("Complemento: ");
-            user.HouseComplement = Console.ReadLine();
+            user.HouseComplement = Console.ReadLine().ToUpper();
 
-            user.FullAdress = $"\nPaís: {user.Country}\nCidade: {user.City}\nEstado: {user.State}\nBairro: " +
+            user.FullAdress = $"País: {user.Country}\nCidade: {user.City}\nEstado: {user.State}\nBairro: " +
                 $"{user.Neiborhood}\n" +
                 $"Rua: {user.Street}\nNumero: {user.HouseNumber}\nComplemento: {user.HouseComplement}\n";
         }
         public void R_CPF(User user)
         {
             Console.Write("Cadastre seu CPF: ");
-            user.CPF = Console.ReadLine();
+            user.CPF = Validator.IsValidCPF(Console.ReadLine());
         }
         public void R_RG(User user)
         {
             Console.Write("Cadastre seu RG: ");
-            user.RG = Console.ReadLine();
+            user.RG = Validator.IsValidRG(Console.ReadLine());
         }
         public void R_PhoneNumber(User user)
         {
-            var inProcess = true;
-            while (inProcess)
-            {
-                Console.Write("Cadastre seu telefone: ");
-                var userInputPhone = Console.ReadLine();
-                if (userInputPhone.Length < 11)
-                {
-                    Console.WriteLine("Telefone inválido, tente novamente");
-                }
-                else
-                {
-                    user.PhoneNumber = user.PhoneCodeArea + userInputPhone;
-                    inProcess = false;
-                }
-            }
+            Console.Write("Cadastre seu telefone com DDD: ");
+            user.PhoneNumber = Validator.IsValidPhoneNumber(Console.ReadLine(),user);
         }
         public void R_CreditCard(User user) //Add limit
         {
@@ -96,12 +85,12 @@ namespace EasyBank
         public void R_Email(User user)
         {
             Console.Write("Cadastre seu email: ");
-            user.Email = Console.ReadLine();
+            user.Email = Validator.IsValidEmail(Console.ReadLine());
         }
         public void R_Password(User user)
         {
-            Console.Write("Cadastre sua senha: ");
-            user.Password = Console.ReadLine();
+            Console.Write("Cadastre sua senha de 4 digitos: ");
+            user.Password = Validator.IsValidPassword(Console.ReadLine());
         }
         public void R_MonthlyIncome(User user)
         {
@@ -111,22 +100,9 @@ namespace EasyBank
         }
         public void R_SafetyKey(User user)
         {
-            var inProcess = true;
-            while (inProcess)
-            {
-                Console.WriteLine("Cadastre sua senha de segurança. Mínimo de 3 numeros");
-                Console.Write("Digite: ");
-                var userInputSafetyKey = Console.ReadLine();
-                if (userInputSafetyKey.Length < 3)
-                {
-                    Console.WriteLine("Máximo de 3 numeros, tente novamente");
-                }
-                else
-                {
-                    user.SafetyKey = userInputSafetyKey;
-                    inProcess = false;
-                }
-            }
+            Console.WriteLine("Cadastre sua senha de segurança. Mínimo de 3 numeros");
+            Console.Write("Digite: ");
+            var userInputSafetyKey = Validator.IsValidSafetyKey(Console.ReadLine(),user);
         }
         public void ViewFullUserData(User user)
         {
