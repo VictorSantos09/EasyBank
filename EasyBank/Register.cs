@@ -18,8 +18,6 @@ namespace EasyBank
             R_MonthlyIncome(user);
             R_SafetyKey(user);
             R_CreditCard(user);
-            ViewFullUserData(user);
-            Console.ReadKey();
         }
         public void R_Name(User user)
         {

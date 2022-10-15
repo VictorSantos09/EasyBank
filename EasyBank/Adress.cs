@@ -2,7 +2,7 @@
 {
     public class Adress
     {
-        public string Country { get; set; } = "Brasil";
+        public string Country { get; set; } = "BRASIL";
         public string City { get; set; }
         public string State { get; set; }
         public string Neiborhood { get; set; }

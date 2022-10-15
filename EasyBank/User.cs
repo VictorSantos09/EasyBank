@@ -16,7 +16,6 @@
         public string PhoneCodeArea { get; set; } = "+55"; // Codigo de area
         public string Password { get; set; } //Senha
         public string SafetyKey { get; set; } //SenhaSegurança (senha 3 digitos)
-        public string Country { get; set; } = "Brasil"; //País
         public DateTime DateBorn { get; set; } //DataNascimento
         public bool AutoDebit { get; set; } //DébitoAutomatico
         public int Age { get; set; } //Idade
