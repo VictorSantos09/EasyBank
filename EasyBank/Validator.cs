@@ -83,7 +83,7 @@ namespace EasyBank
             var checkingCPF = true;
             while (checkingCPF)
             {
-                if (input.Length < 10)
+                if (input.Length < 10 || input.Length > 10)
                 {
                     Console.WriteLine("Tamanho de CPF inválido, tente novamente");
                     Console.Write("Digite: ");
@@ -94,14 +94,15 @@ namespace EasyBank
                     checkingCPF = false;
                 }
             }
-            return input;
+            string finalInput = Convert.ToInt64(input).ToString(@"000\.000\.000\-00");
+            return finalInput;
         }
         public static string IsValidRG(string input)
         {
             var checkingRG = true;
             while (checkingRG)
             {
-                if (input.Length < 9)
+                if (input.Length < 9 || input.Length > 9)
                 {
                     Console.WriteLine("Tamanho de RG inválido, tente novamente");
                     Console.Write("Digite: ");
@@ -112,6 +113,7 @@ namespace EasyBank
                     checkingRG = false;
                 }
             }
+            string finalInput = Convert.ToInt64(input).ToString(@"00\.000\.000\-00");
             return input;
         }
         public static string IsValidPhoneNumber(string input, User user)
@@ -119,7 +121,7 @@ namespace EasyBank
             var checkingPhoneNumber = true;
             while (checkingPhoneNumber)
             {
-                if (input.Length < 11)
+                if (input.Length < 11 || input.Length > 11)
                 {
                     Console.WriteLine("Telefone inválido, tente novamente");
                     Console.Write("Digite: ");
@@ -132,23 +134,6 @@ namespace EasyBank
             }
             var finalNumber = user.PhoneCodeArea + input;
             return finalNumber;
-        }
-        public static string IsValidSafetyKey(string input,User user)
-        {
-            var maxSize = 3;
-            var checkingSafetyKey = true;
-            while (checkingSafetyKey)
-            {
-                if (input.Length > maxSize)
-                {
-                    Console.WriteLine($"Máximo de {maxSize} numeros, tente novamente");
-                }
-                else
-                {
-                    checkingSafetyKey = false;
-                }
-            }
-            return input;
         }
         public static bool HasLetter(string input)
         {

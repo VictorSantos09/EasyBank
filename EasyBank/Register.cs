@@ -16,7 +16,6 @@ namespace EasyBank
             R_RG(user);
             R_Adress(user);
             R_MonthlyIncome(user);
-            R_SafetyKey(user);
             R_CreditCard(user);
         }
         public void R_Name(User user)
@@ -95,12 +94,6 @@ namespace EasyBank
             Console.WriteLine("Cadastre sua renda mensal bruta");
             Console.Write("Digite: ");
             user.MonthlyIncome = Convert.ToInt32(Console.ReadLine());
-        }
-        public void R_SafetyKey(User user)
-        {
-            Console.WriteLine("Cadastre sua senha de segurança. Mínimo de 3 numeros");
-            Console.Write("Digite: ");
-            var userInputSafetyKey = Validator.IsValidSafetyKey(Console.ReadLine(),user);
         }
         public void ViewFullUserData(User user)
         {
