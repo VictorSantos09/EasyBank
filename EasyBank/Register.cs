@@ -66,13 +66,14 @@ namespace EasyBank
             Console.Write("Cadastre seu telefone com DDD: ");
             user.PhoneNumber = Validator.IsValidPhoneNumber(Console.ReadLine(),user);
         }
-        public void R_CreditCard(User user) //Add limit
+        public void R_CreditCard(User user)
         {
             CreditCard creditCard = new CreditCard();
             Random random = new Random();
             creditCard.CVV = Convert.ToString(random.Next(101, 999));
             creditCard.NameOwner = user.Name;
             creditCard.ExpireDate = DateTime.Today.AddYears(3);
+            creditCard.Limite = user.MonthlyIncome + random.Next(491,771);
         }
         public void R_Email(User user)
         {
