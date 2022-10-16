@@ -22,7 +22,7 @@ while (ProgramStarted)
     }
     else if (userInputMainMenu == "3")
     {
-
+        ProgramStarted = false;
     }
     else
     {
