@@ -26,12 +26,7 @@ namespace EasyBank
         public void R_Age_DateBorn(User user) // improve
         {
             Console.Write("Cadastre sua data de nascimento no formato 00/00/0000\nDigite: ");
-            string userInputDateBorn = Console.ReadLine();
-            user.DateBorn = DateTime.ParseExact(userInputDateBorn, "dd/MM/yyyy", null);
-
-            var userDateBorn = user.DateBorn.Year;
-            var today = DateTime.Today.Year;
-            user.Age = today - userDateBorn;
+            string userInputDateBorn = Validator.IsValidAge(Console.ReadLine(),user);
         }
         public void R_Adress(User user)
         {

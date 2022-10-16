@@ -23,22 +23,28 @@ namespace EasyBank
             }
             return input.ToUpper();
         }
-        public static DateTime IsValidAge(DateTime inputDT)
+        public static string IsValidAge(string input, User user)
         {
-            int today = DateTime.Today.Year;
             var checkingAge = true;
             while (checkingAge)
             {
-                if (today - inputDT.Year < 18)
+                var toCheck = DateTime.ParseExact(input, "dd/MM/yyyy", null);
+                int today = DateTime.Today.Year;
+                if (today - toCheck.Year < 18)
                 {
                     Console.WriteLine("Você precisa ter no minimo 18 anos para se registrar");
+                    Console.Write("Digite: ");
+                    input = Console.ReadLine();
                 }
                 else
                 {
+                    user.DateBorn = DateTime.ParseExact(input, "dd/MM/yyyy", null);
+                    var userDateBorn = user.DateBorn.Year;
+                    user.Age = today - userDateBorn;
                     checkingAge = false;
                 }
             }
-            return inputDT;
+            return input;
         }
         public static string IsValidEmail(string input)
         {
@@ -125,7 +131,7 @@ namespace EasyBank
                 {
                     Console.WriteLine("Telefone inválido, tente novamente");
                     Console.Write("Digite: ");
-                   input = Console.ReadLine();
+                    input = Console.ReadLine();
                 }
                 else
                 {
