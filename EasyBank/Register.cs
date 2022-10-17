@@ -5,28 +5,32 @@ namespace EasyBank
 {
     public class Register
     {
-        public void UserRegister(User user)
+        public void UserRegister(User user, List<User> listUser)
         {
-            R_Name(user);
-            R_Age_DateBorn(user);
-            R_PhoneNumber(user);
-            R_Email(user);
-            R_Password(user);
-            R_CPF(user);
-            R_RG(user);
-            R_Adress(user);
-            R_MonthlyIncome(user);
+            var returnedName = R_Name(user);
+            var returnedDateBorn = R_Age_DateBorn(user);
+            var returnedPhoneNumber = R_PhoneNumber(user);
+            var returnedEmail = R_Email(user);
+            var returnedPassword = R_Password(user);
+            var returnedCPF = R_CPF(user);
+            var returnedRG = R_RG(user);
+            //var returnedAdress = R_Adress(user);
+            var returnedMonthlyIncome = R_MonthlyIncome(user);
             R_CreditCard(user);
+            user.UserRegisterConstrutor(returnedName, returnedDateBorn, returnedPhoneNumber, returnedEmail, 
+                returnedPassword, returnedCPF, returnedRG ,returnedMonthlyIncome, listUser);
         }
-        public void R_Name(User user)
+        public string R_Name(User user)
         {
             Console.Write("Cadastre seu nome completo: ");
-            user.Name = Validator.IsValidName(Console.ReadLine());
+            var inputName = Validator.IsValidName(Console.ReadLine());
+            return inputName;
         }
-        public void R_Age_DateBorn(User user) // improve
+        public string R_Age_DateBorn(User user) // improve
         {
             Console.Write("Cadastre sua data de nascimento no formato 00/00/0000\nDigite: ");
-            string userInputDateBorn = Validator.IsValidAge(Console.ReadLine(),user);
+            string userInputDateBorn = Validator.IsValidAge(Console.ReadLine(), user);
+            return userInputDateBorn;
         }
         public void R_Adress(User user)
         {
@@ -51,20 +55,23 @@ namespace EasyBank
                 $"{user.Neiborhood}\n" +
                 $"Rua: {user.Street}\nNumero: {user.HouseNumber}\nComplemento: {user.HouseComplement}\n";
         }
-        public void R_CPF(User user)
+        public string R_CPF(User user)
         {
             Console.Write("Cadastre seu CPF: ");
-            user.CPF = Validator.IsValidCPF(Console.ReadLine());
+            var inputCPF = Validator.IsValidCPF(Console.ReadLine());
+            return inputCPF;
         }
-        public void R_RG(User user)
+        public string R_RG(User user)
         {
             Console.Write("Cadastre seu RG: ");
-            user.RG = Validator.IsValidRG(Console.ReadLine());
+            var inputRG = Validator.IsValidRG(Console.ReadLine());
+            return inputRG;
         }
-        public void R_PhoneNumber(User user)
+        public string R_PhoneNumber(User user)
         {
             Console.Write("Cadastre seu telefone com DDD: ");
-            user.PhoneNumber = Validator.IsValidPhoneNumber(Console.ReadLine(),user);
+            var inputPhoneNumber = Validator.IsValidPhoneNumber(Console.ReadLine(), user);
+            return inputPhoneNumber;
         }
         public void R_CreditCard(User user)
         {
@@ -73,23 +80,26 @@ namespace EasyBank
             creditCard.CVV = Convert.ToString(random.Next(101, 999));
             creditCard.NameOwner = user.Name;
             creditCard.ExpireDate = DateTime.Today.AddYears(3);
-            creditCard.Limite = user.MonthlyIncome + random.Next(491,771);
+            creditCard.Limite = user.MonthlyIncome + random.Next(491, 771);
         }
-        public void R_Email(User user)
+        public string R_Email(User user)
         {
             Console.Write("Cadastre seu email: ");
-            user.Email = Validator.IsValidEmail(Console.ReadLine());
+            var inputEmail = Validator.IsValidEmail(Console.ReadLine());
+            return inputEmail;
         }
-        public void R_Password(User user)
+        public string R_Password(User user)
         {
             Console.Write("Cadastre sua senha de 4 digitos: ");
-            user.Password = Validator.IsValidPassword(Console.ReadLine());
+            var inputPassword = Validator.IsValidPassword(Console.ReadLine());
+            return inputPassword;
         }
-        public void R_MonthlyIncome(User user)
+        public int R_MonthlyIncome(User user)
         {
             Console.WriteLine("Cadastre sua renda mensal bruta");
             Console.Write("Digite: ");
-            user.MonthlyIncome = Convert.ToInt32(Console.ReadLine());
+            var inputMonthlyIncome = Convert.ToInt32(Console.ReadLine());
+            return inputMonthlyIncome;
         }
         public void ViewFullUserData(User user)
         {
