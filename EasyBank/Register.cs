@@ -7,15 +7,15 @@ namespace EasyBank
     {
         public void UserRegister(User user, List<User> listUser)
         {
-            var returnedName = R_Name(user);
+            var returnedName = R_Name();
             var returnedDateBorn = R_Age_DateBorn(user);
             var returnedPhoneNumber = R_PhoneNumber(user);
-            var returnedEmail = R_Email(user);
-            var returnedPassword = R_Password(user);
-            var returnedCPF = R_CPF(user);
-            var returnedRG = R_RG(user);
-            var returnedAdress = R_Adress(user);
-            var returnedMonthlyIncome = R_MonthlyIncome(user);
+            var returnedEmail = R_Email();
+            var returnedPassword = R_Password();
+            var returnedCPF = R_CPF();
+            var returnedRG = R_RG();
+            var returnedAdress = R_Adress();
+            var returnedMonthlyIncome = R_MonthlyIncome();
             R_CreditCard(user);
             var userDateBorn = DateTime.ParseExact(returnedDateBorn, "dd/MM/yyyy", null);
             int thisYear = DateTime.Today.Year;
@@ -24,7 +24,7 @@ namespace EasyBank
             user.UserRegisterConstrutor(returnedName, returnedDateBorn, returnedPhoneNumber, returnedEmail,
                 returnedPassword, returnedCPF, returnedRG, returnedMonthlyIncome, returnedAdress, finalAge, listUser);
         }
-        public string R_Name(User user)
+        public string R_Name()
         {
             Console.Write("Cadastre seu nome completo: ");
             var inputName = Validator.IsValidName(Console.ReadLine());
@@ -36,10 +36,9 @@ namespace EasyBank
             string userInputDateBorn = Validator.IsValidAge(Console.ReadLine(), user);
             return userInputDateBorn;
         }
-        public string[] R_Adress(User user)
+        public string[] R_Adress()
         {
             Adress adress = new Adress();
-            user.Country = adress.Country;
             string[] ListDataAdress = new string[6];
 
             Console.WriteLine("Cadastre seus dados de endereço");
@@ -57,13 +56,13 @@ namespace EasyBank
             ListDataAdress[5] = Console.ReadLine().ToUpper();
             return ListDataAdress;
         }
-        public string R_CPF(User user)
+        public string R_CPF()
         {
             Console.Write("Cadastre seu CPF: ");
             var inputCPF = Validator.IsValidCPF(Console.ReadLine());
             return inputCPF;
         }
-        public string R_RG(User user)
+        public string R_RG()
         {
             Console.Write("Cadastre seu RG: ");
             var inputRG = Validator.IsValidRG(Console.ReadLine());
@@ -84,19 +83,19 @@ namespace EasyBank
             creditCard.ExpireDate = DateTime.Today.AddYears(3);
             creditCard.Limite = user.MonthlyIncome + random.Next(491, 771);
         }
-        public string R_Email(User user)
+        public string R_Email()
         {
             Console.Write("Cadastre seu email: ");
             var inputEmail = Validator.IsValidEmail(Console.ReadLine());
             return inputEmail;
         }
-        public string R_Password(User user)
+        public string R_Password()
         {
             Console.Write("Cadastre sua senha de 4 digitos: ");
             var inputPassword = Validator.IsValidPassword(Console.ReadLine());
             return inputPassword;
         }
-        public int R_MonthlyIncome(User user)
+        public int R_MonthlyIncome()
         {
             Console.WriteLine("Cadastre sua renda mensal bruta");
             Console.Write("Digite: ");
