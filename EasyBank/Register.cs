@@ -14,11 +14,15 @@ namespace EasyBank
             var returnedPassword = R_Password(user);
             var returnedCPF = R_CPF(user);
             var returnedRG = R_RG(user);
-            //var returnedAdress = R_Adress(user);
+            var returnedAdress = R_Adress(user);
             var returnedMonthlyIncome = R_MonthlyIncome(user);
             R_CreditCard(user);
-            user.UserRegisterConstrutor(returnedName, returnedDateBorn, returnedPhoneNumber, returnedEmail, 
-                returnedPassword, returnedCPF, returnedRG ,returnedMonthlyIncome, listUser);
+            var userDateBorn = DateTime.ParseExact(returnedDateBorn, "dd/MM/yyyy", null);
+            int thisYear = DateTime.Today.Year;
+            int finalAge = thisYear - userDateBorn.Year;
+
+            user.UserRegisterConstrutor(returnedName, returnedDateBorn, returnedPhoneNumber, returnedEmail,
+                returnedPassword, returnedCPF, returnedRG, returnedMonthlyIncome, returnedAdress, finalAge, listUser);
         }
         public string R_Name(User user)
         {
@@ -32,28 +36,26 @@ namespace EasyBank
             string userInputDateBorn = Validator.IsValidAge(Console.ReadLine(), user);
             return userInputDateBorn;
         }
-        public void R_Adress(User user)
+        public string[] R_Adress(User user)
         {
             Adress adress = new Adress();
             user.Country = adress.Country;
+            string[] ListDataAdress = new string[6];
 
             Console.WriteLine("Cadastre seus dados de endereço");
             Console.Write("Cidade: ");
-            user.City = Console.ReadLine().ToUpper();
+            ListDataAdress[0] = Console.ReadLine().ToUpper();
             Console.Write("Estado: ");
-            user.State = Console.ReadLine().ToUpper();
+            ListDataAdress[1] = Console.ReadLine().ToUpper();
             Console.Write("Bairro: ");
-            user.Neiborhood = Console.ReadLine().ToUpper();
-            Console.Write("Rua: ");
-            user.Street = Console.ReadLine().ToUpper();
+            ListDataAdress[2] = Console.ReadLine().ToUpper();
+            Console.Write("Rua/Avenida: ");
+            ListDataAdress[3] = Console.ReadLine().ToUpper();
             Console.Write("Numero: ");
-            user.HouseNumber = Console.ReadLine().ToUpper();
+            ListDataAdress[4] = Console.ReadLine().ToUpper();
             Console.Write("Complemento: ");
-            user.HouseComplement = Console.ReadLine().ToUpper();
-
-            user.FullAdress = $"País: {user.Country}\nCidade: {user.City}\nEstado: {user.State}\nBairro: " +
-                $"{user.Neiborhood}\n" +
-                $"Rua: {user.Street}\nNumero: {user.HouseNumber}\nComplemento: {user.HouseComplement}\n";
+            ListDataAdress[5] = Console.ReadLine().ToUpper();
+            return ListDataAdress;
         }
         public string R_CPF(User user)
         {
@@ -100,15 +102,6 @@ namespace EasyBank
             Console.Write("Digite: ");
             var inputMonthlyIncome = Convert.ToInt32(Console.ReadLine());
             return inputMonthlyIncome;
-        }
-        public void ViewFullUserData(User user)
-        {
-            foreach (PropertyDescriptor descriptor in TypeDescriptor.GetProperties(user))
-            {
-                string name = descriptor.Name;
-                object value = descriptor.GetValue(user);
-                Console.WriteLine("{0}={1}", name, value);
-            }
         }
     }
 }
