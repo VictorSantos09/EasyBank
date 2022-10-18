@@ -151,14 +151,67 @@ namespace EasyBank
         }
         public static bool HasSpecialCaracter(string input)
         {
+            string rules = @"!@#$%¨&*()_+=-´`~^[]{}º\|₢'/*-+.,;:¹²³£¢¬";
             for (int i = 0; i < input.Length; i++)
             {
-                if (char.IsSymbol(input[i]))
+                char checker = rules[i];
+                if (input.Contains(checker))
                 {
                     return true;
                 }
             }
             return false;
+        }
+        public static bool HasNumber(string input)
+        {
+            string rules = "123456789";
+            for (int i = 0; i < input.Length; i++)
+            {
+                char checker = rules[i];
+                if (input.Contains(checker))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        public static string OutputNoLetters(string input)
+        {
+            var removingLetter = true;
+            while (removingLetter)
+            {
+                var hasLetter = HasLetter(input);
+                if (hasLetter == true)
+                {
+                    Console.WriteLine("Não pode conter letras. Tente novamente");
+                    Console.Write("Digite: ");
+                    input = Console.ReadLine();
+                }
+                else
+                {
+                    removingLetter = false;
+                }
+            }
+            return input;
+        }
+        public static string OutputNoSpecialCaracter(string input)
+        {
+            var removingSpecialC = true;
+            while (removingSpecialC)
+            {
+                var hasSpecialCaracter = HasSpecialCaracter(input);
+                if (hasSpecialCaracter == true)
+                {
+                    Console.WriteLine("Não pode conter caracteres especiais. Tente novamente");
+                    Console.Write("Digite: ");
+                    input = Console.ReadLine();
+                }
+                else
+                {
+                    removingSpecialC = false;
+                }
+            }
+            return input;
         }
     }
 }
