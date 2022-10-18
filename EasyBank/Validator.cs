@@ -38,9 +38,6 @@ namespace EasyBank
                 }
                 else
                 {
-                    user.DateBorn = DateTime.ParseExact(input, "dd/MM/yyyy", null);
-                    var userDateBorn = user.DateBorn.Year;
-                    user.Age = today - userDateBorn;
                     checkingAge = false;
                 }
             }
@@ -89,7 +86,7 @@ namespace EasyBank
             var checkingCPF = true;
             while (checkingCPF)
             {
-                if (input.Length < 10 || input.Length > 10)
+                if (input.Length < 11 || input.Length > 11)
                 {
                     Console.WriteLine("Tamanho de CPF inválido, tente novamente");
                     Console.Write("Digite: ");
@@ -120,7 +117,7 @@ namespace EasyBank
                 }
             }
             string finalInput = Convert.ToInt64(input).ToString(@"00\.000\.000\-00");
-            return input;
+            return finalInput;
         }
         public static string IsValidPhoneNumber(string input, User user)
         {
