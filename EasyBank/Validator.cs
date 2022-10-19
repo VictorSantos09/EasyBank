@@ -175,6 +175,23 @@ namespace EasyBank
             }
             return false;
         }
+        public static bool HasNumberOrSpecialCaracter(string input)
+        {
+            var number = HasNumber(input);
+            if (number == true)
+            {
+                return true;
+            }
+            else
+            {
+                var specialCaracter = HasSpecialCaracter(input);
+                if (specialCaracter == true)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
         public static string OutputNoLetters(string input)
         {
             var removingLetter = true;
@@ -209,6 +226,35 @@ namespace EasyBank
                 else
                 {
                     removingSpecialC = false;
+                }
+            }
+            return input;
+        }
+        public static string OutputNoNumberAndSpecialCaracteres(string input)
+        {
+            var removingAll = true;
+            while (removingAll)
+            {
+                var hasNumber = Validator.HasNumber(input);
+                if (hasNumber == true)
+                {
+                    Console.WriteLine("Não pode conter numeros, tente novamente");
+                    Console.Write("Digite: ");
+                    input = Console.ReadLine();
+                }
+                else
+                {
+                    var hasSpecialC = Validator.HasSpecialCaracter(input);
+                    if (hasSpecialC == true)
+                    {
+                        Console.WriteLine("Não pode conter caracteres especiais, tente novamente");
+                        Console.Write("Digite: ");
+                        input = Console.ReadLine();
+                    }
+                    else
+                    {
+                        removingAll = false;
+                    }
                 }
             }
             return input;

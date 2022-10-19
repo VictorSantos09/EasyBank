@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Globalization;
+using System.Security.Authentication.ExtendedProtection;
 
 namespace EasyBank
 {
@@ -26,8 +27,22 @@ namespace EasyBank
         }
         public string R_Name()
         {
-            Console.Write("Cadastre seu nome completo: ");
-            var inputName = Validator.IsValidName(Console.ReadLine());
+            var inputName = "";
+            var testing = true;
+            while (testing)
+            {
+                Console.Write("Cadastre seu nome completo: ");
+                inputName = Validator.IsValidName(Console.ReadLine());
+                var checker = Validator.HasNumberOrSpecialCaracter(inputName);
+                if (!checker)
+                {
+                    testing = false;
+                }
+                else
+                {
+                    Console.WriteLine("Numeros e caracteres especiais não são válidos");
+                }
+            }
             return inputName;
         }
         public string R_Age_DateBorn(User user) // improve
@@ -43,17 +58,17 @@ namespace EasyBank
 
             Console.WriteLine("Cadastre seus dados de endereço");
             Console.Write("Cidade: ");
-            ListDataAdress[0] = Console.ReadLine().ToUpper();
+            ListDataAdress[0] = Validator.OutputNoNumberAndSpecialCaracteres(Console.ReadLine()).ToUpper();
             Console.Write("Estado: ");
-            ListDataAdress[1] = Console.ReadLine().ToUpper();
+            ListDataAdress[1] = Validator.OutputNoNumberAndSpecialCaracteres(Console.ReadLine()).ToUpper();
             Console.Write("Bairro: ");
-            ListDataAdress[2] = Console.ReadLine().ToUpper();
+            ListDataAdress[2] = Validator.OutputNoNumberAndSpecialCaracteres(Console.ReadLine()).ToUpper();
             Console.Write("Rua/Avenida: ");
             ListDataAdress[3] = Console.ReadLine().ToUpper();
             Console.Write("Numero: ");
-            ListDataAdress[4] = Console.ReadLine().ToUpper();
+            ListDataAdress[4] = Validator.OutputNoSpecialCaracter(Console.ReadLine()).ToUpper();
             Console.Write("Complemento: ");
-            ListDataAdress[5] = Console.ReadLine().ToUpper();
+            ListDataAdress[5] = Validator.OutputNoSpecialCaracter(Console.ReadLine()).ToUpper();
             return ListDataAdress;
         }
         public string R_CPF()
@@ -99,7 +114,7 @@ namespace EasyBank
         {
             Console.WriteLine("Cadastre sua renda mensal bruta");
             Console.Write("Digite: ");
-            var inputMonthlyIncome = Convert.ToInt32(Console.ReadLine());
+            var inputMonthlyIncome = Convert.ToInt32(Console.ReadLine()); //OutputNoLetterAndSpecialCaracter
             return inputMonthlyIncome;
         }
     }
