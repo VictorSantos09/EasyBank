@@ -2,6 +2,8 @@
 
 var ProgramStarted = true;
 User user = new User();
+List<User> listUser = new List<User>();
+Register register = new Register();
 
 while (ProgramStarted)
 {
@@ -13,7 +15,7 @@ while (ProgramStarted)
 
     if (userInputMainMenu == "1")
     {
-
+        register.UserRegister(user, listUser);
     }
     else if (userInputMainMenu == "2")
     {
@@ -21,7 +23,7 @@ while (ProgramStarted)
     }
     else if (userInputMainMenu == "3")
     {
-
+        ProgramStarted = false;
     }
     else
     {
