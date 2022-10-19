@@ -28,15 +28,15 @@ namespace EasyBank
         public string R_Name()
         {
             var inputName = "";
-            var testing = true;
-            while (testing)
+            var checking = true;
+            while (checking)
             {
                 Console.Write("Cadastre seu nome completo: ");
                 inputName = Validator.IsValidName(Console.ReadLine());
                 var checker = Validator.HasNumberOrSpecialCaracter(inputName);
                 if (!checker)
                 {
-                    testing = false;
+                    checking = false;
                 }
                 else
                 {
@@ -64,30 +64,75 @@ namespace EasyBank
             Console.Write("Bairro: ");
             ListDataAdress[2] = Validator.OutputNoNumberAndSpecialCaracteres(Console.ReadLine()).ToUpper();
             Console.Write("Rua/Avenida: ");
-            ListDataAdress[3] = Console.ReadLine().ToUpper();
+            ListDataAdress[3] = Validator.OutputNoSpecialCaracter(Console.ReadLine().ToUpper());
             Console.Write("Numero: ");
-            ListDataAdress[4] = Validator.OutputNoSpecialCaracter(Console.ReadLine()).ToUpper();
+            ListDataAdress[4] = Validator.OutputNoLetterAndSpecialCaracter(Console.ReadLine()).ToString();
             Console.Write("Complemento: ");
             ListDataAdress[5] = Validator.OutputNoSpecialCaracter(Console.ReadLine()).ToUpper();
             return ListDataAdress;
         }
         public string R_CPF()
         {
-            Console.Write("Cadastre seu CPF: ");
-            var inputCPF = Validator.IsValidCPF(Console.ReadLine());
+            var inputCPF = "";
+            var checking = true;
+            while (checking)
+            {
+                Console.Write("Cadastre seu CPF: ");
+                inputCPF = Validator.IsValidCPF(Console.ReadLine());
+                var checker = Validator.HasLetterOrSpecialCaracter(inputCPF);
+                if (!checker)
+                {
+                    checking = false;
+                }
+                else
+                {
+                    Console.WriteLine("Letras e caracteres especiais não são válidos");
+                }
+            }
+            string finalInput = Convert.ToInt64(inputCPF).ToString(@"000\.000\.000\-00");
             return inputCPF;
         }
         public string R_RG()
         {
-            Console.Write("Cadastre seu RG: ");
-            var inputRG = Validator.IsValidRG(Console.ReadLine());
+            var inputRG = "";
+            var checking = true;
+            while (checking)
+            {
+                Console.Write("Cadastre seu RG: ");
+                inputRG = Validator.IsValidRG(Console.ReadLine());
+                var checker = Validator.HasLetterOrSpecialCaracter(inputRG);
+                if (!checker)
+                {
+                    checking = false;
+                }
+                else
+                {
+                    Console.WriteLine("Numeros e caracteres especiais não são válidos");
+                }
+            }
+            string finalInput = Convert.ToInt64(inputRG).ToString(@"00\.000\.000\-00");
             return inputRG;
         }
         public string R_PhoneNumber(User user)
         {
-            Console.Write("Cadastre seu telefone com DDD: ");
-            var inputPhoneNumber = Validator.IsValidPhoneNumber(Console.ReadLine(), user);
-            return inputPhoneNumber;
+            var inputPhoneNumber = "";
+            var checking = true;
+            while (checking)
+            {
+                Console.Write("Cadastre seu telefone com DDD: ");
+                inputPhoneNumber = Validator.IsValidPhoneNumber(Console.ReadLine());
+                var checker = Validator.HasLetterOrSpecialCaracter(inputPhoneNumber);
+                if (!checker)
+                {
+                    checking = false;
+                }
+                else
+                {
+                    Console.WriteLine("Letras e caracteres especiais não são válidos");
+                }
+            }
+            var finalNumber = user.PhoneCodeArea + inputPhoneNumber;
+            return finalNumber;
         }
         public void R_CreditCard(User user)
         {
@@ -106,15 +151,16 @@ namespace EasyBank
         }
         public string R_Password()
         {
-            Console.Write("Cadastre sua senha de 4 digitos: ");
+            Console.Write("Cadastre sua senha de no minimo 4 digitos: ");
             var inputPassword = Validator.IsValidPassword(Console.ReadLine());
             return inputPassword;
         }
         public int R_MonthlyIncome()
         {
+            var inputMonthlyIncome = 0;
             Console.WriteLine("Cadastre sua renda mensal bruta");
             Console.Write("Digite: ");
-            var inputMonthlyIncome = Convert.ToInt32(Console.ReadLine()); //OutputNoLetterAndSpecialCaracter
+            inputMonthlyIncome = Validator.OutputNoLetterAndSpecialCaracter(Console.ReadLine());
             return inputMonthlyIncome;
         }
     }
