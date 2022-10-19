@@ -107,7 +107,7 @@ namespace EasyBank
                 }
                 else
                 {
-                    Console.WriteLine("Numeros e caracteres especiais não são válidos");
+                    Console.WriteLine("Letras e caracteres especiais não são válidos");
                 }
             }
             string finalInput = Convert.ToInt64(inputRG).ToString(@"00\.000\.000\-00");
