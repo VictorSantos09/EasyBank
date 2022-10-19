@@ -214,9 +214,8 @@ namespace EasyBank
                 var hasLetter = HasLetter(input);
                 if (hasLetter == true)
                 {
-                    Console.WriteLine("Não pode conter letras. Tente novamente");
-                    Console.Write("Digite: ");
-                    input = Console.ReadLine();
+                    input = ErrorLetterMessageInput();
+
                 }
                 else
                 {
@@ -233,9 +232,7 @@ namespace EasyBank
                 var hasSpecialCaracter = HasSpecialCaracter(input);
                 if (hasSpecialCaracter == true)
                 {
-                    Console.WriteLine("Não pode conter caracteres especiais. Tente novamente");
-                    Console.Write("Digite: ");
-                    input = Console.ReadLine();
+                    input = ErrorSpecialCaracterMessageInput();
                 }
                 else
                 {
@@ -252,18 +249,14 @@ namespace EasyBank
                 var hasNumber = Validator.HasNumber(input);
                 if (hasNumber == true)
                 {
-                    Console.WriteLine("Não pode conter numeros, tente novamente");
-                    Console.Write("Digite: ");
-                    input = Console.ReadLine();
+                    input = ErrorNumberMessageInput();
                 }
                 else
                 {
                     var hasSpecialC = Validator.HasSpecialCaracter(input);
                     if (hasSpecialC == true)
                     {
-                        Console.WriteLine("Não pode conter caracteres especiais, tente novamente");
-                        Console.Write("Digite: ");
-                        input = Console.ReadLine();
+                        input = ErrorSpecialCaracterMessageInput();
                     }
                     else
                     {
@@ -309,6 +302,13 @@ namespace EasyBank
         public static string ErrorLetterMessageInput()
         {
             Console.WriteLine("Não pode conter letras. Tente novamente");
+            Console.Write("Digite: ");
+            var input = Console.ReadLine();
+            return input;
+        }
+        public static string ErrorNumberMessageInput()
+        {
+            Console.WriteLine("Não pode conter números. Tente novamente");
             Console.Write("Digite: ");
             var input = Console.ReadLine();
             return input;
