@@ -1,5 +1,11 @@
-﻿using System.Runtime.ExceptionServices;
+﻿using EasyBank;
+using System.Runtime.ExceptionServices;
 
+
+//Register register = new Register();
+//SafetyPassword pass = new SafetyPassword();
+//pass.CriacaoTresLetras();
+//pass.VerificarSenha();
 namespace EasyBank
 {
     public class SafetyPassword
@@ -8,10 +14,25 @@ namespace EasyBank
         static string SafetyKey { get; set; }
         public string CriacaoTresLetras()
         {
+            string quantidadeLetras;
             Console.WriteLine("Crie 3 letras de segurança");
-            SafetyKey = Console.ReadLine().ToUpper();
-            Console.Clear();
-            return SafetyKey;
+            quantidadeLetras = Validator.OutputNoNumberAndSpecialCaracteres(Console.ReadLine());
+
+            if (quantidadeLetras.Length > 3)
+            {
+                Console.WriteLine("Favor informar apenas 3 letras");
+                GerarLetras();
+                quantidadeLetras = Validator.OutputNoNumberAndSpecialCaracteres(Console.ReadLine());
+                Console.Clear();
+            }
+            else
+            {
+                quantidadeLetras.Trim().ToUpper();
+            }
+
+
+            quantidadeLetras = SafetyKey;
+            return quantidadeLetras;
         }
 
         static void GerarLetras()
@@ -36,7 +57,7 @@ namespace EasyBank
             }
         }
 
-        public void VerificarSenha()
+        public bool VerificarSenha()
         {
 
             for (int i = 3; i > -1;)
@@ -52,6 +73,7 @@ namespace EasyBank
                 if (SafetyKey == ConfirmarSenhaLetras)
                 {
                     Console.WriteLine("Senha correta");
+                    return true;
                     Environment.Exit(0);
                 }
                 else
@@ -66,6 +88,8 @@ namespace EasyBank
                     Thread.Sleep(2000);
                 }
             }
+            return false;
+
         }
     }
 }
