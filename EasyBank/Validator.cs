@@ -162,12 +162,15 @@ namespace EasyBank
         public static bool HasNumber(string input)
         {
             string rules = "123456789";
-            for (int i = 0; i < input.Length; i++)
+            for (int i = 0; i < rules.Length; i++)
             {
-                char checker = rules[i];
-                if (input.Contains(checker))
+                for (int j = 0; j < input.Length; j++)
                 {
-                    return true;
+                    char checker = rules[i];
+                    if (input.Contains(checker))
+                    {
+                        return true;
+                    }
                 }
             }
             return false;
@@ -274,7 +277,7 @@ namespace EasyBank
                 var letter = HasLetter(input);
                 if (letter == true)
                 {
-                   input = ErrorLetterMessageInput();
+                    input = ErrorLetterMessageInput();
                 }
                 else
                 {
