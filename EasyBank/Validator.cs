@@ -175,6 +175,10 @@ namespace EasyBank
             }
             return false;
         }
+        public static bool HasWhiteSpace(string input)
+        {
+            return input.Contains(" ");
+        }
         public static bool HasNumberOrSpecialCaracter(string input)
         {
             var number = HasNumber(input);
@@ -295,6 +299,24 @@ namespace EasyBank
             var inputConvertedToInt = Convert.ToInt32(input);
             return inputConvertedToInt;
         }
+        public static string OutputNoWhiteSpace(string input)
+        {
+            var checking = true;
+            while (checking)
+            {
+                var checker = HasWhiteSpace(input);
+                if (checker == true)
+                {
+                    ErrorGeneric();
+                    input =  Console.ReadLine();
+                }
+                else
+                {
+                    checking = false;
+                }
+            }
+            return input;
+        }
         public static string ErrorSpecialCaracterMessageInput()
         {
             Console.WriteLine("Não pode conter caracteres especiais, tente novamente");
@@ -315,6 +337,11 @@ namespace EasyBank
             Console.Write("Digite: ");
             var input = Console.ReadLine();
             return input;
+        }
+        public static void ErrorGeneric()
+        {
+            var message = "Tente novamente";
+            Console.WriteLine(message);
         }
     }
 }
