@@ -97,8 +97,7 @@ namespace EasyBank
                     checkingCPF = false;
                 }
             }
-            string finalInput = Convert.ToInt64(input).ToString(@"000\.000\.000\-00");
-            return finalInput;
+            return input;
         }
         public static string IsValidRG(string input)
         {
@@ -116,10 +115,9 @@ namespace EasyBank
                     checkingRG = false;
                 }
             }
-            string finalInput = Convert.ToInt64(input).ToString(@"00\.000\.000\-00");
-            return finalInput;
+            return input;
         }
-        public static string IsValidPhoneNumber(string input, User user)
+        public static string IsValidPhoneNumber(string input)
         {
             var checkingPhoneNumber = true;
             while (checkingPhoneNumber)
@@ -135,8 +133,7 @@ namespace EasyBank
                     checkingPhoneNumber = false;
                 }
             }
-            var finalNumber = user.PhoneCodeArea + input;
-            return finalNumber;
+            return input;
         }
         public static bool HasLetter(string input)
         {
@@ -151,14 +148,170 @@ namespace EasyBank
         }
         public static bool HasSpecialCaracter(string input)
         {
+            string rules = @"!@#$%¨&*()_+=-´`~^[]{}º\|₢'/*-+.,;:¹²³£¢¬";
             for (int i = 0; i < input.Length; i++)
             {
-                if (char.IsSymbol(input[i]))
+                char checker = rules[i];
+                if (input.Contains(checker))
                 {
                     return true;
                 }
             }
             return false;
+        }
+        public static bool HasNumber(string input)
+        {
+            string rules = "123456789";
+            for (int i = 0; i < input.Length; i++)
+            {
+                char checker = rules[i];
+                if (input.Contains(checker))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        public static bool HasNumberOrSpecialCaracter(string input)
+        {
+            var number = HasNumber(input);
+            if (number == true)
+            {
+                return true;
+            }
+            else
+            {
+                var specialCaracter = HasSpecialCaracter(input);
+                if (specialCaracter == true)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        public static bool HasLetterOrSpecialCaracter(string input)
+        {
+            var letter = HasLetter(input);
+            if (letter == true)
+            {
+                return true;
+            }
+            else
+            {
+                var specialC = HasSpecialCaracter(input);
+                if (specialC == true)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        public static string OutputNoLetters(string input)
+        {
+            var removingLetter = true;
+            while (removingLetter)
+            {
+                var hasLetter = HasLetter(input);
+                if (hasLetter == true)
+                {
+                    input = ErrorLetterMessageInput();
+
+                }
+                else
+                {
+                    removingLetter = false;
+                }
+            }
+            return input;
+        }
+        public static string OutputNoSpecialCaracter(string input)
+        {
+            var removingSpecialC = true;
+            while (removingSpecialC)
+            {
+                var hasSpecialCaracter = HasSpecialCaracter(input);
+                if (hasSpecialCaracter == true)
+                {
+                    input = ErrorSpecialCaracterMessageInput();
+                }
+                else
+                {
+                    removingSpecialC = false;
+                }
+            }
+            return input;
+        }
+        public static string OutputNoNumberAndSpecialCaracteres(string input)
+        {
+            var removingAll = true;
+            while (removingAll)
+            {
+                var hasNumber = Validator.HasNumber(input);
+                if (hasNumber == true)
+                {
+                    input = ErrorNumberMessageInput();
+                }
+                else
+                {
+                    var hasSpecialC = Validator.HasSpecialCaracter(input);
+                    if (hasSpecialC == true)
+                    {
+                        input = ErrorSpecialCaracterMessageInput();
+                    }
+                    else
+                    {
+                        removingAll = false;
+                    }
+                }
+            }
+            return input;
+        }
+        public static int OutputNoLetterAndSpecialCaracter(string input)
+        {
+            var removingAll = true;
+            while (removingAll)
+            {
+                var letter = HasLetter(input);
+                if (letter == true)
+                {
+                   input = ErrorLetterMessageInput();
+                }
+                else
+                {
+                    var SpecialC = HasSpecialCaracter(input);
+                    if (SpecialC == true)
+                    {
+                        input = ErrorSpecialCaracterMessageInput();
+                    }
+                    else
+                    {
+                        removingAll = false;
+                    }
+                }
+            }
+            var inputConvertedToInt = Convert.ToInt32(input);
+            return inputConvertedToInt;
+        }
+        public static string ErrorSpecialCaracterMessageInput()
+        {
+            Console.WriteLine("Não pode conter caracteres especiais, tente novamente");
+            Console.Write("Digite: ");
+            var input = Console.ReadLine();
+            return input;
+        }
+        public static string ErrorLetterMessageInput()
+        {
+            Console.WriteLine("Não pode conter letras. Tente novamente");
+            Console.Write("Digite: ");
+            var input = Console.ReadLine();
+            return input;
+        }
+        public static string ErrorNumberMessageInput()
+        {
+            Console.WriteLine("Não pode conter números. Tente novamente");
+            Console.Write("Digite: ");
+            var input = Console.ReadLine();
+            return input;
         }
     }
 }
