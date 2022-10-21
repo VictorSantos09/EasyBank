@@ -10,28 +10,54 @@ namespace EasyBank
 {
     public class SafetyPassword
     {
-
-        static string SafetyKey { get; set; }
-        public string CriacaoTresLetras()
+        public string CriacaoTresLetras(User user)
         {
             string quantidadeLetras;
             Console.WriteLine("Crie 3 letras de segurança");
-            quantidadeLetras = Validator.OutputNoNumberAndSpecialCaracteres(Console.ReadLine());
+            quantidadeLetras = Validator.OutputNoNumberAndSpecialCaracteres(Console.ReadLine().ToUpper());
 
-            if (quantidadeLetras.Length > 3)
+            while (quantidadeLetras.Length < 3 || quantidadeLetras.Length > 3)
             {
                 Console.WriteLine("Favor informar apenas 3 letras");
                 GerarLetras();
                 quantidadeLetras = Validator.OutputNoNumberAndSpecialCaracteres(Console.ReadLine());
                 Console.Clear();
+
             }
-            else
+
+            Console.WriteLine($"Voce escolheu as Letras    '{quantidadeLetras}'  Digite sim para confirmar ou não para inserir novamente");
+            string confirmacao = Console.ReadLine().ToUpper();
+
+            if (confirmacao == "sim".ToUpper())
             {
-                quantidadeLetras.Trim().ToUpper();
+                Console.WriteLine("Confirmando..."); Thread.Sleep(2000);
+                Console.WriteLine("Confirmado.");
+                Console.WriteLine();
             }
 
+            while (confirmacao != "não".ToUpper() && confirmacao != "sim".ToUpper())
+            {
 
-            quantidadeLetras = SafetyKey;
+                Console.WriteLine("Favor escreva sim ou não corretamente");
+                confirmacao = Validator.OutputNoNumberAndSpecialCaracteres(Console.ReadLine().ToUpper());
+                Console.Clear();
+
+            }
+            if (confirmacao == "não".ToUpper())
+            {
+                Console.WriteLine("Favor insira novamente as 3 letras");
+                    GerarLetras();
+                quantidadeLetras = Validator.OutputNoNumberAndSpecialCaracteres(Console.ReadLine().ToUpper());
+                Console.Clear();
+                while (quantidadeLetras.Length < 3 || quantidadeLetras.Length > 3)
+                {
+                    Console.WriteLine("Favor informar apenas 3 letras");
+                    Console.Clear();
+
+                }
+            }
+
+            user.SafetyKey = quantidadeLetras;
             return quantidadeLetras;
         }
 
@@ -57,7 +83,7 @@ namespace EasyBank
             }
         }
 
-        public bool VerificarSenha()
+        public bool VerificarLetras(User user)
         {
 
             for (int i = 3; i > -1;)
@@ -70,7 +96,7 @@ namespace EasyBank
                 Console.WriteLine();
 
 
-                if (SafetyKey == ConfirmarSenhaLetras)
+                if (user.SafetyKey == ConfirmarSenhaLetras)
                 {
                     Console.WriteLine("Senha correta");
                     return true;
@@ -89,7 +115,6 @@ namespace EasyBank
                 }
             }
             return false;
-
         }
     }
 }
