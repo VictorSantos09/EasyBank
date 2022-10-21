@@ -308,7 +308,7 @@ namespace EasyBank
                 if (checker == true)
                 {
                     ErrorGeneric();
-                    input =  Console.ReadLine();
+                    input = IsNullOrEmpty.OutputNotNull(Console.ReadLine());
                 }
                 else
                 {

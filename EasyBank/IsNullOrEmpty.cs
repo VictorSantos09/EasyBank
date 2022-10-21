@@ -27,7 +27,7 @@
         }
         public static bool IsNull(string input)
         {
-            if (input == null)
+            if (input == string.Empty)
             {
                 return true;
             }
