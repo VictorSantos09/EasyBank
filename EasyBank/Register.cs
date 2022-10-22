@@ -6,7 +6,7 @@ namespace EasyBank
 {
     public class Register
     {
-        public void UserRegister(User user, List<User> listUser)
+        public void UserRegister(User user, List<User> listUser, List<CreditCard> listcreditCards)
         {
             var returnedName = R_Name();
             var returnedDateBorn = R_Age_DateBorn(user);
@@ -17,13 +17,16 @@ namespace EasyBank
             var returnedRG = R_RG();
             var returnedAdress = R_Adress();
             var returnedMonthlyIncome = R_MonthlyIncome();
-            R_CreditCard(user);
             var userDateBorn = DateTime.ParseExact(returnedDateBorn, "dd/MM/yyyy", null);
             int thisYear = DateTime.Today.Year;
             int finalAge = thisYear - userDateBorn.Year;
 
             user.UserRegisterConstrutor(returnedName, returnedDateBorn, returnedPhoneNumber, returnedEmail,
                 returnedPassword, returnedCPF, returnedRG, returnedMonthlyIncome, returnedAdress, finalAge, listUser);
+
+            CreditCard creditCard = new CreditCard();
+            creditCard.UserMonthlyIncome = returnedMonthlyIncome;
+            creditCard.MainRegister(user, listcreditCards, listUser);
         }
         public string R_Name()
         {
@@ -133,19 +136,10 @@ namespace EasyBank
             var finalNumber = user.PhoneCodeArea + inputPhoneNumber;
             return finalNumber;
         }
-        public void R_CreditCard(User user)
-        {
-            CreditCard creditCard = new CreditCard();
-            Random random = new Random();
-            creditCard.CVV = Convert.ToString(random.Next(101, 999));
-            creditCard.NameOwner = user.Name;
-            creditCard.ExpireDate = DateTime.Today.AddYears(3);
-            creditCard.Limite = user.MonthlyIncome + random.Next(491, 771);
-        }
         public string R_Email()
         {
             Console.Write("Cadastre seu email: ");
-            var inputEmail = Validator.IsValidEmail(Console.ReadLine());
+            var inputEmail = Validator.IsValidEmail(Console.ReadLine().ToUpper());
             return inputEmail;
         }
         public string R_Password()

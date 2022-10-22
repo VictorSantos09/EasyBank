@@ -57,7 +57,7 @@ namespace EasyBank
                 {
                     Console.WriteLine("Email inválido, tente novamente");
                     Console.Write("Digite: ");
-                    input = Console.ReadLine();
+                    input = Console.ReadLine().ToUpper();
                 }
             }
             return input;
@@ -378,6 +378,31 @@ namespace EasyBank
                 }
             }
             return finalInput;
+        }
+        public static void ID_AUTOINCREMENT(List<User>? listUsers, List<CreditCard>? listCreditCards, int option)
+        {
+            // Options: 1 - User, 2 - CreditCard
+            int counter = 1;
+            if (option == 1)
+            {
+                for (int i = 0; i < listUsers.Count; i++)
+                {
+                    if (listUsers[i].Name != string.Empty)
+                    {
+                        listUsers[i].Id = counter++;
+                    }
+                }
+            }
+            else if (option == 2)
+            {
+                for (int i = 0; i < listCreditCards.Count; i++)
+                {
+                    if (listCreditCards[i].NameOwner != string.Empty)
+                    {
+                        listCreditCards[i].Id = counter++;
+                    }
+                }
+            }
         }
     }
 }

@@ -22,7 +22,6 @@
         public void UserRegisterConstrutor(string _name, string _dateBorn, string _phoneNumber, string _email,
             string _password, string _CPF, string _RG, int _monthlyIncome, string[] _adress, int _age, List<User> listUser)
         {
-            int idCounter = 1;
             listUser.Add(new User
             {
                 Name = _name,
@@ -42,8 +41,8 @@
                 FullAdress = $"Pais: {Country} Cidade: {_adress[0]} Estado: {_adress[1]} Bairro: {_adress[2]} " +
                 $"Rua: {_adress[3]} Numero: {_adress[4]} Complemento: {_adress[5]}",
                 Age = _age,
-                Id = idCounter++,
             });
+            Validator.ID_AUTOINCREMENT(listUser, null, 1);
         }
     }
 }
