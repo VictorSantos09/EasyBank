@@ -99,7 +99,7 @@ namespace EasyBank
             while (checking)
             {
                 Console.Write("Cadastre seu RG: ");
-                inputRG = Validator.IsValidRG(Console.ReadLine());
+                inputRG = Validator.DynamicSizeRG(Console.ReadLine());
                 var checker = Validator.HasLetterOrSpecialCaracter(inputRG);
                 if (!checker)
                 {
@@ -110,7 +110,6 @@ namespace EasyBank
                     Console.WriteLine("Letras e caracteres especiais não são válidos");
                 }
             }
-            string finalInput = Convert.ToInt64(inputRG).ToString(@"00\.000\.000\-00");
             return inputRG;
         }
         public string R_PhoneNumber(User user)
