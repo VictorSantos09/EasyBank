@@ -1,4 +1,5 @@
-﻿namespace EasyBank
+﻿.
+namespace EasyBank
 {
     public class AutoDebit
     {
@@ -23,10 +24,15 @@
                 else if (optionMenu == "2")
                 {
                     Console.WriteLine("Visualizar Débitos Automáticos");
+                    
                 }
                 else if (optionMenu == "3")
                 {
                     Console.WriteLine("Cadastrar novo Débito Automático");
+                    Console.WriteLine("Nos diga qual é sua conta (digite o número que corresponde a sua opção):");
+                    Console.WriteLine("1 - Poupança \n2 - Fatura \n3 - Água \n4 - Luz \n5 - Seguro de Vida");
+                    string opcao = Console.ReadLine();
+                    // insira validator de espaço e caracteres especiais;
                 }
                 else if (optionMenu == "4")
                 {
