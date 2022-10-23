@@ -2,9 +2,13 @@
 
 var ProgramStarted = true;
 User user = new User();
+Bill bill = new Bill();
+Register register = new Register();
+
 List<User> listUser = new List<User>();
 List<CreditCard> listcreditCards = new List<CreditCard>();
-Register register = new Register();
+List<Bill> bills = new List<Bill>();
+List<Loan> loans = new List<Loan>();
 
 while (ProgramStarted)
 {

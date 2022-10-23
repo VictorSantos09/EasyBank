@@ -379,9 +379,14 @@ namespace EasyBank
             }
             return finalInput;
         }
-        public static void ID_AUTOINCREMENT(List<User>? listUsers, List<CreditCard>? listCreditCards, int option)
+        public static void ID_AUTOINCREMENT(List<User>? listUsers, List<CreditCard>? listCreditCards, int option,
+            List<Bill>? bills, List<Loan>? loans)
         {
-            // Options: 1 - User, 2 - CreditCard
+            // Options: 1 - User, 2 - CreditCard, 3 - Bills, 4 - Loan
+
+           // Ao implementar banco de dados esse método pode causar erros, principalmente alinhamento incorretos de Id com os usuarios e objetos
+           //Talvez será necessario converter para ele contar a partir da quantidade de IDs existentes no DB
+
             int counter = 1;
             if (option == 1)
             {
@@ -400,6 +405,26 @@ namespace EasyBank
                     if (listCreditCards[i].NameOwner != string.Empty)
                     {
                         listCreditCards[i].Id = counter++;
+                    }
+                }
+            }
+            else if (option == 3)
+            {
+                for (int i = 0; i < bills.Count; i++)
+                {
+                    if (bills[i].Name != string.Empty && bills[i].Name != null)
+                    {
+                        bills[i].Id = counter++;
+                    }
+                }
+            }
+            else if (option == 4)
+            {
+                for (int i = 0; i < loans.Count; i++)
+                {
+                    if (loans[i].Open == true)
+                    {
+                        loans[i].Id = counter++;
                     }
                 }
             }

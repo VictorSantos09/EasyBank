@@ -42,7 +42,7 @@
                 $"Rua: {_adress[3]} Numero: {_adress[4]} Complemento: {_adress[5]}",
                 Age = _age,
             });
-            Validator.ID_AUTOINCREMENT(listUser, null, 1);
+            Validator.ID_AUTOINCREMENT(listUser, null, 1,null,null);
         }
     }
 }
