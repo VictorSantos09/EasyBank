@@ -25,8 +25,7 @@ namespace EasyBank
                 returnedPassword, returnedCPF, returnedRG, returnedMonthlyIncome, returnedAdress, finalAge, listUser);
 
             CreditCard creditCard = new CreditCard();
-            creditCard.UserMonthlyIncome = returnedMonthlyIncome;
-            creditCard.MainRegister(user, listcreditCards, listUser);
+            creditCard.MainRegister(user, listcreditCards, listUser,returnedMonthlyIncome);
         }
         public string R_Name()
         {
@@ -93,7 +92,7 @@ namespace EasyBank
                 }
             }
             string finalInput = Convert.ToInt64(inputCPF).ToString(@"000\.000\.000\-00");
-            return inputCPF;
+            return finalInput;
         }
         public string R_RG()
         {

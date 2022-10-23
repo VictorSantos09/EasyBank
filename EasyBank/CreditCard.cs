@@ -5,7 +5,6 @@ namespace EasyBank
 {
     public class CreditCard
     {
-        public int UserMonthlyIncome { get; set; }
         public int Id { get; set; }
         public int ValueParcel { get; set; } //Valor da parcela
         public int Limit { get; set; } // Limite do cartão
@@ -30,10 +29,10 @@ namespace EasyBank
             });
             Validator.ID_AUTOINCREMENT(null, listCreditCards, 2);
         }
-        public void MainRegister(User user, List<CreditCard> listcreditCards, List<User> listUser)
+        public void MainRegister(User user, List<CreditCard> listcreditCards, List<User> listUser, int userMonthlyIncome)
         {
             // ValueParcel - Investigar
-            var limitReturned = R_Limit();
+            var limitReturned = R_Limit(userMonthlyIncome);
             var nameReturned = R_NameOwner(listUser);
             var _CVVReturned = R_CVV();
             // SafetyKey - Thiago
@@ -41,10 +40,10 @@ namespace EasyBank
 
             Constructor(listcreditCards, 0, limitReturned, nameReturned, _CVVReturned, null, expireDateReturned);
         }
-        public int R_Limit()
+        public int R_Limit(int userMonthlyIncome)
         {
             Random random = new Random();
-            var limit = UserMonthlyIncome + random.Next(491, 771);
+            var limit = userMonthlyIncome + random.Next(491, 771);
             return limit;
         }
         public string R_NameOwner(List<User> listUser)
