@@ -1,5 +1,4 @@
-﻿.
-namespace EasyBank
+﻿namespace EasyBank
 {
     public class AutoDebit
     {
@@ -30,9 +29,28 @@ namespace EasyBank
                 {
                     Console.WriteLine("Cadastrar novo Débito Automático");
                     Console.WriteLine("Nos diga qual é sua conta (digite o número que corresponde a sua opção):");
-                    Console.WriteLine("1 - Poupança \n2 - Fatura \n3 - Água \n4 - Luz \n5 - Seguro de Vida");
+                    Console.WriteLine("1 - Poupança \n2 - Fatura \n3 - Água \n4 - Seguro de Vida \n5 - Outra");
                     string opcao = Console.ReadLine();
                     // insira validator de espaço e caracteres especiais;
+
+                    if(opcao == "1")
+                    {
+                        ReceberValor();
+                        //Aplicar método que faça a ligação entre DébitoAuto e Poupança;
+                        //Se usuário escolher este método, poupança todo mês recebe o valor
+                        // que foi inserido aqui;
+                    } else if(opcao == "2")
+                    {
+                        //Aplicar método que faça a ligação entre DébitoAuto e Crédito;
+                        //Se usuário escolher este método, a fatura do cartão todo mês
+                        // será paga por aqui;
+                        //Usuário não vai inserir valor, encontrar método em que pegue o valor
+                        // da fatura;
+                    } else if(opcao == "3" || opcao == "4")
+                    {
+                        ReceberValor();
+
+                    } else
                 }
                 else if (optionMenu == "4")
                 {
@@ -59,6 +77,16 @@ namespace EasyBank
             Console.WriteLine("(Ex: água, luz) e todo mês, na data que você escolher, debitamos o valor da sua conta e pronto! Suas contas estão pagas, sem trabalho extra!");
             Console.WriteLine("Você pode visualizar quais contas estão em débitos automáticos na opção '2'.");
             Console.WriteLine("Quer remover uma conta do débito automático? Acesse a opção '4'.");
+        }
+        public void ReceberValor()
+        {
+            Console.Write("Insira o valor para débito mensal: ");
+            float valor = float.Parse(Console.ReadLine());
+            // insira validator de espaço, caracteres especiais e letras;
+        }
+        public void fatura(float valorEmprestimo)
+        {
+
         }
     }
 }
