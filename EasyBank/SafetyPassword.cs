@@ -1,6 +1,6 @@
 ﻿namespace EasyBank
 {
-   public class SafetyPassword
+    public class SafetyPassword
     {
 
     }

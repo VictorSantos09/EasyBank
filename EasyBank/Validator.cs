@@ -1,6 +1,4 @@
-﻿using System.Security.Authentication.ExtendedProtection;
-
-namespace EasyBank
+﻿namespace EasyBank
 {
     public static class Validator
     {
@@ -337,7 +335,8 @@ namespace EasyBank
             Console.WriteLine(message);
         }
         public static string DynamicSizeRG(string input)
-        {   string finalInput = "";
+        {
+            string finalInput = "";
             var checking = true;
             while (checking)
             {
@@ -384,8 +383,8 @@ namespace EasyBank
         {
             // Options: 1 - User, 2 - CreditCard, 3 - Bills, 4 - Loan
 
-           // Ao implementar banco de dados esse método pode causar erros, principalmente alinhamento incorretos de Id com os usuarios e objetos
-           //Talvez será necessario converter para ele contar a partir da quantidade de IDs existentes no DB
+            // Ao implementar banco de dados esse método pode causar erros, principalmente alinhamento incorretos de Id com os usuarios e objetos
+            //Talvez será necessario converter para ele contar a partir da quantidade de IDs existentes no DB
 
             int counter = 1;
             if (option == 1)

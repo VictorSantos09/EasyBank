@@ -1,8 +1,4 @@
-﻿using System.ComponentModel;
-using System.Globalization;
-using System.Security.Authentication.ExtendedProtection;
-
-namespace EasyBank
+﻿namespace EasyBank
 {
     public class Register
     {
@@ -25,7 +21,7 @@ namespace EasyBank
                 returnedPassword, returnedCPF, returnedRG, returnedMonthlyIncome, returnedAdress, finalAge, listUser);
 
             CreditCard creditCard = new CreditCard();
-            creditCard.MainRegister(listcreditCards, listUser,returnedMonthlyIncome);
+            creditCard.MainRegister(listcreditCards, listUser, returnedMonthlyIncome);
         }
         public string R_Name()
         {

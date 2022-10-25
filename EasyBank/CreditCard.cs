@@ -1,7 +1,4 @@
-﻿using System;
-using System.Globalization;
-
-namespace EasyBank
+﻿namespace EasyBank
 {
     public class CreditCard
     {
@@ -27,6 +24,14 @@ namespace EasyBank
                 ExpireDate = _ExpireDate,
             });
             Validator.ID_AUTOINCREMENT(null, listCreditCards, 2, null, null);
+        }
+        public void InvoiceConstructorInsert(List<CreditCard> creditCards, int index, int _valueInvoice)
+        {
+            // Verificar
+            creditCards.InsertRange(index, creditCards);
+            {
+                ValueInvoice = _valueInvoice;
+            };
         }
         public void MainRegister(List<CreditCard> listcreditCards, List<User> listUser, int userMonthlyIncome)
         {
@@ -67,26 +72,49 @@ namespace EasyBank
             DateTime _ExpireDate = DateTime.Today.AddYears(3);
             return _ExpireDate;
         }
-        public int IncrementMonthInvoce(List<Bill> bills) // Aprimorar se possivel
+        public void IncrementMonthInvoce(List<Bill> bills, List<User> users, List<CreditCard> creditCards) // Aprimorar se possivel
         {
+            //Este metodo será chamado a cada virada de mês, será necessario ver uma solução para armazenar e visualizar outras contas
+            //fora o empréstimo
             var finalValue = 0;
             for (int i = 0; i < bills.Count; i++)
             {
-                if (bills[i].Value != 0)
+                if (bills[i].Id == users[i].Id)
                 {
                     finalValue = finalValue + bills[i].Value;
+                    InvoiceConstructorInsert(creditCards, i, finalValue);
                 }
             }
-            return finalValue;
         }
-        public void PaymentParcel(List<User> listUsers, List<CreditCard> listCreditCards)
+        public void ManualMonthPaymentInvoice(List<User> users, List<CreditCard> creditCards, List<Bill> bills)
         {
-            var qtdParcelToPay = 0;
-            for (int i = 0; i < listUsers.Count; i++)
+            //Verificar. Necessario ver a questão de caso o usuario possa haver mais de uma conta conseguir linkar com este método
+            for (int i = 0; i < users.Count; i++)
             {
-                if (listCreditCards[i].ValueInvoice != 0)
+                if (creditCards[i].Id == users[i].Id && bills[i].Id == users[i].Id)
                 {
-                    qtdParcelToPay++;
+                    if (bills[i].NumberParcels != 0)
+                    {
+                        var valueToPay = creditCards[i].ValueInvoice;
+                        Console.WriteLine($"TOTAL A PAGAR: {valueToPay}\nITEM:{bills[i].Name}\nPARCELAS RESTANTES: {bills[i].NumberParcels}" +
+                            $"\nClique ENTER para pagar");
+                        Console.ReadKey();
+                        if (users[i].CurrentAccount < valueToPay)
+                        {
+                            Console.WriteLine("Saldo Indisponivel");
+                        }
+                        else
+                        {
+                            users[i].CurrentAccount = -valueToPay;
+                            bills[i].NumberParcels--;
+                            creditCards[i].ValueInvoice = 0;
+                            Console.WriteLine($"Pagamento efetuado");
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Não há faturas á pagar");
+                    }
                 }
             }
         }
