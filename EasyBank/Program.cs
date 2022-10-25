@@ -2,8 +2,13 @@
 
 var ProgramStarted = true;
 User user = new User();
-List<User> listUser = new List<User>();
+Bill bill = new Bill();
 Register register = new Register();
+
+List<User> listUser = new List<User>();
+List<CreditCard> listcreditCards = new List<CreditCard>();
+List<Bill> bills = new List<Bill>();
+List<Loan> loans = new List<Loan>();
 
 while (ProgramStarted)
 {
@@ -15,7 +20,7 @@ while (ProgramStarted)
 
     if (userInputMainMenu == "1")
     {
-        register.UserRegister(user, listUser);
+        register.UserRegister(user, listUser, listcreditCards);
     }
     else if (userInputMainMenu == "2")
     {
