@@ -4,7 +4,7 @@
     {
         public int Id { get; set; }
         public string NumberCard { get; set; } //Necessario fazerr 
-        public int ValueInvoice { get; set; } //Valor da fatura
+        public double ValueInvoice { get; set; } //Valor da fatura
         public int Limit { get; set; } // Limite do cartão
         public string NameOwner { get; set; }
         public string CVV { get; set; }
@@ -25,9 +25,9 @@
             });
             Validator.ID_AUTOINCREMENT(null, listCreditCards, 2, null, null);
         }
-        public void InvoiceConstructorInsert(List<CreditCard> creditCards, int index, int _valueInvoice)
+        public void InvoiceConstructorInsert(List<CreditCard> creditCards, int index, double _valueInvoice)
         {
-            // Verificar
+            // com erro, nao faz insert, esta duplicando list
             creditCards.InsertRange(index, creditCards);
             {
                 ValueInvoice = _valueInvoice;
@@ -76,10 +76,10 @@
         {
             //Este metodo será chamado a cada virada de mês, será necessario ver uma solução para armazenar e visualizar outras contas
             //fora o empréstimo
-            var finalValue = 0;
+            var finalValue = 0.0;
             for (int i = 0; i < bills.Count; i++)
             {
-                if (bills[i].Id == users[i].Id)
+                if (bills[i].OwnerID == users[i].Id)
                 {
                     finalValue = finalValue + bills[i].Value;
                     InvoiceConstructorInsert(creditCards, i, finalValue);

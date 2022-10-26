@@ -6,7 +6,7 @@
         public int CashbackLevel { get; set; } //NivelCashback
         public int MonthMovimentation { get; set; } //MovimentaçãoMensal
         public int InvestedMoney { get; set; } //DinheiroInvestido (poupança)
-        public int CurrentAccount { get; set; } //ContaCorrente
+        public double CurrentAccount { get; set; } //ContaCorrente
         public int MonthlyIncome { get; set; } //RendaMensal
         public string Name { get; set; } //Nome
         public string Email { get; set; } //Email
@@ -19,6 +19,7 @@
         public DateTime DateBorn { get; set; } //DataNascimento
         public bool AutoDebit { get; set; } //DébitoAutomatico
         public int Age { get; set; } //Idade
+        public bool OpenLoan { get; set; }
         public void UserRegisterConstrutor(string _name, string _dateBorn, string _phoneNumber, string _email,
             string _password, string _CPF, string _RG, int _monthlyIncome, string[] _adress, int _age, List<User> listUser)
         {

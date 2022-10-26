@@ -298,7 +298,7 @@
                 var checker = HasWhiteSpace(input);
                 if (checker == true)
                 {
-                    ErrorGeneric();
+                    ErrorGeneric(null);
                     input = IsNullOrEmpty.OutputNotNull(Console.ReadLine());
                 }
                 else
@@ -329,10 +329,10 @@
             var input = Console.ReadLine();
             return input;
         }
-        public static void ErrorGeneric()
+        public static void ErrorGeneric(string? message)
         {
-            var message = "Tente novamente";
-            Console.WriteLine(message);
+            var mainMessage = "Tente novamente";
+            Console.WriteLine($"{mainMessage} {message}");
         }
         public static string DynamicSizeRG(string input)
         {
@@ -427,6 +427,16 @@
                     }
                 }
             }
+        }
+        public static int GetActualUserID(int idFromLogin)
+        {
+            var userID = idFromLogin;
+            return userID;
+        }
+        public static int GetActualUserIndex(int idFromLogin)
+        {
+            var userID = --idFromLogin;
+            return userID;
         }
     }
 }
