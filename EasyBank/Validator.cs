@@ -45,11 +45,11 @@ namespace EasyBank
         }
         public static string IsValidEmail(string input)
         {
-            string[] formats = { "hotmail", "gmail", "yahoo", "outlook", "icloud" }; //Apply
+            string[] formats = { "HOTMAIL", "GMAIL", "YAHOO", "OUTLOOK", "ICLOUD" };
             var checkingEmail = true;
             while (checkingEmail)
             {
-                if (input.Contains("@") && input.ToUpper().Contains(".COM"))
+                if (input.Contains("@") && input.ToUpper().Contains(".COM") && ValidatorEmailFormat(formats, input))
                 {
                     checkingEmail = false;
                 }
@@ -61,6 +61,17 @@ namespace EasyBank
                 }
             }
             return input;
+        }
+        public static bool ValidatorEmailFormat(string[] formats, string input)
+        {
+            foreach (var item in formats)
+            {
+                if (input.Contains(item))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
         public static string IsValidPassword(string input)
         {
@@ -95,24 +106,6 @@ namespace EasyBank
                 else
                 {
                     checkingCPF = false;
-                }
-            }
-            return input;
-        }
-        public static string IsValidRG(string input)
-        {
-            var checkingRG = true;
-            while (checkingRG)
-            {
-                if (input.Length < 9 || input.Length > 9)
-                {
-                    Console.WriteLine("Tamanho de RG inválido, tente novamente");
-                    Console.Write("Digite: ");
-                    input = Console.ReadLine();
-                }
-                else
-                {
-                    checkingRG = false;
                 }
             }
             return input;
@@ -162,15 +155,22 @@ namespace EasyBank
         public static bool HasNumber(string input)
         {
             string rules = "123456789";
-            for (int i = 0; i < input.Length; i++)
+            for (int i = 0; i < rules.Length; i++)
             {
-                char checker = rules[i];
-                if (input.Contains(checker))
+                for (int j = 0; j < input.Length; j++)
                 {
-                    return true;
+                    char checker = rules[i];
+                    if (input.Contains(checker))
+                    {
+                        return true;
+                    }
                 }
             }
             return false;
+        }
+        public static bool HasWhiteSpace(string input)
+        {
+            return input.Contains(" ");
         }
         public static bool HasNumberOrSpecialCaracter(string input)
         {
@@ -274,7 +274,7 @@ namespace EasyBank
                 var letter = HasLetter(input);
                 if (letter == true)
                 {
-                   input = ErrorLetterMessageInput();
+                    input = ErrorLetterMessageInput();
                 }
                 else
                 {
@@ -291,6 +291,24 @@ namespace EasyBank
             }
             var inputConvertedToInt = Convert.ToInt32(input);
             return inputConvertedToInt;
+        }
+        public static string OutputNoWhiteSpace(string input)
+        {
+            var checking = true;
+            while (checking)
+            {
+                var checker = HasWhiteSpace(input);
+                if (checker == true)
+                {
+                    ErrorGeneric();
+                    input = IsNullOrEmpty.OutputNotNull(Console.ReadLine());
+                }
+                else
+                {
+                    checking = false;
+                }
+            }
+            return input;
         }
         public static string ErrorSpecialCaracterMessageInput()
         {
@@ -312,6 +330,54 @@ namespace EasyBank
             Console.Write("Digite: ");
             var input = Console.ReadLine();
             return input;
+        }
+        public static void ErrorGeneric()
+        {
+            var message = "Tente novamente";
+            Console.WriteLine(message);
+        }
+        public static string DynamicSizeRG(string input)
+        {   string finalInput = "";
+            var checking = true;
+            while (checking)
+            {
+                var size1 = 7;
+                var size2 = 8;
+                var size3 = 9;
+                var size4 = 13;
+                string patternSize1 = @"00\.00\.00\-0";
+                string patternSize2 = @"00\.00\.000\-0";
+                string patternSize3 = @"00\.000\.000\-0";
+                string patternSize4 = @"000\.000\.000\-0000";
+
+                if (input.Length == size1)
+                {
+                    finalInput = Convert.ToInt64(input).ToString(patternSize1);
+                    checking = false;
+                }
+                else if (input.Length == size2)
+                {
+                    finalInput = Convert.ToInt64(input).ToString(patternSize2);
+                    checking = false;
+                }
+                else if (input.Length == size3)
+                {
+                    finalInput = Convert.ToInt64(input).ToString(patternSize3);
+                    checking = false;
+                }
+                else if (input.Length == size4)
+                {
+                    finalInput = Convert.ToInt64(input).ToString(patternSize4);
+                    checking = false;
+                }
+                else
+                {
+                    Console.WriteLine("Tamanho incorreto do RG, tente novamente");
+                    Console.Write("Digite: ");
+                    input = Console.ReadLine();
+                }
+            }
+            return finalInput;
         }
     }
 }
