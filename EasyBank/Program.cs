@@ -5,7 +5,7 @@ Bill bill = new Bill();
 Register register = new Register();
 
 List<User> listUser = new List<User>();
-List<CreditCard> listcreditCards = new List<CreditCard>();
+List<CreditCard> creditCards = new List<CreditCard>();
 List<Bill> bills = new List<Bill>();
 List<Loan> loans = new List<Loan>();
 
@@ -19,7 +19,7 @@ while (ProgramStarted)
 
     if (userInputMainMenu == "1")
     {
-        register.UserRegister(listUser);
+        register.UserRegister(listUser, creditCards);
     }
     else if (userInputMainMenu == "2")
     {

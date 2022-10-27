@@ -2,10 +2,17 @@
 {
     public class Register
     {
-        public void UserRegister(List<User> users)
+        public void UserRegister(List<User> users, List<CreditCard> creditCards)
         {
-            users.Add(new User(R_Name(), R_Age_DateBorn(), R_PhoneNumber(), R_Email(),
+            RegisterCreditCard registerCreditCard = new RegisterCreditCard();
+
+            var userName = R_Name();
+            users.Add(new User(userName, R_Age_DateBorn(), R_PhoneNumber(), R_Email(),
                  R_Password(), R_CPF(), R_RG(), R_MonthlyIncome(), R_Adress()));
+
+            creditCards.Add(new CreditCard(registerCreditCard.R_Limit(1000),
+                userName, registerCreditCard.R_CVV(), null, registerCreditCard.R_ExpireDate())
+                );
         }
         public string R_Name()
         {
