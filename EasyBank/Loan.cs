@@ -6,16 +6,14 @@
         public int Value { get; set; }
         public int Parcels { get; set; }
         public bool Open { get; set; }
-        public void Constructor(List<Loan> loans, int _value, int _parcels)
+        public Loan(List<Loan> loans, int _value, int _parcels)
         {
-            if (_value != 0 && _parcels != 0)
-            {
-                loans.Add(new Loan
-                {
-                    Value = _value,
-                    Parcels = _parcels,
-                });
-            }
+            Value = _value;
+            Parcels = _parcels;
+        }
+        public Loan()
+        {
+
         }
         public void LoanRequest(List<User> users, List<Bill> bills, int idFromLogin)
         {
@@ -96,12 +94,7 @@
         }
         public void ApplyLoan(List<Bill> bills, List<User> users, int qtdParcels, string payment, double finalValue, int idFromLogin, int loanValue)
         {
-            var userID = Validator.GetActualUserID(idFromLogin);
-            var userIndex = Validator.GetActualUserIndex(idFromLogin);
-            Bill bill = new Bill();
-            string nameToConstructor = "EMPRÉSTIMO";
-            bill.ConstructorBills(bills, finalValue, nameToConstructor, qtdParcels, null, userID, userIndex);
-            users[userIndex].CurrentAccount = users[userIndex].CurrentAccount + loanValue;
+
         }
     }
 }

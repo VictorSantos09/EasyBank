@@ -2,6 +2,7 @@
 {
     public static class Validator
     {
+        public static int ID { get; set; } = 1;
         public static string IsValidName(string input)
         {
             var minimalSize = 5;
@@ -378,57 +379,20 @@
             }
             return finalInput;
         }
-        public static void ID_AUTOINCREMENT(List<User>? listUsers, List<CreditCard>? listCreditCards, int option,
-            List<Bill>? bills, List<Loan>? loans)
+        public static int ID_AUTOINCREMENT<T>(List<T> list)
         {
-            // Options: 1 - User, 2 - CreditCard, 3 - Bills, 4 - Loan
-
             // Ao implementar banco de dados esse método pode causar erros, principalmente alinhamento incorretos de Id com os usuarios e objetos
             //Talvez será necessario converter para ele contar a partir da quantidade de IDs existentes no DB
             //-- APAGAR NO FUTURO, Banco de Dados ja terá ID_AUTOINCREMENT
 
-            int counter = 1;
-            if (option == 1)
+            for (int i = 0; i < list.Count; i++)
             {
-                for (int i = 0; i < listUsers.Count; i++)
-                {
-                    if (listUsers[i].Name != string.Empty)
-                    {
-                        listUsers[i].Id = counter++;
-                    }
-                }
+                return ID;
+                ID++;
             }
-            else if (option == 2)
-            {
-                for (int i = 0; i < listCreditCards.Count; i++)
-                {
-                    if (listCreditCards[i].NameOwner != string.Empty)
-                    {
-                        listCreditCards[i].Id = counter++;
-                    }
-                }
-            }
-            else if (option == 3)
-            {
-                for (int i = 0; i < bills.Count; i++)
-                {
-                    if (bills[i].Name != string.Empty && bills[i].Name != null)
-                    {
-                        bills[i].Id = counter++;
-                    }
-                }
-            }
-            else if (option == 4)
-            {
-                for (int i = 0; i < loans.Count; i++)
-                {
-                    if (loans[i].Open == true)
-                    {
-                        loans[i].Id = counter++;
-                    }
-                }
-            }
-        } // LIXO
+            return ID;
+            ID++;
+        }
         public static int GetActualUserID(int idFromLogin)
         {
             var userID = idFromLogin;

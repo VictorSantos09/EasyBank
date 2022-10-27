@@ -4,15 +4,19 @@
     {
         public void UserRegister(List<User> users, List<CreditCard> creditCards)
         {
-            RegisterCreditCard registerCreditCard = new RegisterCreditCard();
+            CreditCard creditCard = new CreditCard();
 
             var userName = R_Name();
-            users.Add(new User(userName, R_Age_DateBorn(), R_PhoneNumber(), R_Email(),
-                 R_Password(), R_CPF(), R_RG(), R_MonthlyIncome(), R_Adress()));
+            var userMonthlyIncome = R_MonthlyIncome();
+            var idReturned = Validator.ID_AUTOINCREMENT(users);
+            var idReturned2 = Validator.ID_AUTOINCREMENT(creditCards);
+            var user = new User(userName, R_Age_DateBorn(), R_PhoneNumber(), R_Email(),
+                 R_Password(), R_CPF(), R_RG(), userMonthlyIncome, R_Adress(),idReturned);
+            users.Add(user);
 
-            creditCards.Add(new CreditCard(registerCreditCard.R_Limit(1000),
-                userName, registerCreditCard.R_CVV(), null, registerCreditCard.R_ExpireDate())
-                );
+            var creditCardConstructor = new CreditCard(creditCard.R_Limit(userMonthlyIncome), userName,
+                creditCard.R_CVV(), null, creditCard.R_ExpireDate(),idReturned2);
+            creditCards.Add(creditCardConstructor);
         }
         public string R_Name()
         {
@@ -103,7 +107,7 @@
         }
         public string R_PhoneNumber()
         {
-            ParametersConstructors parameters = new ParametersConstructors();
+            User user = new User();
             var inputPhoneNumber = "";
             var checking = true;
             while (checking)
@@ -120,7 +124,7 @@
                     Console.WriteLine("Letras e caracteres especiais não são válidos");
                 }
             }
-            var finalNumber = parameters.PhoneCodeArea + inputPhoneNumber;
+            var finalNumber = user.PhoneCodeArea + inputPhoneNumber;
             return finalNumber;
         }
         public string R_Email()

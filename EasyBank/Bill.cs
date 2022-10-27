@@ -9,21 +9,18 @@
         public string? Info { get; set; }
         public int OwnerIndex { get; set; }
         public int OwnerID { get; set; }
-        public void ConstructorBills(List<Bill> bills, double _valueInvoce, string _nameBill, int QtdParcels, string? _infoBill, int userID, int userIndex)
+        public Bill(List<Bill> bills, double _valueInvoce, string _nameBill, int QtdParcels, string? _infoBill, int userID, int userIndex)
         {
-            if (_valueInvoce != 0 && _nameBill != null && QtdParcels != 0)
-            {
-                bills.Add(new Bill
-                {
-                    Value = _valueInvoce,
-                    Name = _nameBill,
-                    NumberParcels = QtdParcels,
-                    Info = _infoBill,
-                    OwnerIndex = userIndex,
-                    OwnerID = userID,
-                });
-                Validator.ID_AUTOINCREMENT(null, null, 3, bills, null);
-            }
+            Value = _valueInvoce;
+            Name = _nameBill;
+            NumberParcels = QtdParcels;
+            Info = _infoBill;
+            OwnerIndex = userIndex;
+            OwnerID = userID;
+        }
+        public Bill()
+        {
+
         }
         public void ViewMonthBills(List<Bill> bills)
         {

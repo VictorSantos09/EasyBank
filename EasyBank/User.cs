@@ -21,7 +21,7 @@
         public int Age { get; set; } //Idade
         public bool OpenLoan { get; set; }
         public User(string _name, string _dateBorn, string _phoneNumber, string _email,
-            string _password, string _CPF, string _RG, int _monthlyIncome, string[] _adress)
+            string _password, string _CPF, string _RG, int _monthlyIncome, string[] _adress, int _id)
         {
             Name = _name;
             DateBorn = DateTime.ParseExact(_dateBorn, "dd/MM/yyyy", null);
@@ -40,6 +40,11 @@
             FullAdress = $"Pais: {Country} Cidade: {_adress[0]} Estado: {_adress[1]} Bairro: {_adress[2]} " +
             $"Rua: {_adress[3]} Numero: {_adress[4]} Complemento: {_adress[5]}";
             Age = DateTime.Today.Year - DateBorn.Year;
+            Id = _id;
+        }
+        public User()
+        {
+
         }
     }
 }
