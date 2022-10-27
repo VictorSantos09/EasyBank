@@ -2,26 +2,10 @@
 {
     public class Register
     {
-        public void UserRegister(List<User> listUser, List<CreditCard> listcreditCards)
+        public void UserRegister(List<User> users)
         {
-            var returnedName = R_Name();
-            var returnedDateBorn = R_Age_DateBorn(user);
-            var returnedPhoneNumber = R_PhoneNumber(user);
-            var returnedEmail = R_Email();
-            var returnedPassword = R_Password();
-            var returnedCPF = R_CPF();
-            var returnedRG = R_RG();
-            var returnedAdress = R_Adress();
-            var returnedMonthlyIncome = R_MonthlyIncome();
-            var userDateBorn = DateTime.ParseExact(returnedDateBorn, "dd/MM/yyyy", null);
-            int thisYear = DateTime.Today.Year;
-            int finalAge = thisYear - userDateBorn.Year;
-
-            new User(R_Name(), returnedDateBorn, returnedPhoneNumber, returnedEmail,
-                returnedPassword, returnedCPF, returnedRG, returnedMonthlyIncome, returnedAdress, finalAge, listUser);
-
-            CreditCard creditCard = new CreditCard();
-            creditCard.MainRegister(listcreditCards, listUser, returnedMonthlyIncome);
+            users.Add(new User(R_Name(), R_Age_DateBorn(), R_PhoneNumber(), R_Email(),
+                 R_Password(), R_CPF(), R_RG(), R_MonthlyIncome(), R_Adress()));
         }
         public string R_Name()
         {
@@ -43,10 +27,10 @@
             }
             return inputName;
         }
-        public string R_Age_DateBorn(User user) // improve
+        public string R_Age_DateBorn() // improve
         {
             Console.Write("Cadastre sua data de nascimento no formato 00/00/0000\nDigite: ");
-            string userInputDateBorn = Validator.IsValidAge(Console.ReadLine(), user);
+            string userInputDateBorn = Validator.IsValidAge(Console.ReadLine());
             return userInputDateBorn;
         }
         public string[] R_Adress()
@@ -110,8 +94,9 @@
             }
             return inputRG;
         }
-        public string R_PhoneNumber(User user)
+        public string R_PhoneNumber()
         {
+            ParametersConstructors parameters = new ParametersConstructors();
             var inputPhoneNumber = "";
             var checking = true;
             while (checking)
@@ -128,7 +113,7 @@
                     Console.WriteLine("Letras e caracteres especiais não são válidos");
                 }
             }
-            var finalNumber = user.PhoneCodeArea + inputPhoneNumber;
+            var finalNumber = parameters.PhoneCodeArea + inputPhoneNumber;
             return finalNumber;
         }
         public string R_Email()

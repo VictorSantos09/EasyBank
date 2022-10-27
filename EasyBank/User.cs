@@ -21,7 +21,7 @@
         public int Age { get; set; } //Idade
         public bool OpenLoan { get; set; }
         public User(string _name, string _dateBorn, string _phoneNumber, string _email,
-            string _password, string _CPF, string _RG, int _monthlyIncome, string[] _adress, int _age, List<User> listUser, )
+            string _password, string _CPF, string _RG, int _monthlyIncome, string[] _adress)
         {
             Name = _name;
             DateBorn = DateTime.ParseExact(_dateBorn, "dd/MM/yyyy", null);
@@ -39,9 +39,7 @@
             HouseComplement = _adress[5];
             FullAdress = $"Pais: {Country} Cidade: {_adress[0]} Estado: {_adress[1]} Bairro: {_adress[2]} " +
             $"Rua: {_adress[3]} Numero: {_adress[4]} Complemento: {_adress[5]}";
-            Age = _age;
-
-            Validator.ID_AUTOINCREMENT(listUser, null, 1, null, null);
+            Age = DateTime.Today.Year - DateBorn.Year;
         }
     }
 }

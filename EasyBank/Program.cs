@@ -19,7 +19,7 @@ while (ProgramStarted)
 
     if (userInputMainMenu == "1")
     {
-        register.UserRegister(user, listUser, listcreditCards);
+        register.UserRegister(listUser);
     }
     else if (userInputMainMenu == "2")
     {

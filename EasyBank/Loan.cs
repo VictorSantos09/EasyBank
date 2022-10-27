@@ -1,6 +1,4 @@
-﻿using System.Security.Cryptography.X509Certificates;
-
-namespace EasyBank
+﻿namespace EasyBank
 {
     public class Loan
     {
@@ -17,7 +15,6 @@ namespace EasyBank
                     Value = _value,
                     Parcels = _parcels,
                 });
-                Validator.ID_AUTOINCREMENT(null, null, 4, null, loans);
             }
         }
         public void LoanRequest(List<User> users, List<Bill> bills, int idFromLogin)
@@ -79,7 +76,7 @@ namespace EasyBank
                 var confirmed = ConfirmLoan();
                 if (confirmed == true)
                 {
-                    ApplyLoan(bills,users, ChoiceQtdParcels,paymentOptions,finalValue, idFromLogin,loanValue);
+                    ApplyLoan(bills, users, ChoiceQtdParcels, paymentOptions, finalValue, idFromLogin, loanValue);
                 }
                 else
                 {

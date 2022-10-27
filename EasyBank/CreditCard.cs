@@ -11,37 +11,20 @@
         public string Flag { get; set; } = "MASTERCARD";
         private string SafetyKey { get; set; } //SenhaSegurança (senha 3 digitos) a mesma do usuario, aplicar aqui tambem
         public DateTime ExpireDate { get; set; } // Data de vencimento
-
-        public void Constructor(List<CreditCard> listCreditCards, int _Limit,
+        public CreditCard(int _Limit,
             string _NameOwner, string _CVV, string _SafetyKey, DateTime _ExpireDate)
         {
-            listCreditCards.Add(new CreditCard
-            {
-                Limit = _Limit,
-                NameOwner = _NameOwner,
-                CVV = _CVV,
-                SafetyKey = _SafetyKey,
-                ExpireDate = _ExpireDate,
-            });
-            Validator.ID_AUTOINCREMENT(null, listCreditCards, 2, null, null);
+            Limit = _Limit;
+            NameOwner = _NameOwner;
+            CVV = _CVV;
+            SafetyKey = _SafetyKey;
+            ExpireDate = _ExpireDate;
         }
-        public void InvoiceConstructorInsert(List<CreditCard> creditCards, int index, double _valueInvoice)
+        public void MainRegister(List<User> listUser, int userMonthlyIncome)
         {
-            // com erro, nao faz insert, esta duplicando list
-            creditCards.InsertRange(index, creditCards);
-            {
-                ValueInvoice = _valueInvoice;
-            };
-        }
-        public void MainRegister(List<CreditCard> listcreditCards, List<User> listUser, int userMonthlyIncome)
-        {
-            var limitReturned = R_Limit(userMonthlyIncome);
-            var nameReturned = R_NameOwner(listUser);
-            var _CVVReturned = R_CVV();
             // SafetyKey - Thiago
-            var expireDateReturned = R_ExpireDate();
-
-            Constructor(listcreditCards, limitReturned, nameReturned, _CVVReturned, null, expireDateReturned);
+            // Numero cartão
+            new CreditCard(R_Limit(userMonthlyIncome), R_NameOwner(listUser), R_CVV(), null, R_ExpireDate());
         }
         public int R_Limit(int userMonthlyIncome)
         {
@@ -82,7 +65,7 @@
                 if (bills[i].OwnerID == users[i].Id)
                 {
                     finalValue = finalValue + bills[i].Value;
-                    InvoiceConstructorInsert(creditCards, i, finalValue);
+                    // Aplicar ao usuario
                 }
             }
         }
