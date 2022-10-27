@@ -15,8 +15,8 @@ namespace EasyBank
             string quantidadeLetras;
             Console.WriteLine("Crie 3 letras de segurança");
             quantidadeLetras = Validator.OutputNoNumberAndSpecialCaracteres(Console.ReadLine().ToUpper());
-
             quantidadeLetras = ConfirmarQuantLetras(quantidadeLetras);
+            quantidadeLetras = Validator.OutputNoWhiteSpace(quantidadeLetras).ToUpper();
 
             string confirmacao = ConfirmacaoTresLetras(quantidadeLetras);
 
@@ -34,6 +34,7 @@ namespace EasyBank
                 Console.WriteLine("Favor insira novamente as 3 letras");
                 GerarLetras();
                 quantidadeLetras = Validator.OutputNoNumberAndSpecialCaracteres(Console.ReadLine().ToUpper());
+                quantidadeLetras = Validator.OutputNoWhiteSpace(quantidadeLetras);
                 quantidadeLetras = ConfirmarQuantLetras(quantidadeLetras);
                 confirmacao = ConfirmacaoTresLetras(quantidadeLetras);
                 confirmacao = DiferenteSimOuNao(confirmacao);
