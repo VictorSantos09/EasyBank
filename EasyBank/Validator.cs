@@ -384,7 +384,7 @@
             // Options: 1 - User, 2 - CreditCard, 3 - Bills, 4 - Loan
 
             // Ao implementar banco de dados esse método pode causar erros, principalmente alinhamento incorretos de Id com os usuarios e objetos
-            //Talvez será necessario converter para ele contar a partir da quantidade de IDs existentes no DB
+            //Talvez será necessario converter para ele contar a partir da quantidade de IDs existentes no DB -- APAGAR NO FUTURO
 
             int counter = 1;
             if (option == 1)

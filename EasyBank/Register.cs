@@ -2,7 +2,7 @@
 {
     public class Register
     {
-        public void UserRegister(User user, List<User> listUser, List<CreditCard> listcreditCards)
+        public void UserRegister(List<User> listUser, List<CreditCard> listcreditCards)
         {
             var returnedName = R_Name();
             var returnedDateBorn = R_Age_DateBorn(user);
@@ -17,7 +17,7 @@
             int thisYear = DateTime.Today.Year;
             int finalAge = thisYear - userDateBorn.Year;
 
-            user.UserRegisterConstrutor(returnedName, returnedDateBorn, returnedPhoneNumber, returnedEmail,
+            new User(R_Name(), returnedDateBorn, returnedPhoneNumber, returnedEmail,
                 returnedPassword, returnedCPF, returnedRG, returnedMonthlyIncome, returnedAdress, finalAge, listUser);
 
             CreditCard creditCard = new CreditCard();

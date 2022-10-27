@@ -20,29 +20,27 @@
         public bool AutoDebit { get; set; } //DébitoAutomatico
         public int Age { get; set; } //Idade
         public bool OpenLoan { get; set; }
-        public void UserRegisterConstrutor(string _name, string _dateBorn, string _phoneNumber, string _email,
-            string _password, string _CPF, string _RG, int _monthlyIncome, string[] _adress, int _age, List<User> listUser)
+        public User(string _name, string _dateBorn, string _phoneNumber, string _email,
+            string _password, string _CPF, string _RG, int _monthlyIncome, string[] _adress, int _age, List<User> listUser, )
         {
-            listUser.Add(new User
-            {
-                Name = _name,
-                DateBorn = DateTime.ParseExact(_dateBorn, "dd/MM/yyyy", null),
-                PhoneNumber = _phoneNumber,
-                Email = _email,
-                Password = _password,
-                CPF = _CPF,
-                RG = _RG,
-                MonthlyIncome = _monthlyIncome,
-                City = _adress[0],
-                State = _adress[1],
-                Neiborhood = _adress[2],
-                Street = _adress[3],
-                HouseNumber = _adress[4],
-                HouseComplement = _adress[5],
-                FullAdress = $"Pais: {Country} Cidade: {_adress[0]} Estado: {_adress[1]} Bairro: {_adress[2]} " +
-                $"Rua: {_adress[3]} Numero: {_adress[4]} Complemento: {_adress[5]}",
-                Age = _age,
-            });
+            Name = _name;
+            DateBorn = DateTime.ParseExact(_dateBorn, "dd/MM/yyyy", null);
+            PhoneNumber = _phoneNumber;
+            Email = _email;
+            Password = _password;
+            CPF = _CPF;
+            RG = _RG;
+            MonthlyIncome = _monthlyIncome;
+            City = _adress[0];
+            State = _adress[1];
+            Neiborhood = _adress[2];
+            Street = _adress[3];
+            HouseNumber = _adress[4];
+            HouseComplement = _adress[5];
+            FullAdress = $"Pais: {Country} Cidade: {_adress[0]} Estado: {_adress[1]} Bairro: {_adress[2]} " +
+            $"Rua: {_adress[3]} Numero: {_adress[4]} Complemento: {_adress[5]}";
+            Age = _age;
+
             Validator.ID_AUTOINCREMENT(listUser, null, 1, null, null);
         }
     }

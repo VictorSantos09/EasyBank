@@ -1,7 +1,6 @@
 ﻿using EasyBank;
 
 var ProgramStarted = true;
-User user = new User();
 Bill bill = new Bill();
 Register register = new Register();
 

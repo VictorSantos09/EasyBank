@@ -39,11 +39,11 @@ namespace EasyBank
                 }
                 else
                 {
-                    PaymentOption(loanValue, bills, idFromLogin);
+                    PaymentOption(loanValue, bills, idFromLogin, users);
                 }
             }
         }
-        public void PaymentOption(int loanValue, List<Bill> bills, int idFromLogin)
+        public void PaymentOption(int loanValue, List<Bill> bills, int idFromLogin, List<User> users)
         {
             var options = "Crédito";
             Console.WriteLine("Forma de pagamento permitida");
@@ -51,7 +51,7 @@ namespace EasyBank
             var userInputChoice = Console.ReadLine();
             if (userInputChoice == "1")
             {
-                ChooseQtdParcels(loanValue, options, bills, idFromLogin);
+                ChooseQtdParcels(loanValue, options, bills, idFromLogin, users);
             }
         }
         public double AmountInterest(int qtdParcels)
@@ -62,7 +62,7 @@ namespace EasyBank
             var finalValue = (qtdParcels * rateBase) + qtdParcels * rateMonthIncrease;
             return finalValue;
         }
-        public void ChooseQtdParcels(int loanValue, string paymentOptions, List<Bill> bills, int idFromLogin)
+        public void ChooseQtdParcels(int loanValue, string paymentOptions, List<Bill> bills, int idFromLogin, List<User> users)
         {
             Console.Write("Digite o numero de parcelas: ");
             var ChoiceQtdParcels = Convert.ToInt32(Console.ReadLine());
@@ -79,7 +79,7 @@ namespace EasyBank
                 var confirmed = ConfirmLoan();
                 if (confirmed == true)
                 {
-                    ApplyLoan(bills,ChoiceQtdParcels,paymentOptions,finalValue, idFromLogin);
+                    ApplyLoan(bills,users, ChoiceQtdParcels,paymentOptions,finalValue, idFromLogin,loanValue);
                 }
                 else
                 {
@@ -97,13 +97,14 @@ namespace EasyBank
             }
             return false;
         }
-        public void ApplyLoan(List<Bill> bills, int qtdParcels, string payment, double finalValue, int idFromLogin)
+        public void ApplyLoan(List<Bill> bills, List<User> users, int qtdParcels, string payment, double finalValue, int idFromLogin, int loanValue)
         {
             var userID = Validator.GetActualUserID(idFromLogin);
             var userIndex = Validator.GetActualUserIndex(idFromLogin);
             Bill bill = new Bill();
             string nameToConstructor = "EMPRÉSTIMO";
             bill.ConstructorBills(bills, finalValue, nameToConstructor, qtdParcels, null, userID, userIndex);
+            users[userIndex].CurrentAccount = users[userIndex].CurrentAccount + loanValue;
         }
     }
 }

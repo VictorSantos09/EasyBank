@@ -91,7 +91,7 @@
             //Verificar. Necessario ver a questão de caso o usuario possa haver mais de uma conta conseguir linkar com este método
             for (int i = 0; i < users.Count; i++)
             {
-                if (creditCards[i].Id == users[i].Id && bills[i].Id == users[i].Id)
+                if (creditCards[i].Id == users[i].Id && bills[i].OwnerID == users[i].Id)
                 {
                     if (bills[i].NumberParcels != 0)
                     {
