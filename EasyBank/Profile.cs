@@ -17,7 +17,7 @@
 
                 if (option == "1")
                 {
-                    CardData(creditCard.Id, creditCard.CVV, creditCard.ExpireDate, creditCard.NameOwner, user.CashbackLevel);
+                    CardInfo(creditCard.Id, creditCard.CVV, creditCard.ExpireDate, creditCard.NameOwner, user.CashbackLevel);
                 }
 
                 if (option == "2")
@@ -41,7 +41,7 @@
 
         }
 
-        public void CardData(int cardNumber, string cVV, DateTime dataDeVencimento, string nome, int nivelDeCashback)
+        public void CardInfo(int cardNumber, string cVV, DateTime dataDeVencimento, string nome, int nivelDeCashback)
         {
             Console.Clear();
             Console.Write($"\nNúmero: {cardNumber}\nCVV: {cVV}\nData de Vencimento: {dataDeVencimento}\nNome: {nome}\nCashback: {nivelDeCashback}");
@@ -64,7 +64,7 @@
 
                 if (userEmail == email && userCpf == cpf)
                 {
-                    PasswordValidationAccountCancellation(emailAndCpfValidationMenu);
+                    ValidationAccountCancellation(emailAndCpfValidationMenu);
                 }
                 else
                 {
@@ -76,7 +76,7 @@
             }
         }
 
-        public void PasswordValidationAccountCancellation(bool backToViewProflie)
+        public void ValidationAccountCancellation(bool backToViewProflie)
         {
             Console.Clear();
             Console.Write("Você tem certeza que deseja cancelar a conta? Após desativa-la não é possível recuperação!");
@@ -90,8 +90,41 @@
 
             if (cancellationAccountOption == "2")
             {
-
+                ThreeChancesPassword();
             }
+        }
+
+        public void ThreeChancesPassword()
+        {
+            User user = new User();
+            int counter = 0;
+
+            while (counter != 3)
+            {
+                Console.Clear();
+                Console.Write("Insira a sua senha\n\n-> ");
+                string checkoutPassword = Console.ReadLine();
+
+                if (checkoutPassword != user.Password)
+                {
+                    Console.Write("Algo deu errado favor insira a senha novamente!\n\nPressione ENTER");
+                    Console.ReadLine();
+                    counter++;
+                }
+                else
+                {
+                    AccountCancellation();
+                }
+            }
+        }
+
+        public void AccountCancellation()
+        {
+            User account = new User();
+            CreditCard userCreditCard = new CreditCard();
+
+            account = null;
+            userCreditCard = null;
         }
     }
 }
