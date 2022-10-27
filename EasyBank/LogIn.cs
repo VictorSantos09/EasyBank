@@ -2,31 +2,50 @@
 {
     public class LogIn
     {
-        public string CPF { get; set; }
-        public string Email { get; set; }
-        public string Password { get; set; }
-        
-        public string VerificarCPF()
+        public bool VerificarLogin(List<User> users)
         {
-            Console.WriteLine("Digite seu CPF: ");
-            CPF = Console.ReadLine();
-            return CPF;
-        }
-        public string VerificarEmail()
-        {
-            Console.WriteLine("Digite seu Email: ");
-            Email = Console.ReadLine();
-            return Email;
-        }
-        public string VerificarPassaword()
-        {
-            Console.WriteLine("Digite sua senha: ");
-            Passaword = Console.ReadLine();
-            return Passaword;
-        }
-        public bool VerificadorLogin()
-        {
+            for (int i = 0; i < users.Count; i++)
+            {
+                for (int j = 0; j < 3; j++)
+                {
+                    Console.WriteLine("Digite o seu e-mail ou CPF");
+                    var usuario = Console.ReadLine();
+                    Console.WriteLine("Digite o sua senha");
+                    var senha = Console.ReadLine();
+                    if (usuario.Contains("@"))
+                    {
+                        if (usuario == users[i].Email)
+                        {
+                            if (senha == users[i].Password)
+                            {
+                                Console.WriteLine("Login realizado com sucesso!");
+                                return true;
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("Usuário ou Senha incorreto. Tente novamente!");
+                        }
+                    }
+                    else //então seria CPF
+                    {
+                        if (usuario == users[i].CPF)
+                        {
+                            if (senha == users[i].Password)
+                            {
+                                Console.WriteLine("Login realizado com sucesso!");
+                                return true;
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("Usuário ou Senha incorreto. Tente novamente!");
+                        }
 
+                    }
+                }
+            }
+            return false;
         }
     }
 }
