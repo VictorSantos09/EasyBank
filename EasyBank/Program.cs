@@ -20,7 +20,7 @@ while (ProgramStarted)
     }
     else if (userInputMainMenu == "2")
     {
-        login.VerificarLogin(listUser); 
+        login.CheckLogin(listUser); 
     }
     else if (userInputMainMenu == "3")
     {

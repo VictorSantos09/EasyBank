@@ -2,21 +2,21 @@
 {
     public class LogIn
     {
-        public bool VerificarLogin(List<User> users)
+        public bool CheckLogin(List<User> users)
         {
             for (int i = 0; i < users.Count; i++)
             {
                 for (int j = 0; j < 3; j++)
                 {
                     Console.WriteLine("Digite o seu e-mail ou CPF");
-                    var usuario = Console.ReadLine();
+                    var userCPForEmail = Console.ReadLine();
                     Console.WriteLine("Digite o sua senha");
-                    var senha = Console.ReadLine();
-                    if (usuario.Contains("@"))
+                    var userPassword = Console.ReadLine();
+                    if (userCPForEmail.Contains("@")) //se a opção de login for e-mail
                     {
-                        if (usuario == users[i].Email)
+                        if (userCPForEmail == users[i].Email)
                         {
-                            if (senha == users[i].Password)
+                            if (userPassword == users[i].Password)
                             {
                                 Console.WriteLine("Login realizado com sucesso!");
                                 return true;
@@ -24,14 +24,14 @@
                         }
                         else
                         {
-                            Console.WriteLine("Usuário ou Senha incorreto. Tente novamente!");
+                            Console.WriteLine("E-mail ou senha incorreto. Tente novamente!");
                         }
                     }
-                    else //então seria CPF
+                    else //se a opção de login não é e-mail então é por CPF
                     {
-                        if (usuario == users[i].CPF)
+                        if (userCPForEmail == users[i].CPF)
                         {
-                            if (senha == users[i].Password)
+                            if (userPassword == users[i].Password)
                             {
                                 Console.WriteLine("Login realizado com sucesso!");
                                 return true;
@@ -39,7 +39,7 @@
                         }
                         else
                         {
-                            Console.WriteLine("Usuário ou Senha incorreto. Tente novamente!");
+                            Console.WriteLine("CPF ou senha incorreto. Tente novamente!");
                         }
 
                     }
