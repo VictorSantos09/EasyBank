@@ -8,14 +8,15 @@
 
             var userName = R_Name();
             var userMonthlyIncome = R_MonthlyIncome();
-            var idReturned = Validator.ID_AUTOINCREMENT(users);
-            var idReturned2 = Validator.ID_AUTOINCREMENT(creditCards);
+            var userID = Validator.ID_AUTOINCREMENT(users);
             var user = new User(userName, R_Age_DateBorn(), R_PhoneNumber(), R_Email(),
-                 R_Password(), R_CPF(), R_RG(), userMonthlyIncome, R_Adress(),idReturned);
-            users.Add(user);
+                 R_Password(), R_CPF(), R_RG(), userMonthlyIncome, R_Adress(), userID);
 
+            users.Add(user);
+            var creditCardID = Validator.ID_AUTOINCREMENT(creditCards);
             var creditCardConstructor = new CreditCard(creditCard.R_Limit(userMonthlyIncome), userName,
-                creditCard.R_CVV(), null, creditCard.R_ExpireDate(),idReturned2);
+                creditCard.R_CVV(), null, creditCard.R_ExpireDate(), creditCardID);
+
             creditCards.Add(creditCardConstructor);
         }
         public string R_Name()

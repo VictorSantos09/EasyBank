@@ -381,17 +381,16 @@
         }
         public static int ID_AUTOINCREMENT<T>(List<T> list)
         {
-            // Ao implementar banco de dados esse método pode causar erros, principalmente alinhamento incorretos de Id com os usuarios e objetos
-            //Talvez será necessario converter para ele contar a partir da quantidade de IDs existentes no DB
-            //-- APAGAR NO FUTURO, Banco de Dados ja terá ID_AUTOINCREMENT
-
             for (int i = 0; i < list.Count; i++)
             {
-                return ID;
-                ID++;
+                if (list.Count == 0)
+                {
+                    ID++;
+                    return ID;
+                }
+                return ++ID;
             }
             return ID;
-            ID++;
         }
         public static int GetActualUserID(int idFromLogin)
         {
