@@ -2,6 +2,8 @@
 {
     public class RegisterNewAutoDebit
     {
+        public bool Activated { get; set; }
+        public string OptionAcceptDebitOrNot { get; set; }
         public void MenuCadastro()
         {
             Console.WriteLine("Cadastrar novo Débito Automático");
@@ -53,12 +55,27 @@
         {
            
             Console.Write($"Informe o valor da conta de {opcao} para cobrança mensal: ");
-            float valorDebitar = float.Parse(Console.ReadLine());
+            float valorDaContaADebitar = float.Parse(Console.ReadLine());
             // inserir validator de nulo,letras e caracteres especiais;
             // quando virar o mês, será conta corrente - valorDebitar, portanto:
             //if(datetime == dia1)
             //{
             //  valorContaCorrente = valorContaCorrente - valorDebitar;
+            Console.WriteLine("Agora pagar sua conta ficou fácil. Basta confirmar abaixo as informações:");
+            Console.WriteLine($"A conta de {opcao}, no valor de {valorDaContaADebitar} será paga automaticamente no mesmo dia que sua renda mensal entra em conta, descontando assim o valor da fatura da conta corrente.");
+            Console.WriteLine("Mas e se não houver saldo?  Sem problemas, assim que entrar saldo suficiente a fatura será paga!");
+            Console.WriteLine("Confirma a ativação do pagamento Débito Automático? Digite '1' para Sim e '2' para Não");
+            OptionAcceptDebitOrNot = Console.ReadLine();
+
+            if(OptionAcceptDebitOrNot == "1")
+            {
+                Activated = true;
+            }
+            else
+            {
+                Activated = false;
+            }
+
         }
     }
 }
