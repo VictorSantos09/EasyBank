@@ -4,7 +4,7 @@
     {
         public bool Activated { get; set; }
         public string OptionAcceptDebitOrNot { get; set; }
-        public void MenuCadastro()
+        public void MenuCadastro(List<ArrayClassOfAutoDebit> arrayClassOfAutoDebits)
         {
             Console.WriteLine("Cadastrar novo Débito Automático");
             Console.WriteLine("Nos diga qual é sua conta (digite o número que corresponde a sua opção):");
@@ -14,7 +14,9 @@
             
             if (option == "1")
             {
-                PreencherInfos("Poupança");
+                var contaValor = PreencherInfos("Poupança");
+                var ArrayTanana = new ArrayClassOfAutoDebit("POUPANÇA", null, null,contaValor);
+                arrayClassOfAutoDebits.Add(ArrayTanana);
                 //Aplicar método que faça a ligação entre DébitoAuto e Poupança;
                 //Se usuário escolher este método, poupança todo mês recebe o valor
                 // que foi inserido aqui;
@@ -51,7 +53,7 @@
             Console.Clear();
         }
 
-        public void PreencherInfos(string opcao)
+        public float PreencherInfos(string opcao)
         {
            
             Console.Write($"Informe o valor da conta de {opcao} para cobrança mensal: ");
@@ -75,7 +77,7 @@
             {
                 Activated = false;
             }
-
+            return valorDaContaADebitar;
         }
     }
 }

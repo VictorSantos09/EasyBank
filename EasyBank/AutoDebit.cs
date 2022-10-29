@@ -28,7 +28,7 @@
                 }
                 else if (optionMenu == "3")
                 {
-                    registerDebit.MenuCadastro();
+                    //registerDebit.MenuCadastro();
                 }
                 else if (optionMenu == "4")
                 {

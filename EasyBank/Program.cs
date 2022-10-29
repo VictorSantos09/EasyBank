@@ -4,6 +4,8 @@ User user = new User();
 var ProgramStarted = true;
 List<User> listUser = new List<User>();
 Register register = new Register();
+RegisterNewAutoDebit RegisterNewAutoDebit = new RegisterNewAutoDebit();
+List<ArrayClassOfAutoDebit> autoDebits = new List<ArrayClassOfAutoDebit>();
 while (ProgramStarted)
 {
     Thread.Sleep(1000);
@@ -14,7 +16,7 @@ while (ProgramStarted)
 
     if (userInputMainMenu == "1")
     {
-
+        RegisterNewAutoDebit.MenuCadastro(autoDebits);
     }
     else if (userInputMainMenu == "2")
     {
