@@ -3,6 +3,7 @@
     public class CreditCard
     {
         public int Id { get; set; }
+        public int OwnerID { get; set; }
         public string NumberCard { get; set; } //Necessario fazerr 
         public double ValueInvoice { get; set; } //Valor da fatura
         public int Limit { get; set; } // Limite do cartão
@@ -54,51 +55,69 @@
             DateTime _ExpireDate = DateTime.Today.AddYears(3);
             return _ExpireDate;
         }
-        public void IncrementMonthInvoce(List<Bill> bills, List<User> users, List<CreditCard> creditCards) // Aprimorar se possivel
+        public void IncrementMonthInvoce(List<Bill> bills, List<User> users, List<CreditCard> creditCards, int userIndex)
         {
             //Este metodo será chamado a cada virada de mês, será necessario ver uma solução para armazenar e visualizar outras contas
             //fora o empréstimo
-            var finalValue = 0.0;
+            creditCards[userIndex].ValueInvoice = 0.0;
             for (int i = 0; i < bills.Count; i++)
             {
                 if (bills[i].OwnerID == users[i].Id)
                 {
-                    finalValue = finalValue + bills[i].Value;
-                    // Aplicar ao usuario
+                    if (bills[i].Value != 0)
+                    {
+                        creditCards[userIndex].ValueInvoice += bills[i].Value;
+                    }
                 }
             }
         }
-        public void ManualMonthPaymentInvoice(List<User> users, List<CreditCard> creditCards, List<Bill> bills)
+        public void ManualMonthPaymentInvoice(List<User> users, List<CreditCard> creditCards, List<Bill> bills, int userIndex)
         {
             //Verificar. Necessario ver a questão de caso o usuario possa haver mais de uma conta conseguir linkar com este método
-            for (int i = 0; i < users.Count; i++)
+            var valueToPay = 0.0;
+            if (creditCards[userIndex].OwnerID == users[userIndex].Id)
             {
-                if (creditCards[i].Id == users[i].Id && bills[i].OwnerID == users[i].Id)
+                if (HasPendingPaymentsAndPrint(bills, users, userIndex) == true)
                 {
-                    if (bills[i].NumberParcels != 0)
+                    valueToPay = creditCards[userIndex].ValueInvoice;
+
+                    Console.WriteLine($"TOTAL A PAGAR: {valueToPay}\nClique ENTER para pagar");
+                    Console.ReadKey();
+                    if (users[userIndex].CurrentAccount < valueToPay)
                     {
-                        var valueToPay = creditCards[i].ValueInvoice;
-                        Console.WriteLine($"TOTAL A PAGAR: {valueToPay}\nITEM:{bills[i].Name}\nPARCELAS RESTANTES: {bills[i].NumberParcels}" +
-                            $"\nClique ENTER para pagar");
-                        Console.ReadKey();
-                        if (users[i].CurrentAccount < valueToPay)
-                        {
-                            Console.WriteLine("Saldo Indisponivel");
-                        }
-                        else
-                        {
-                            users[i].CurrentAccount = -valueToPay;
-                            bills[i].NumberParcels--;
-                            creditCards[i].ValueInvoice = 0;
-                            Console.WriteLine($"Pagamento efetuado");
-                        }
+                        Console.WriteLine("Saldo Indisponivel");
                     }
                     else
                     {
-                        Console.WriteLine("Não há faturas á pagar");
+                        users[userIndex].CurrentAccount += -valueToPay;
+                        bills[userIndex].NumberParcels--; // Resolver
+                        creditCards[userIndex].ValueInvoice = 0;
+                        Console.WriteLine($"Pagamento efetuado");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Não há faturas á pagar");
+                }
+            }
+        }
+        public bool HasPendingPaymentsAndPrint(List<Bill> bills, List<User> users, int userIndex)
+        {
+            var totalToPay = 0.0;
+            for (int i = 0; i < bills.Count; i++)
+            {
+                if (bills[i].OwnerID == users[userIndex].Id)
+                {
+                    if (bills[i].Name != string.Empty || bills[i].Name != null)
+                    {
+                        Console.WriteLine($"ITEM: {bills[i].Name} | PARCELAS RESTANTES: {bills[i].NumberParcels} | VALOR: {bills[i].Value}");
+                        totalToPay += bills[i].Value;
+                        return true;
                     }
                 }
             }
+            Console.WriteLine($"Total a pagar: R${totalToPay}");
+            return false;
         }
 
     }
