@@ -32,14 +32,14 @@
             var limit = userMonthlyIncome + random.Next(491, 771);
             return limit;
         }
-        public string R_NameOwner(List<User> listUser)
+        public string R_NameOwner(List<User> users)
         {
             var name = string.Empty;
-            for (int i = 0; i < listUser.Count; i++)
+            for (int i = 0; i < users.Count; i++)
             {
-                if (listUser[i].Name != string.Empty)
+                if (users[i].Name != string.Empty)
                 {
-                    name = listUser[i].Name;
+                    name = users[i].Name;
                 }
             }
             return name;
@@ -55,7 +55,7 @@
             DateTime _ExpireDate = DateTime.Today.AddYears(3);
             return _ExpireDate;
         }
-        public void IncrementMonthInvoce(List<Bill> bills, List<User> users, List<CreditCard> creditCards, int userIndex)
+        public void IncrementMonthInvoice(List<Bill> bills, List<User> users, List<CreditCard> creditCards, int userIndex)
         {
             //Este metodo será chamado a cada virada de mês, será necessario ver uma solução para armazenar e visualizar outras contas
             //fora o empréstimo

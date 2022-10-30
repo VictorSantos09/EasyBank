@@ -392,14 +392,14 @@
             }
             return ID;
         }
-        public static int GetActualUserID(int idFromLogin)
+        public static int GetActualUserID(int userIndex)
         {
-            var userID = idFromLogin;
+            var userID = userIndex;
             return userID;
         }
-        public static int GetActualUserIndex(int idFromLogin)
+        public static int GetActualUserIndex(int userIndex)
         {
-            var userID = --idFromLogin;
+            var userID = --userIndex;
             return userID;
         }
     }

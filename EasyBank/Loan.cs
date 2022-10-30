@@ -3,22 +3,24 @@
     public class Loan
     {
         public int Id { get; set; }
-        public int Value { get; set; }
+        public int OwnerID { get; set; }
+        public double Value { get; set; }
         public int Parcels { get; set; }
         public bool Open { get; set; }
-        public Loan(List<Loan> loans, int _value, int _parcels)
+        public Loan(double _value, int _parcels, int ownerID, int _id, bool _open)
         {
             Value = _value;
             Parcels = _parcels;
+            OwnerID = ownerID;
+            Id = _id;
+            Open = _open;
         }
         public Loan()
         {
 
         }
-        public void LoanRequest(List<User> users, List<Bill> bills, int idFromLogin)
+        public void LoanRequest(List<User> users, List<Loan> loans, List<Bill> bills, int userIndex, int userID)
         {
-            var userID = Validator.GetActualUserID(idFromLogin);
-            var userIndex = Validator.GetActualUserIndex(idFromLogin);
             if (users[userIndex].OpenLoan == true)
             {
                 Console.WriteLine("Não é possivel abrir mais de um empréstimo");
@@ -34,47 +36,46 @@
                 }
                 else
                 {
-                    PaymentOption(loanValue, bills, idFromLogin, users);
+                    PaymentOption(loanValue, bills, userIndex, loans, userID);
                 }
             }
         }
-        public void PaymentOption(int loanValue, List<Bill> bills, int idFromLogin, List<User> users)
+        public void PaymentOption(int loanValue, List<Bill> bills, int userIndex, List<Loan> loans, int userID)
         {
-            var options = "Crédito";
+            var paymentOptions = "Crédito";
             Console.WriteLine("Forma de pagamento permitida");
             Console.WriteLine("Credíto até 12x - MasterCard\nDigite 1 para continuar\nDigite: ");
             var userInputChoice = Console.ReadLine();
             if (userInputChoice == "1")
             {
-                ChooseQtdParcels(loanValue, options, bills, idFromLogin, users);
+                ChooseQtdParcels(loanValue, paymentOptions, bills, loans, userID);
             }
         }
         public double AmountInterest(int qtdParcels)
         {
-            var rateBase = 10;
-            var rateMonthIncrease = 0.55;
+            var rateBase = 25;
+            var rateMonthIncrease = 5;
 
-            var finalValue = (qtdParcels * rateBase) + qtdParcels * rateMonthIncrease;
+            var finalValue = (rateMonthIncrease * qtdParcels) + qtdParcels * rateBase;
             return finalValue;
         }
-        public void ChooseQtdParcels(int loanValue, string paymentOptions, List<Bill> bills, int idFromLogin, List<User> users)
+        public void ChooseQtdParcels(int loanValue, string paymentOptions, List<Bill> bills, List<Loan> loans, int userID)
         {
             Console.Write("Digite o numero de parcelas: ");
-            var ChoiceQtdParcels = Convert.ToInt32(Console.ReadLine());
-            if (ChoiceQtdParcels > 12 || ChoiceQtdParcels < 1)
+            var qtdParcels = Convert.ToInt32(Console.ReadLine());
+            if (qtdParcels > 12 || qtdParcels < 1)
             {
                 Validator.ErrorGeneric("Escolha indisponivel");
             }
             else
             {
-                var finalInterestValue = AmountInterest(ChoiceQtdParcels);
+                var finalInterestValue = AmountInterest(qtdParcels);
                 Console.WriteLine($"Valor do emprestimo: {loanValue}\nForma de Pagamento: {paymentOptions}\n" +
-                    $"Parcelas: {ChoiceQtdParcels}\nJuros: {finalInterestValue}");
+                    $"Parcelas: {qtdParcels}\nJuros: {finalInterestValue}");
                 var finalValue = loanValue + finalInterestValue;
-                var confirmed = ConfirmLoan();
-                if (confirmed == true)
+                if (ConfirmLoan() == true)
                 {
-                    ApplyLoan(bills, users, ChoiceQtdParcels, paymentOptions, finalValue, idFromLogin, loanValue);
+                    ApplyLoan(bills, loans, qtdParcels, finalValue, userID);
                 }
                 else
                 {
@@ -92,9 +93,18 @@
             }
             return false;
         }
-        public void ApplyLoan(List<Bill> bills, List<User> users, int qtdParcels, string payment, double finalValue, int idFromLogin, int loanValue)
+        public void ApplyLoan(List<Bill> bills, List<Loan> loans, int qtdParcels, double finalValue, int userID)
         {
-
+            var loan = new Loan(finalValue, qtdParcels, userID, Validator.ID_AUTOINCREMENT(loans), true);
+            loans.Add(loan);
+            bills.Add(new Bill
+            {
+                Name = "EMPRÉSTIMO",
+                NumberParcels = qtdParcels,
+                OwnerID = userID,
+                Value = finalValue,
+                Id = Validator.ID_AUTOINCREMENT(bills),
+            });
         }
     }
 }
