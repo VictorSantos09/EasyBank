@@ -13,7 +13,7 @@
         private string SafetyKey { get; set; } //SenhaSegurança (senha 3 digitos) a mesma do usuario, aplicar aqui tambem
         public DateTime ExpireDate { get; set; } // Data de vencimento
         public CreditCard(int _Limit,
-            string _NameOwner, string _CVV, string _SafetyKey, DateTime _ExpireDate, int _id)
+            string _NameOwner, string _CVV, string _SafetyKey, DateTime _ExpireDate, int _id, string _numberCard)
         {
             Limit = _Limit;
             NameOwner = _NameOwner;
@@ -21,6 +21,7 @@
             SafetyKey = _SafetyKey;
             ExpireDate = _ExpireDate;
             Id = _id;
+            NumberCard = _numberCard;
         }
         public CreditCard()
         {
@@ -119,6 +120,13 @@
             Console.WriteLine($"Total a pagar: R${totalToPay}");
             return false;
         }
-
+        public string R_CardNumber()
+        {
+            var min = 1001;
+            var max = 9999;
+            Random random = new Random();
+            string number = $"1322 {random.Next(min, max)} {random.Next(min, max)} {random.Next(min, max)}";
+            return number;
+        }
     }
 }
