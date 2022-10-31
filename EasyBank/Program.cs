@@ -16,7 +16,7 @@ while (ProgramStarted)
 
     if (userInputMainMenu == "1")
     {
-        RegisterNewAutoDebit.MenuCadastro(autoDebits);
+
     }
     else if (userInputMainMenu == "2")
     {

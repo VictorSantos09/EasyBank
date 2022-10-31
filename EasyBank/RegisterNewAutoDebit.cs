@@ -1,29 +1,28 @@
-﻿namespace EasyBank
+﻿using System.Collections.Generic;
+
+namespace EasyBank
 {
     public class RegisterNewAutoDebit
     {
         public bool Activated { get; set; }
         public string OptionAcceptDebitOrNot { get; set; }
-        public void MenuCadastro(List<ArrayClassOfAutoDebit> arrayClassOfAutoDebits)
+        public void MenuCadastro(List<ArrayClassOfAutoDebit> arrayClassOfAutoDebits, int ownerID)
         {
             Console.WriteLine("Cadastrar novo Débito Automático");
             Console.WriteLine("Nos diga qual é sua conta (digite o número que corresponde a sua opção):");
             Console.WriteLine("1 - Poupança \n2 - Fatura \n3 - Água \n4 - Seguro de Vida \n5 - Outra");
             string option = Console.ReadLine();
             // insira validator de espaço e caracteres especiais;
-            
             if (option == "1")
             {
-                var contaValor = PreencherInfos("Poupança");
-                var ArrayTanana = new ArrayClassOfAutoDebit("POUPANÇA", null, null,contaValor);
-                arrayClassOfAutoDebits.Add(ArrayTanana);
+                PreencheArmazenaLista("Poupança", arrayClassOfAutoDebits, ownerID);
                 //Aplicar método que faça a ligação entre DébitoAuto e Poupança;
                 //Se usuário escolher este método, poupança todo mês recebe o valor
                 // que foi inserido aqui;
             }
             else if (option == "2")
             {
-                PreencherInfos("Fatura de crédito");
+               PreencheArmazenaLista("Fatura", arrayClassOfAutoDebits, ownerID);
                 //Aplicar método que faça a ligação entre DébitoAuto e Crédito;
                 //Se usuário escolher este método, a fatura do cartão todo mês
                 // será paga por aqui;
@@ -32,30 +31,27 @@
             }
             else if (option == "3")
             {
-                PreencherInfos("Água");
+                PreencheArmazenaLista("Água", arrayClassOfAutoDebits, ownerID);
             }
             else if(option == "4")
             {
-                PreencherInfos("Seguro de Vida");
+                PreencheArmazenaLista("Seguro de Vida", arrayClassOfAutoDebits, ownerID);
             }
             else if(option == "5")
             {
                 Console.WriteLine("Informe-nos a conta que deseja cadastrar:");
                 option = Console.ReadLine();
-                PreencherInfos(option);
+                PreencheArmazenaLista(option, arrayClassOfAutoDebits, ownerID);
             }
             else
             {
                 Console.WriteLine("Digite uma opção válida (Opções: 1, 2, 3, 4 ou 5)");
                 option = Console.ReadLine();
             }
-
             Console.Clear();
         }
-
         public float PreencherInfos(string opcao)
-        {
-           
+        {         
             Console.Write($"Informe o valor da conta de {opcao} para cobrança mensal: ");
             float valorDaContaADebitar = float.Parse(Console.ReadLine());
             // inserir validator de nulo,letras e caracteres especiais;
@@ -78,6 +74,13 @@
                 Activated = false;
             }
             return valorDaContaADebitar;
+        }
+        public void PreencheArmazenaLista(string NomeDespesa,
+            List<ArrayClassOfAutoDebit> arrayClassOfAutoDebits, int ownerID)
+        {
+            float contaValor = PreencherInfos(NomeDespesa);
+            var datasAutoDebit = new ArrayClassOfAutoDebit(NomeDespesa, null, ownerID, contaValor);
+            arrayClassOfAutoDebits.Add(datasAutoDebit);
         }
     }
 }
