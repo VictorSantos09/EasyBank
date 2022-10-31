@@ -2,7 +2,7 @@
 {
     public class Profile
     {
-        public void ViewProfile(string nomeDoUsuario, string emaiDoUsuario, string telefoneDoUsuario, string dataDeNasimentoDoUsuario)
+        public void ViewProfile(string userName, string userEmail, string userPhone, string userDateBorn)
         {
             User user = new User();
             CreditCard creditCard = new CreditCard();
@@ -10,8 +10,8 @@
 
             while (menuProfile)
             {
-                Console.Write($"Olá {nomeDoUsuario}\n");
-                Console.Write($"\nNome: {nomeDoUsuario}\nE-mail: {emaiDoUsuario}\nTelefone: {telefoneDoUsuario}\nData de Nascimento: {dataDeNasimentoDoUsuario}");
+                Console.Write($"Olá {userName}\n");
+                Console.Write($"\nNome: {userName}\nE-mail: {userEmail}\nTelefone: {userPhone}\nData de Nascimento: {userDateBorn}");
                 Console.Write("\n\n1- Ver dados do cartão\n2- Ver limite\n3- Alterar Cadastro\n4- Cancelar Conta\n 5- Voltar");
                 string option = Console.ReadLine();
 
@@ -30,7 +30,7 @@
 
                 if (option == "4")
                 {
-                    AccountCancellationValidator(user.CPF, user.Email,user.SafetyKey, user.Password);
+                    AccountCancellationValidator(user.CPF, user.Email, user.SafetyKey, user.Password);
                 }
 
                 if (option == "5")
@@ -49,7 +49,7 @@
             Console.ReadLine();
         }
 
-        public void AccountCancellationValidator(string cpf, string email,string safetyKey, string senha)
+        public void AccountCancellationValidator(string cpf, string email, string safetyKey, string senha)
         {
 
             bool emailAndCpfValidationMenu = true;
@@ -90,11 +90,11 @@
 
             if (cancellationAccountOption == "2")
             {
-                ThreeChancesPassword();
+                ThreeChancesPasswords();
             }
         }
 
-        public void ThreeChancesPassword()
+        public void ThreeChancesPasswords()
         {
             User user = new User();
             int counter = 0;
@@ -115,6 +115,26 @@
                 {
                     AccountCancellation();
                 }
+
+                counter = 0;
+
+            while (counter != 3)
+                {
+                    Console.Clear();
+                    Console.Write("Insira a sua senha de segurança\n\n-> ");
+                    string checkoutSafetyKey = Console.ReadLine();
+
+                    if (checkoutSafetyKey != user.SafetyKey)
+                    {
+                        Console.Write("Algo deu errado favor insira a senha novamente!\n\nPressione ENTER");
+                        Console.ReadLine();
+                        counter++;
+                    }
+                    else
+                    {
+                        AccountCancellation();
+                    }
+                }
             }
         }
 
@@ -123,8 +143,32 @@
             User account = new User();
             CreditCard userCreditCard = new CreditCard();
 
-            account = null;
-            userCreditCard = null;
+            account.Id = 0;
+            account.MonthMovimentation = 0;
+            account.InvestedMoney = 0;
+            account.CurrentAccount = 0;
+            account.MonthlyIncome = 0;
+            account.CashbackLevel = 0;
+            account.Name = null;
+            account.Email = null;
+            account.CPF = null;
+            account.RG = null;
+            account.PhoneNumber = null;
+            account.PhoneCodeArea = null;
+            account.Password = null;
+            account.SafetyKey = null;
+            account.DateBorn = new DateTime(0000, 00, 00);
+            account.AutoDebit = false;
+            account.Age = 0;
+
+            userCreditCard.Id = 0;
+            userCreditCard.ValueParcel = 0;
+            userCreditCard.Limite = 0;
+            userCreditCard.NameOwner = null;
+            userCreditCard.CVV = null;
+            userCreditCard.Flag = null;
+            userCreditCard.SafetyKey = null;
+            userCreditCard.ExpireDate = new DateTime(0000, 00, 00);
         }
     }
 }
