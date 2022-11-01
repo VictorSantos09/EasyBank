@@ -2,50 +2,74 @@
 {
     public class LogIn
     {
-        public bool VerificarLogin(List<User> users)
+        public int VerificarLogin(List<User> users)
         {
-            for (int i = 0; i < users.Count; i++)
+            var counter = 3;
+            var checking = true;
+            while (checking)
             {
-                for (int j = 0; j < 3; j++)
+                if  (counter == 0)
                 {
-                    Console.WriteLine("Digite o seu e-mail ou CPF");
-                    var usuario = Console.ReadLine();
-                    Console.WriteLine("Digite o sua senha");
-                    var senha = Console.ReadLine();
-                    if (usuario.Contains("@"))
+                    Console.WriteLine("Você atingiu o limite de tentativas!");
+                    checking = false;
+                }
+                for (int i = 0; i < users.Count; i++)
+                {
+                    for (int j = 0; j < counter; j++)
                     {
-                        if (usuario == users[i].Email)
+                        Console.WriteLine("Digite o seu e-mail ou CPF");
+                        var usuario = Console.ReadLine();
+                        Console.WriteLine("Digite o sua senha");
+                        var senha = Console.ReadLine();
+                        if (usuario.Contains("@"))
                         {
-                            if (senha == users[i].Password)
+                            if (usuario == users[i].Email)
                             {
-                                Console.WriteLine("Login realizado com sucesso!");
-                                return true;
+                                if (senha == users[i].Password)
+                                {
+                                    Console.WriteLine("Login realizado com sucesso!");
+                                    return i;
+                                    checking = false;
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Usuário ou Senha incorreto. Tente novamente!");
+                                    counter--;
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine("E-mail não cadastrado ou incorreto. Tente novamente!");
+                                counter--;
                             }
                         }
                         else
                         {
-                            Console.WriteLine("Usuário ou Senha incorreto. Tente novamente!");
-                        }
-                    }
-                    else //então seria CPF
-                    {
-                        if (usuario == users[i].CPF)
-                        {
-                            if (senha == users[i].Password)
+                            if (usuario == users[i].CPF)
                             {
-                                Console.WriteLine("Login realizado com sucesso!");
-                                return true;
+                                if (senha == users[i].Password)
+                                {
+                                    Console.WriteLine("Login realizado com sucesso!");
+                                    return i;
+                                    checking = false;
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Usuário ou Senha incorreto. Tente novamente!");
+                                    counter--;
+                                }
                             }
-                        }
-                        else
-                        {
-                            Console.WriteLine("Usuário ou Senha incorreto. Tente novamente!");
-                        }
+                            else
+                            {
+                                Console.WriteLine("CPF não cadastrado ou incorreto. Tente novamente!");
+                                counter--;
+                            }
 
+                        }
                     }
                 }
             }
-            return false;
+            return 0;// se for 0 não foi efetuado o login
         }
     }
 }
