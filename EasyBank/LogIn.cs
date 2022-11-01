@@ -2,13 +2,15 @@
 {
     public class LogIn
     {
-        public int VerificarLogin(List<User> users)
+        public int CheckLogin(List<User> users)
         {
+            var userCPForEmail = "";
+            var userPassword = "";
             var counter = 3;
             var checking = true;
             while (checking)
             {
-                if  (counter == 0)
+                if (counter == 0)
                 {
                     Console.WriteLine("Você atingiu o limite de tentativas!");
                     checking = false;
@@ -45,19 +47,23 @@
                         }
                         else
                         {
-                            if (usuario == users[i].CPF)
+                            if (userCPForEmail == users[i].CPF)
                             {
-                                if (senha == users[i].Password)
+                                if (userPassword == users[i].Password)
                                 {
-                                    Console.WriteLine("Login realizado com sucesso!");
-                                    return i;
-                                    checking = false;
+                                    if (senha == users[i].Password)
+                                    {
+                                        Console.WriteLine("Login realizado com sucesso!");
+                                        return i;
+                                        checking = false;
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Usuário ou Senha incorreto. Tente novamente!");
+                                        counter--;
+                                    }
                                 }
-                                else
-                                {
-                                    Console.WriteLine("Usuário ou Senha incorreto. Tente novamente!");
-                                    counter--;
-                                }
+
                             }
                             else
                             {
