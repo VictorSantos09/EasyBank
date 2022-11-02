@@ -1,13 +1,15 @@
-﻿namespace EasyBank
+﻿using System.Collections.Generic;
+
+namespace EasyBank
 {
     public class AutoDebit
     {
-        public int Id { get; set; }
         public void Menu(RegisterNewAutoDebit registerNewAutoDebit,
-            List<ArrayClassOfAutoDebit> arrayClassOfAutoDebit, int ownerID)
+            List<ArrayClassOfAutoDebit> arrayClassOfAutoDebit, int ownerID, string NameExpense,
+            string option)
         {
-            bool ValidaMenu = true;
-            while (ValidaMenu)
+            bool selectMenu = true;
+            while (selectMenu)
             {
                 Console.WriteLine("1 - O que é\n2 - Meus DB's\n3 - Cadastrar Nova Conta\n4 - Desativar \n5 - Sair");
 
@@ -15,7 +17,7 @@
                 string optionMenu = Console.ReadLine();
                 if (optionMenu == "1")
                 {
-                    Explicacao();
+                    Explication();
                 }
                 else if (optionMenu == "2")
                 {
@@ -23,16 +25,18 @@
                 }
                 else if (optionMenu == "3")
                 {
-                    //registerDebit.MenuCadastro();
+                    registerNewAutoDebit.RegistrationMenu(arrayClassOfAutoDebit, ownerID);
+                    registerNewAutoDebit.FillInInformation(option);
+                    registerNewAutoDebit.FillStoreList(NameExpense, arrayClassOfAutoDebit, ownerID);
                 }
                 else if (optionMenu == "4")
                 {
-                    Console.WriteLine("Desativar Débito Automático");
+                    RemoveAutoDebit(arrayClassOfAutoDebit, ownerID);
                 }
                 else if (optionMenu == "5")
                 {
-                    Console.WriteLine("Saindo...");
-                    ValidaMenu = false;
+                    Console.WriteLine("Voltando ao Menu Principal...");
+                    selectMenu = false;
                 }
                 else
                 {
@@ -40,7 +44,7 @@
                 }
             }
         }
-        public void Explicacao()
+        public void Explication()
         {
             Console.WriteLine("\n \nEstá cada dia mais difícil lembrar da data de vencimento de suas contas?");
             Console.WriteLine("Com o débito automático você programa suas contas para serem pagas de forma automática na data escolhida por você!");
@@ -49,11 +53,6 @@
             Console.WriteLine("Você pode visualizar quais contas estão em débitos automáticos na opção '2'.");
             Console.WriteLine("Quer remover uma conta do débito automático? Acesse a opção '4'. \n \n");
         }
-        
-        //public void Fatura(float valorEmprestimo)
-        //{
-
-        //}
         public void RemoveAutoDebit(List<ArrayClassOfAutoDebit> arrayClassOfAutoDebit, int ownerID)
         {
             Console.WriteLine("Informe qual conta deseja desativar:");
@@ -65,14 +64,14 @@
         }
         public void DisplaysDebits(List<ArrayClassOfAutoDebit> arrayClassOfAutoDebit, int ownerID)
         {
-            int indice = 1;
+            int index = 1;
             for (int i = 0; i < arrayClassOfAutoDebit.Count; i++)
             {
                 if (arrayClassOfAutoDebit[i].OwnerID == ownerID)
                 {
-                    Console.WriteLine($"{indice} - {arrayClassOfAutoDebit[i].Name} " +
+                    Console.WriteLine($"{index} - {arrayClassOfAutoDebit[i].Name} " +
                         $"(Valor: R${arrayClassOfAutoDebit[i].Value})");
-                    indice++;
+                    index++;
                 }
             }
         }
