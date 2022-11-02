@@ -23,7 +23,7 @@
             phoneNumber = Console.ReadLine();
         }
 
-      public void ChangeDateBorn(string dateBorn)
+        public void ChangeDateBorn(string dateBorn)
         {
             Console.Clear();
 
