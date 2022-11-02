@@ -26,7 +26,7 @@ while (ProgramStarted)
     }
     else if (userInputMainMenu == "2")
     {
-        Loan.LoanRequest(users, loans, bills, 0, 1); // Temporario
+
     }
     else if (userInputMainMenu == "3")
     {
