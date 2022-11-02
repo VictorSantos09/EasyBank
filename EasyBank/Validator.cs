@@ -392,9 +392,9 @@
             }
             return ID;
         }
-        public static int GetActualUserID(int userIndex)
+        public static int GetActualUserID<T>(int userIndex, List<User> users)
         {
-            var userID = userIndex;
+            var userID = users[userIndex].Id;
             return userID;
         }
         public static int GetActualUserIndex(int userIndex)

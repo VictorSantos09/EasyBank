@@ -56,21 +56,22 @@
             DateTime _ExpireDate = DateTime.Today.AddYears(3);
             return _ExpireDate;
         }
-        public void IncrementMonthInvoice(List<Bill> bills, List<User> users, List<CreditCard> creditCards, int userIndex)
+        public double IncrementMonthInvoice(List<Bill> bills, List<User> users, int userIndex)
         {
             //Este metodo será chamado a cada virada de mês, será necessario ver uma solução para armazenar e visualizar outras contas
             //fora o empréstimo
-            creditCards[userIndex].ValueInvoice = 0.0;
+            var totalToPay = 0.0;
             for (int i = 0; i < bills.Count; i++)
             {
-                if (bills[i].OwnerID == users[i].Id)
+                if (bills[i].OwnerID == users[userIndex].Id)
                 {
                     if (bills[i].Value != 0)
                     {
-                        creditCards[userIndex].ValueInvoice += bills[i].Value;
+                        totalToPay += bills[i].Value;
                     }
                 }
             }
+            return totalToPay;
         }
         public void ManualMonthPaymentInvoice(List<User> users, List<CreditCard> creditCards, List<Bill> bills, int userIndex)
         {
@@ -127,6 +128,42 @@
             Random random = new Random();
             string number = $"1322 {random.Next(min, max)} {random.Next(min, max)} {random.Next(min, max)}";
             return number;
+        }
+        public void AutoPaymentInvoice(List<Bill> bills, List<CreditCard> creditCards, List<User> users, int userID, int userIndex)
+        {
+            var totalToPay = IncrementMonthInvoice(bills, users, userIndex);
+            if (totalToPay != 0)
+            {
+                creditCards[userIndex].ValueInvoice = totalToPay;
+                if (users[userIndex].CurrentAccount >= totalToPay)
+                {
+                    users[userIndex].CurrentAccount = -totalToPay;
+                    creditCards[userIndex].ValueInvoice = 0;
+                    RemoveBills(bills, userID);
+                }
+                else
+                {
+                    Validator.ErrorGeneric("pagamento automatico falhou, saldo insuficiente");
+                }
+            }
+        }
+        public void RemoveBills(List<Bill> bills, int userID)
+        {
+            for (int i = 0; i < bills.Count; i++)
+            {
+                if (bills[i].OwnerID == userID)
+                {
+                    if (bills[i].NumberParcels <= 1)
+                    {
+                        var bill = bills[i];
+                        bills.Remove(bill);
+                    }
+                    else
+                    {
+                        bills[i].NumberParcels--;
+                    }
+                }
+            }
         }
     }
 }
