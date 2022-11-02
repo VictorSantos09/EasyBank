@@ -3,6 +3,7 @@
 var ProgramStarted = true;
 Register register = new Register();
 Loan Loan = new Loan();
+LogIn login = new LogIn();
 
 List<User> users = new List<User>();
 List<CreditCard> creditCards = new List<CreditCard>();
@@ -26,7 +27,7 @@ while (ProgramStarted)
     }
     else if (userInputMainMenu == "2")
     {
-
+        login.CheckLogin(users); 
     }
     else if (userInputMainMenu == "3")
     {
