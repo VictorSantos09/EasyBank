@@ -2,7 +2,6 @@
 {
     public class ProfileConfig
     {
-<<<<<<< HEAD
       public void ChangeName(string name)
         {
             Console.Clear();
@@ -27,8 +26,8 @@
         public void ChangeDateBorn(string dateBorn)
         {
             Console.Clear();
+        }
 
-=======
         public void ChangeRegistration(string nomeDoUsuario, string emaiDoUsuario, string telefoneDoUsuario, string dataDeNasimentoDoUsuario)
         {
             Console.Write("Qual dado será alterado?\n");
@@ -55,7 +54,6 @@
                     break;
 
             }
->>>>>>> 28a474adc80f3e46e47cf9bc6acf92efd99223db
         }
     }
 }
