@@ -1,18 +1,19 @@
 ﻿namespace EasyBank
 {
     public class Profile
-    {
+    { 
         public void ViewProfile(string userName, string userEmail, string userPhone, string userDateBorn)
         {
             User user = new User();
             CreditCard creditCard = new CreditCard();
+            ProfileConfig profileConfig = new ProfileConfig();
             bool menuProfile = true;
 
             while (menuProfile)
-            {
-                Console.Write($"Olá {userName}\n");
+            {       
+                Console.Write($"Olá {userName}");
                 Console.Write($"\nNome: {userName}\nE-mail: {userEmail}\nTelefone: {userPhone}\nData de Nascimento: {userDateBorn}");
-                Console.Write("\n\n1- Ver dados do cartão\n2- Ver limite\n3- Alterar Cadastro\n4- Cancelar Conta\n 5- Voltar");
+                Console.Write("\n1- Ver dados do cartão\n2- Ver limite\n3- Alterar Cadastro\n4- Cancelar Conta\n 5- Voltar");
                 string option = Console.ReadLine();
 
                 if (option == "1")
@@ -26,6 +27,34 @@
                     Console.Write($"Limite do cartão de crédito\n\n-> {creditCard.Limite}");
                     Console.Write("\n\nPressione ENTER para voltar");
                     Console.ReadLine();
+                }
+
+                if (option == "3")
+                {
+                    Console.Clear();
+                    Console.Write($"\n1- Nome: {userName}\n2- E-mail: {userEmail}\n3- Telefone: {userPhone}\n4- Data de Nascimento: {userDateBorn}");
+                    Console.Write("O que será alterado?\n-> ");
+                    string profileConfigOption = Console.ReadLine();
+
+                    if (profileConfigOption == "1")
+                    {
+                        profileConfig.ChangeName(userName);
+                    }
+
+                    if (profileConfigOption == "2")
+                    {
+                        profileConfig.ChangeEmail(userEmail);
+                    }
+
+                    if (profileConfigOption == "3")
+                    {
+                        profileConfig.ChangePhoneNumber(userPhone);
+                    }
+
+                    if (profileConfigOption == "4")
+                    {
+
+                    }
                 }
 
                 if (option == "4")
@@ -115,6 +144,7 @@
                 {
                     AccountCancellation();
                 }
+            }
 
                 counter = 0;
 
@@ -135,7 +165,7 @@
                        AccountCancellation();
                     }
                 }
-            }
+            
         }
 
         public void AccountCancellation()
