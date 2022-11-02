@@ -1,7 +1,11 @@
 ﻿namespace EasyBank
 {
     public class Profile
+<<<<<<< HEAD
     { 
+=======
+    {
+>>>>>>> 28a474adc80f3e46e47cf9bc6acf92efd99223db
         public void ViewProfile(string userName, string userEmail, string userPhone, string userDateBorn)
         {
             User user = new User();
@@ -10,10 +14,17 @@
             bool menuProfile = true;
 
             while (menuProfile)
+<<<<<<< HEAD
             {       
                 Console.Write($"Olá {userName}");
                 Console.Write($"\nNome: {userName}\nE-mail: {userEmail}\nTelefone: {userPhone}\nData de Nascimento: {userDateBorn}");
                 Console.Write("\n1- Ver dados do cartão\n2- Ver limite\n3- Alterar Cadastro\n4- Cancelar Conta\n 5- Voltar");
+=======
+            {
+                Console.Write($"Olá {userName}\n");
+                Console.Write($"\nNome: {userName}\nE-mail: {userEmail}\nTelefone: {userPhone}\nData de Nascimento: {userDateBorn}");
+                Console.Write("\n\n1- Ver dados do cartão\n2- Ver limite\n3- Alterar Cadastro\n4- Cancelar Conta\n 5- Voltar");
+>>>>>>> 28a474adc80f3e46e47cf9bc6acf92efd99223db
                 string option = Console.ReadLine();
 
                 if (option == "1")
@@ -123,7 +134,11 @@
             }
         }
 
+<<<<<<< HEAD
         public void ThreeChancesPasswords()
+=======
+         public void ThreeChancesPasswords()
+>>>>>>> 28a474adc80f3e46e47cf9bc6acf92efd99223db
         {
             User user = new User();
             int counter = 0;
@@ -145,7 +160,11 @@
                     AccountCancellation();
                 }
             }
+<<<<<<< HEAD
 
+=======
+                
+>>>>>>> 28a474adc80f3e46e47cf9bc6acf92efd99223db
                 counter = 0;
 
             while (counter != 3)
@@ -165,10 +184,13 @@
                        AccountCancellation();
                     }
                 }
+<<<<<<< HEAD
             
+=======
+>>>>>>> 28a474adc80f3e46e47cf9bc6acf92efd99223db
         }
 
-        public void AccountCancellation()
+       public void AccountCancellation()
         {
             User account = new User();
             CreditCard userCreditCard = new CreditCard();
