@@ -75,7 +75,6 @@
         }
         public void ManualMonthPaymentInvoice(List<User> users, List<CreditCard> creditCards, List<Bill> bills, int userIndex)
         {
-            //Verificar. Necessario ver a questão de caso o usuario possa haver mais de uma conta conseguir linkar com este método
             var valueToPay = 0.0;
             if (creditCards[userIndex].OwnerID == users[userIndex].Id)
             {
@@ -92,7 +91,7 @@
                     else
                     {
                         users[userIndex].CurrentAccount += -valueToPay;
-                        bills[userIndex].NumberParcels--; // Resolver
+                        bills[userIndex].NumberParcels--;
                         creditCards[userIndex].ValueInvoice = 0;
                         Console.WriteLine($"Pagamento efetuado");
                     }
