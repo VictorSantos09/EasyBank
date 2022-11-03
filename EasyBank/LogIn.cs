@@ -4,45 +4,39 @@
     {
         public int CheckLogin(List<User> users)
         {
-            var userCPForEmail = "";
-            var userPassword = "";
             var counter = 3;
             var checking = true;
             while (checking)
             {
-                if (counter == 0)
+                if (counter <= 0)
                 {
                     Console.WriteLine("Você atingiu o limite de tentativas!");
                     checking = false;
                 }
-                for (int i = 0; i < users.Count; i++)
+                else
                 {
-                    for (int j = 0; j < counter; j++)
+
+                    for (int i = 0; i < users.Count; i++)
                     {
                         Console.WriteLine("Digite o seu e-mail ou CPF");
-                        var usuario = Console.ReadLine();
-                        Console.WriteLine("Digite o sua senha");
-                        var senha = Console.ReadLine();
-                        if (usuario.Contains("@"))
+                        var userCPForEmail = Console.ReadLine();
+                        Console.WriteLine("Digite o sua userPassword");
+                        var userPassword = Console.ReadLine();
+                        if (userCPForEmail.Contains("@"))
                         {
-                            if (usuario == users[i].Email)
+                            if (userCPForEmail == users[i].Email)
                             {
-                                if (senha == users[i].Password)
+                                if (userPassword == users[i].Password)
                                 {
                                     Console.WriteLine("Login realizado com sucesso!");
-                                    return i;
+                                    return users[i].Id;
                                     checking = false;
                                 }
                                 else
                                 {
-                                    Console.WriteLine("Usuário ou Senha incorreto. Tente novamente!");
+                                    Console.WriteLine("Senha incorreta. Tente novamente!");
                                     counter--;
                                 }
-                            }
-                            else
-                            {
-                                Console.WriteLine("E-mail não cadastrado ou incorreto. Tente novamente!");
-                                counter--;
                             }
                         }
                         else
@@ -51,27 +45,18 @@
                             {
                                 if (userPassword == users[i].Password)
                                 {
-                                    if (senha == users[i].Password)
-                                    {
-                                        Console.WriteLine("Login realizado com sucesso!");
-                                        return i;
-                                        checking = false;
-                                    }
-                                    else
-                                    {
-                                        Console.WriteLine("Usuário ou Senha incorreto. Tente novamente!");
-                                        counter--;
-                                    }
+                                    Console.WriteLine("Login realizado com sucesso!");
+                                    return users[i].Id;
+                                    checking = false;
                                 }
-
+                                else
+                                {
+                                    Console.WriteLine("Senha incorreta. Tente novamente!");
+                                    counter--;
+                                }
                             }
-                            else
-                            {
-                                Console.WriteLine("CPF não cadastrado ou incorreto. Tente novamente!");
-                                counter--;
-                            }
-
                         }
+
                     }
                 }
             }

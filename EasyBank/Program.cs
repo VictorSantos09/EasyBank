@@ -2,7 +2,7 @@
 
 var ProgramStarted = true;
 User user = new User();
-List<User> listUser = new List<User>();
+List<User> users = new List<User>();
 Register register = new Register();
 LogIn login = new LogIn();
 
@@ -16,11 +16,11 @@ while (ProgramStarted)
 
     if (userInputMainMenu == "1")
     {
-        register.UserRegister(user, listUser);
+        register.UserRegister(user, users);
     }
     else if (userInputMainMenu == "2")
     {
-        login.CheckLogin(listUser); 
+        login.CheckLogin(users); 
     }
     else if (userInputMainMenu == "3")
     {
