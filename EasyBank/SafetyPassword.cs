@@ -5,7 +5,7 @@ namespace EasyBank
 {
     public class SafetyPassword
     {
-        public string LetterCreation(List<User> listUser, int userIndex)
+        public string LetterCreation()
         {
             string numberLetters;
             Console.WriteLine("Crie 3 letras de segurança");
@@ -34,7 +34,7 @@ namespace EasyBank
                 confirmation = DifferentFromYesOrNo(confirmation);
                 Console.Clear();
             }
-            listUser[userIndex].SafetyKey = numberLetters;
+            // users[userIndex].SafetyKey = numberLetters;
             return numberLetters;
         }
         public static string ConfirmNumberOfLetters(string confirmQuantity)
@@ -113,9 +113,8 @@ namespace EasyBank
                 Console.WriteLine(item);
             }
         }
-        public bool CheckLetters(User user)
+        public bool CheckLetters(List<User> users, int userIndex)
         {
-
             for (int i = 3; i > -1;)
             {
                 GenerateLetters();
@@ -125,7 +124,7 @@ namespace EasyBank
                 var confirmPasswordLetter = Console.ReadLine().ToUpper();
                 Console.WriteLine();
 
-                if (user.SafetyKey == confirmPasswordLetter)
+                if (users[userIndex].SafetyKey == confirmPasswordLetter)
                 {
                     Console.WriteLine("Senha correta");
                     return true;
