@@ -20,10 +20,10 @@
         public bool AutoDebit { get; set; } //DébitoAutomatico
         public int Age { get; set; } //Idade
         public void UserRegisterConstrutor(string _name, string _dateBorn, string _phoneNumber, string _email,
-            string _password, string _CPF, string _RG, int _monthlyIncome, string[] _adress, int _age, List<User> listUser)
+            string _password, string _CPF, string _RG, int _monthlyIncome, string[] _adress, int _age, List<User> users)
         {
             int idCounter = 1;
-            listUser.Add(new User
+            users.Add(new User
             {
                 Name = _name,
                 DateBorn = DateTime.ParseExact(_dateBorn, "dd/MM/yyyy", null),
