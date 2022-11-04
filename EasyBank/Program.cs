@@ -28,8 +28,15 @@ while (ProgramStarted)
     }
     else if (userInputMainMenu == "2")
     {
-        login.CheckLogin(users);
-    }
+      var userID = login.CheckLogin(users);
+        if (userID == 0)
+        {
+            Console.WriteLine("Usuario não cadastrado ou dados incorretos");
+        }
+        else
+        {
+            // Home - Implement
+        }
     }
     else if (userInputMainMenu == "3")
     {

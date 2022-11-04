@@ -15,12 +15,11 @@
                 }
                 else
                 {
-
                     for (int i = 0; i < users.Count; i++)
                     {
                         Console.WriteLine("Digite o seu e-mail ou CPF");
                         var userCPForEmail = Console.ReadLine();
-                        Console.WriteLine("Digite o sua userPassword");
+                        Console.WriteLine("Digite a sua senha");
                         var userPassword = Console.ReadLine();
                         if (userCPForEmail.Contains("@"))
                         {
