@@ -1,8 +1,8 @@
 ﻿namespace EasyBank
 {
     public class Profile
-    { 
-        public void ViewProfile(string userName, string userEmail, string userPhone, string userDateBorn)
+    {
+        public void ViewProfile(List<User> users, List<CreditCard>creditCards, int userIndex)
         {
             User user = new User();
             CreditCard creditCard = new CreditCard();
@@ -11,15 +11,15 @@
 
             while (menuProfile)
 
-            {       
-                Console.Write($"Olá {userName}\n");
-                Console.Write($"\nNome: {userName}\nE-mail: {userEmail}\nTelefone: {userPhone}\nData de Nascimento: {userDateBorn}");
+            {
+                Console.Write($"Olá {users[userIndex].Name}\n");
+                Console.Write($"\nNome: {users[userIndex].Name}\nE-mail: {users[userIndex].Email}\nTelefone: {users[userIndex].PhoneNumber}\nData de Nascimento: {users[userIndex].DateBorn}");
                 Console.Write("\n\n1- Ver dados do cartão\n2- Ver limite\n3- Alterar Cadastro\n4- Cancelar Conta\n 5- Voltar");
                 string option = Console.ReadLine();
 
                 if (option == "1")
                 {
-                    CardInfo(creditCard.Id, creditCard.CVV, creditCard.ExpireDate, creditCard.NameOwner, user.CashbackLevel);
+                    CardInfo(creditCards, userIndex);
                 }
 
                 if (option == "2")
@@ -33,23 +33,23 @@
                 if (option == "3")
                 {
                     Console.Clear();
-                    Console.Write($"\n1- Nome: {userName}\n2- E-mail: {userEmail}\n3- Telefone: {userPhone}\n4- Data de Nascimento: {userDateBorn}");
+                    Console.Write($"\n1- Nome: {users[userIndex].Name}\n2- E-mail: {users[userIndex].Email}\n3- Telefone: {users[userIndex].PhoneNumber}\n4- Data de Nascimento: {users[userIndex].DateBorn}");
                     Console.Write("O que será alterado?\n-> ");
                     string profileConfigOption = Console.ReadLine();
 
                     if (profileConfigOption == "1")
                     {
-                        profileConfig.ChangeName(userName);
+                        profileConfig.ChangeName(users[userIndex].Name);
                     }
 
                     if (profileConfigOption == "2")
                     {
-                        profileConfig.ChangeEmail(userEmail);
+                        profileConfig.ChangeEmail(users[userIndex].Email);
                     }
 
                     if (profileConfigOption == "3")
                     {
-                        profileConfig.ChangePhoneNumber(userPhone);
+                        profileConfig.ChangePhoneNumber(users[userIndex].PhoneNumber);
                     }
 
                     if (profileConfigOption == "4")
@@ -60,7 +60,7 @@
 
                 if (option == "4")
                 {
-                    AccountCancellationValidator(user.CPF, user.Email, user.SafetyKey, user.Password);
+                    AccountCancellationValidator(users, creditCards, userIndex);
                 }
 
                 if (option == "5")
@@ -71,15 +71,15 @@
 
         }
 
-        public void CardInfo(int cardNumber, string cVV, DateTime dataDeVencimento, string nome, int nivelDeCashback)
+        public void CardInfo(List<CreditCard> creditCards, int userIndex)
         {
             Console.Clear();
-            Console.Write($"\nNúmero: {cardNumber}\nCVV: {cVV}\nData de Vencimento: {dataDeVencimento}\nNome: {nome}\nCashback: {nivelDeCashback}");
+            Console.Write($"\nNúmero: {creditCards[userIndex].NumberCard}\nCVV: {creditCards[userIndex].CVV}\nData de Vencimento: {creditCards[userIndex].ExpireDate}\nNome: {creditCards[userIndex].NameOwner}");
             Console.Write("\n\nPressione ENTER para voltar");
             Console.ReadLine();
         }
 
-        public void AccountCancellationValidator(string cpf, string email, string safetyKey, string senha)
+        public void AccountCancellationValidator(List<User> users, List<CreditCard> creditCards, int userIndex)
         {
 
             bool emailAndCpfValidationMenu = true;
@@ -92,9 +92,9 @@
                 Console.Write("Digite o seu cpf: ");
                 string userCpf = Console.ReadLine();
 
-                if (userEmail == email && userCpf == cpf)
+                if (userEmail == users[userIndex].Email && userCpf == users[userIndex].CPF)
                 {
-                    ValidationAccountCancellation(emailAndCpfValidationMenu);
+                    ValidationAccountCancellation(emailAndCpfValidationMenu, users, creditCards, userIndex);
                 }
                 else
                 {
@@ -106,7 +106,7 @@
             }
         }
 
-        public void ValidationAccountCancellation(bool backToViewProflie)
+        public void ValidationAccountCancellation(bool backToViewProflie, List<User> users, List<CreditCard> creditCards, int userIndex)
         {
             Console.Clear();
             Console.Write("Você tem certeza que deseja cancelar a conta? Após desativa-la não é possível recuperação!");
@@ -120,12 +120,12 @@
 
             if (cancellationAccountOption == "2")
             {
-                ThreeChancesPasswords();
+                ThreeChancesPasswords(users, creditCards, userIndex);
             }
         }
 
- 
-         public void ThreeChancesPasswords()
+
+        public void ThreeChancesPasswords(List<User> users, List<CreditCard> creditCards, int userIndex)
         {
             User user = new User();
             int counter = 0;
@@ -144,61 +144,45 @@
                 }
                 else
                 {
-                    AccountCancellation();
+                    AccountCancellation(users, creditCards, userIndex);
                 }
             }
-                counter = 0;
+            counter = 0;
 
             while (counter != 3)
-                {
-                    Console.Clear();
-                    Console.Write("Insira a sua senha de segurança\n\n-> ");
-                    string checkoutSafetyKey = Console.ReadLine();
+            {
+                Console.Clear();
+                Console.Write("Insira a sua senha de segurança\n\n-> ");
+                string checkoutSafetyKey = Console.ReadLine();
 
-                    if (checkoutSafetyKey != user.SafetyKey)
-                    {
-                        Console.Write("Algo deu errado favor insira a senha novamente!\n\nPressione ENTER");
-                        Console.ReadLine();
-                        counter++;
-                    }
-                    else
-                    {
-                       AccountCancellation();
-                    }
+                if (checkoutSafetyKey != user.SafetyKey)
+                {
+                    Console.Write("Algo deu errado favor insira a senha novamente!\n\nPressione ENTER");
+                    Console.ReadLine();
+                    counter++;
                 }
+                else
+                {
+                    AccountCancellation(users, creditCards, userIndex);
+                }
+            }
         }
 
-       public void AccountCancellation()
+        public void AccountCancellation(List<User> users, List<CreditCard> creditCards, int userIndex)
         {
-            User account = new User();
-            CreditCard userCreditCard = new CreditCard();
 
-            account.Id = 0;
-            account.MonthMovimentation = 0;
-            account.InvestedMoney = 0;
-            account.CurrentAccount = 0;
-            account.MonthlyIncome = 0;
-            account.CashbackLevel = 0;
-            account.Name = null;
-            account.Email = null;
-            account.CPF = null;
-            account.RG = null;
-            account.PhoneNumber = null;
-            account.PhoneCodeArea = null;
-            account.Password = null;
-            account.SafetyKey = null;
-            account.DateBorn = new DateTime(0000, 00, 00);
-            account.AutoDebit = false;
-            account.Age = 0;
+            users.RemoveAt(userIndex);
 
-            userCreditCard.Id = 0;
-            userCreditCard.ValueParcel = 0;
-            userCreditCard.Limite = 0;
-            userCreditCard.NameOwner = null;
-            userCreditCard.CVV = null;
-            userCreditCard.Flag = null;
-            userCreditCard.SafetyKey = null;
-            userCreditCard.ExpireDate = new DateTime(0000, 00, 00);
+            for (int i = 0; i < creditCards.Count; i++)
+            {
+                if (creditCards[i].OwnerId == users[userIndex].Id)
+                {
+                    creditCards.RemoveAt(i);
+                }
+
+            }
+
+
         }
     }
 }
