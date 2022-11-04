@@ -30,6 +30,7 @@ while (ProgramStarted)
     {
         login.CheckLogin(users);
     }
+    }
     else if (userInputMainMenu == "3")
     {
         ProgramStarted = false;
