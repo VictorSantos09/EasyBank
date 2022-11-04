@@ -35,7 +35,9 @@ while (ProgramStarted)
         }
         else
         {
-            // Home - Implement
+            var userIndex = 0;
+            InsideApp insideApp = new InsideApp();
+            insideApp.Home(userID, userIndex, users, creditCards, loans, bills);
         }
     }
     else if (userInputMainMenu == "3")
