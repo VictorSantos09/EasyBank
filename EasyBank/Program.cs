@@ -31,7 +31,7 @@ while (ProgramStarted)
       var userID = login.CheckLogin(users);
         if (userID == 0)
         {
-            Console.WriteLine("Usuario não cadastrado ou dados incorretos");
+            Console.WriteLine("Dados não cadastrados ou senha incorreta");
         }
         else
         {
