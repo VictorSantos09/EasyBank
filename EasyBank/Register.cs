@@ -1,29 +1,23 @@
-﻿using System.ComponentModel;
-using System.Globalization;
-using System.Security.Authentication.ExtendedProtection;
-
-namespace EasyBank
+﻿namespace EasyBank
 {
     public class Register
     {
-        public void UserRegister(User user, List<User> listUser)
+        public void UserRegister(List<User> users, List<CreditCard> creditCards, Adress adress)
         {
-            var returnedName = R_Name();
-            var returnedDateBorn = R_Age_DateBorn(user);
-            var returnedPhoneNumber = R_PhoneNumber(user);
-            var returnedEmail = R_Email();
-            var returnedPassword = R_Password();
-            var returnedCPF = R_CPF();
-            var returnedRG = R_RG();
-            var returnedAdress = R_Adress();
-            var returnedMonthlyIncome = R_MonthlyIncome();
-            R_CreditCard(user);
-            var userDateBorn = DateTime.ParseExact(returnedDateBorn, "dd/MM/yyyy", null);
-            int thisYear = DateTime.Today.Year;
-            int finalAge = thisYear - userDateBorn.Year;
+            CreditCard creditCard = new CreditCard();
 
-            user.UserRegisterConstrutor(returnedName, returnedDateBorn, returnedPhoneNumber, returnedEmail,
-                returnedPassword, returnedCPF, returnedRG, returnedMonthlyIncome, returnedAdress, finalAge, listUser);
+            var userName = R_Name();
+            var userMonthlyIncome = R_MonthlyIncome();
+            var userID = Validator.ID_AUTOINCREMENT(users);
+            var user = new User(userName, R_Age_DateBorn(), R_PhoneNumber(), R_Email(),
+                 R_Password(), R_CPF(), R_RG(), userMonthlyIncome, R_Adress(), userID, adress);
+
+            users.Add(user);
+            var creditCardID = Validator.ID_AUTOINCREMENT(creditCards);
+            var creditCardConstructor = new CreditCard(creditCard.R_Limit(userMonthlyIncome), userName,
+                creditCard.R_CVV(), null, creditCard.R_ExpireDate(), creditCardID, creditCard.R_CardNumber());
+
+            creditCards.Add(creditCardConstructor);
         }
         public string R_Name()
         {
@@ -45,10 +39,10 @@ namespace EasyBank
             }
             return inputName;
         }
-        public string R_Age_DateBorn(User user) // improve
+        public string R_Age_DateBorn() // improve
         {
             Console.Write("Cadastre sua data de nascimento no formato 00/00/0000\nDigite: ");
-            string userInputDateBorn = Validator.IsValidAge(Console.ReadLine(), user);
+            string userInputDateBorn = Validator.IsValidAge(Console.ReadLine());
             return userInputDateBorn;
         }
         public string[] R_Adress()
@@ -90,7 +84,7 @@ namespace EasyBank
                 }
             }
             string finalInput = Convert.ToInt64(inputCPF).ToString(@"000\.000\.000\-00");
-            return inputCPF;
+            return finalInput;
         }
         public string R_RG()
         {
@@ -112,8 +106,9 @@ namespace EasyBank
             }
             return inputRG;
         }
-        public string R_PhoneNumber(User user)
+        public string R_PhoneNumber()
         {
+            User user = new User();
             var inputPhoneNumber = "";
             var checking = true;
             while (checking)
@@ -133,19 +128,10 @@ namespace EasyBank
             var finalNumber = user.PhoneCodeArea + inputPhoneNumber;
             return finalNumber;
         }
-        public void R_CreditCard(User user)
-        {
-            CreditCard creditCard = new CreditCard();
-            Random random = new Random();
-            creditCard.CVV = Convert.ToString(random.Next(101, 999));
-            creditCard.NameOwner = user.Name;
-            creditCard.ExpireDate = DateTime.Today.AddYears(3);
-            creditCard.Limite = user.MonthlyIncome + random.Next(491, 771);
-        }
         public string R_Email()
         {
             Console.Write("Cadastre seu email: ");
-            var inputEmail = Validator.IsValidEmail(Console.ReadLine());
+            var inputEmail = Validator.IsValidEmail(Console.ReadLine().ToUpper());
             return inputEmail;
         }
         public string R_Password()

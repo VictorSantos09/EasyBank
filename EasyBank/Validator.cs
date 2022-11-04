@@ -1,9 +1,8 @@
-﻿using System.Security.Authentication.ExtendedProtection;
-
-namespace EasyBank
+﻿namespace EasyBank
 {
     public static class Validator
     {
+        public static int ID { get; set; } = 1;
         public static string IsValidName(string input)
         {
             var minimalSize = 5;
@@ -23,7 +22,7 @@ namespace EasyBank
             }
             return input.ToUpper();
         }
-        public static string IsValidAge(string input, User user)
+        public static string IsValidAge(string input)
         {
             var checkingAge = true;
             while (checkingAge)
@@ -57,7 +56,7 @@ namespace EasyBank
                 {
                     Console.WriteLine("Email inválido, tente novamente");
                     Console.Write("Digite: ");
-                    input = Console.ReadLine();
+                    input = Console.ReadLine().ToUpper();
                 }
             }
             return input;
@@ -300,7 +299,7 @@ namespace EasyBank
                 var checker = HasWhiteSpace(input);
                 if (checker == true)
                 {
-                    ErrorGeneric();
+                    ErrorGeneric(null);
                     input = IsNullOrEmpty.OutputNotNull(Console.ReadLine());
                 }
                 else
@@ -331,13 +330,14 @@ namespace EasyBank
             var input = Console.ReadLine();
             return input;
         }
-        public static void ErrorGeneric()
+        public static void ErrorGeneric(string? message)
         {
-            var message = "Tente novamente";
-            Console.WriteLine(message);
+            var mainMessage = "Tente novamente";
+            Console.WriteLine($"{mainMessage} {message}");
         }
         public static string DynamicSizeRG(string input)
-        {   string finalInput = "";
+        {
+            string finalInput = "";
             var checking = true;
             while (checking)
             {
@@ -378,6 +378,21 @@ namespace EasyBank
                 }
             }
             return finalInput;
+        }
+        public static int ID_AUTOINCREMENT<T>(List<T> list) where T : EntidadeBase
+        {
+            var lastItem = list.LastOrDefault();
+            return lastItem is null ? 1 : lastItem.Id + 1;
+        }
+        public static int GetActualUserID<T>(int userIndex, List<User> users)
+        {
+            var userID = users[userIndex].Id;
+            return userID;
+        }
+        public static int GetActualUserIndex(int userIndex)
+        {
+            var userID = --userIndex;
+            return userID;
         }
     }
 }
