@@ -1,6 +1,6 @@
 ﻿namespace EasyBank
 {
-    public class Bill // Contas
+    public class Bill : EntidadeBase
     {
         public int Id { get; set; }
         public double Value { get; set; }

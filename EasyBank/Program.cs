@@ -4,6 +4,7 @@ var ProgramStarted = true;
 Register register = new Register();
 Loan Loan = new Loan();
 LogIn login = new LogIn();
+Adress adress = new Adress();
 
 List<User> users = new List<User>();
 List<CreditCard> creditCards = new List<CreditCard>();
@@ -11,9 +12,9 @@ List<Bill> bills = new List<Bill>();
 List<Loan> loans = new List<Loan>();
 while (ProgramStarted)
 {
-    string[] standardAdress = { "Blumenau", "SC", "Ponta Aguda", "AV Brasil", "788", "SENAC" };
+    string[] standardAdress = { "aBlumenau", "SC", "Ponta Aguda", "AV Brasil", "788", "SENAC" };
     var userStantard = new User("Victor", "26/02/2004", "13991256286", "Victor@gmail.com", // Usuario padrão para economizar tempo
-        "1234", "6324587419", "745896245", 1500, standardAdress, Validator.ID_AUTOINCREMENT(users));
+        "1234", "6324587419", "745896245", 1500, standardAdress, Validator.ID_AUTOINCREMENT(users), new Adress());
     users.Add(userStantard);
     Thread.Sleep(1000);
     Console.Clear();
@@ -23,11 +24,11 @@ while (ProgramStarted)
 
     if (userInputMainMenu == "1")
     {
-        register.UserRegister(users, creditCards);
+        register.UserRegister(users, creditCards, adress);
     }
     else if (userInputMainMenu == "2")
     {
-        login.CheckLogin(users); 
+        login.CheckLogin(users);
     }
     else if (userInputMainMenu == "3")
     {

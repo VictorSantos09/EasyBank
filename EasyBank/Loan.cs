@@ -1,6 +1,6 @@
 ﻿namespace EasyBank
 {
-    public class Loan
+    public class Loan : EntidadeBase
     {
         public int Id { get; set; }
         public int OwnerID { get; set; }

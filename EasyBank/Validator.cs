@@ -379,18 +379,10 @@
             }
             return finalInput;
         }
-        public static int ID_AUTOINCREMENT<T>(List<T> list)
+        public static int ID_AUTOINCREMENT<T>(List<T> list) where T : EntidadeBase
         {
-            for (int i = 0; i < list.Count; i++)
-            {
-                if (list.Count == 0)
-                {
-                    ID++;
-                    return ID;
-                }
-                return ++ID;
-            }
-            return ID;
+            var lastItem = list.LastOrDefault();
+            return lastItem is null ? 1 : lastItem.Id + 1;
         }
         public static int GetActualUserID<T>(int userIndex, List<User> users)
         {

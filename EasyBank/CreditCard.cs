@@ -1,6 +1,6 @@
 ﻿namespace EasyBank
 {
-    public class CreditCard
+    public class CreditCard : EntidadeBase
     {
         public int Id { get; set; }
         public int OwnerID { get; set; }

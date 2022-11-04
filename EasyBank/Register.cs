@@ -2,7 +2,7 @@
 {
     public class Register
     {
-        public void UserRegister(List<User> users, List<CreditCard> creditCards)
+        public void UserRegister(List<User> users, List<CreditCard> creditCards, Adress adress)
         {
             CreditCard creditCard = new CreditCard();
 
@@ -10,7 +10,7 @@
             var userMonthlyIncome = R_MonthlyIncome();
             var userID = Validator.ID_AUTOINCREMENT(users);
             var user = new User(userName, R_Age_DateBorn(), R_PhoneNumber(), R_Email(),
-                 R_Password(), R_CPF(), R_RG(), userMonthlyIncome, R_Adress(), userID);
+                 R_Password(), R_CPF(), R_RG(), userMonthlyIncome, R_Adress(), userID, adress);
 
             users.Add(user);
             var creditCardID = Validator.ID_AUTOINCREMENT(creditCards);
