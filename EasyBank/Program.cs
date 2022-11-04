@@ -35,8 +35,9 @@ while (ProgramStarted)
         }
         else
         {
-            var userIndex = 0;
+            var userIndex = Validator.GetActualUserIndex(userID);
             InsideApp insideApp = new InsideApp();
+
             insideApp.Home(userID, userIndex, users, creditCards, loans, bills);
         }
     }

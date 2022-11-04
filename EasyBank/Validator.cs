@@ -389,10 +389,9 @@
             var userID = users[userIndex].Id;
             return userID;
         }
-        public static int GetActualUserIndex(int userIndex)
+        public static int GetActualUserIndex(int userID)
         {
-            var userID = --userIndex;
-            return userID;
+          return --userID;
         }
     }
 }
