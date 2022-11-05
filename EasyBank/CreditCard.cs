@@ -111,7 +111,7 @@
 
                 if (user.CurrentAccount < valueToPay)
                 {
-                    GeneralValidator.ErrorGeneric("Saldo Indisponivel");
+                    MessageError.ErrorGeneric("Saldo Indisponivel");
                 }
                 else
                 {
@@ -167,7 +167,7 @@
                 }
                 else
                 {
-                    GeneralValidator.ErrorGeneric("pagamento automatico falhou, saldo insuficiente");
+                    MessageError.ErrorGeneric("pagamento automatico falhou, saldo insuficiente");
                 }
             }
         }

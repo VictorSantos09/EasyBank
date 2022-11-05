@@ -88,7 +88,7 @@
                 var hasLetter = HasLetter(input);
                 if (hasLetter == true)
                 {
-                    input = ErrorLetterMessageInput();
+                    input = MessageError.ErrorGenericWrite("Não pode conter letras", input);
 
                 }
                 else
@@ -106,7 +106,7 @@
                 var hasSpecialCaracter = HasSpecialCaracter(input);
                 if (hasSpecialCaracter == true)
                 {
-                    input = ErrorSpecialCaracterMessageInput();
+                    input = MessageError.ErrorGenericWrite("Não pode conter caracteres especiais", input);
                 }
                 else
                 {
@@ -123,14 +123,14 @@
                 var hasNumber = GeneralValidator.HasNumber(input);
                 if (hasNumber == true)
                 {
-                    input = ErrorNumberMessageInput();
+                    input = MessageError.ErrorGenericWrite("Não pode conter numeros", input);
                 }
                 else
                 {
                     var hasSpecialC = GeneralValidator.HasSpecialCaracter(input);
                     if (hasSpecialC == true)
                     {
-                        input = ErrorSpecialCaracterMessageInput();
+                        input = MessageError.ErrorGenericWrite("Não pode conter caracteres especiais", input);
                     }
                     else
                     {
@@ -148,14 +148,14 @@
                 var letter = HasLetter(input);
                 if (letter == true)
                 {
-                    input = ErrorLetterMessageInput();
+                    input = MessageError.ErrorGenericWrite("Não pode conter caracteres especiais e letras", input);
                 }
                 else
                 {
                     var SpecialC = HasSpecialCaracter(input);
                     if (SpecialC == true)
                     {
-                        input = ErrorSpecialCaracterMessageInput();
+                        input = MessageError.ErrorGenericWrite("Não pode conter caracteres especiais", input);
                     }
                     else
                     {
@@ -173,7 +173,7 @@
                 var checker = HasWhiteSpace(input);
                 if (checker == true)
                 {
-                    ErrorGeneric(null);
+                    MessageError.ErrorGenericWrite("Não pode conter espaços em branco", input);
                     input = IsNullOrEmpty.OutputNotNull(Console.ReadLine());
                 }
                 else

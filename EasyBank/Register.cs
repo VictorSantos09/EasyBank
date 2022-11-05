@@ -8,15 +8,15 @@
             var userName = R_Name();
             var userMonthlyIncome = MonthlyIncome();
 
-            var userID = GeneralValidator.ID_AUTOINCREMENT(users);
-            SafetyPassword safetyPassword = new SafetyPassword();
+            var userID = UserValidator.ID_AUTOINCREMENT(users);
+            //SafetyPassword safetyPassword = new SafetyPassword();
 
             var user = new User(userName, R_Age_DateBorn(), PhoneNumber(), Email(),
-                 Password(), CPF(), RG(), userMonthlyIncome, Adress(), userID, adress, safetyPassword.LetterCreation());
+                 Password(), CPF(), RG(), userMonthlyIncome, Adress(), userID, adress, null);
 
             users.Add(user);
 
-            var creditCardID = GeneralValidator.ID_AUTOINCREMENT(creditCards);
+            var creditCardID = UserValidator.ID_AUTOINCREMENT(creditCards);
             CreditCard creditCard = new CreditCard();
 
             var creditCardConstructor = new CreditCard(creditCard.R_Limit(userMonthlyIncome), userName,
@@ -32,7 +32,7 @@
             while (checking)
             {
                 Console.Write("Cadastre seu nome completo: ");
-                inputName = GeneralValidator.IsValidName(Console.ReadLine());
+                inputName = UserValidator.IsValidName(Console.ReadLine());
                 var checker = GeneralValidator.HasNumberOrSpecialCaracter(inputName);
 
                 if (!checker)
@@ -51,7 +51,7 @@
         public string R_Age_DateBorn()
         {
             Console.Write("Cadastre sua data de nascimento no formato 00/00/0000\nDigite: ");
-            string userInputDateBorn = GeneralValidator.IsValidAge(Console.ReadLine());
+            string userInputDateBorn = UserValidator.IsValidAge(Console.ReadLine());
 
             return userInputDateBorn;
         }
@@ -63,7 +63,7 @@
             while (checking)
             {
                 Console.Write("Cadastre seu CPF: ");
-                inputCPF = GeneralValidator.IsValidCPF(Console.ReadLine());
+                inputCPF = UserValidator.IsValidCPF(Console.ReadLine());
                 var checker = GeneralValidator.HasLetterOrSpecialCaracter(inputCPF);
 
                 if (!checker)
@@ -88,7 +88,7 @@
             while (checking)
             {
                 Console.Write("Cadastre seu RG: ");
-                inputRG = GeneralValidator.DynamicSizeRG(Console.ReadLine());
+                inputRG = UserValidator.DynamicSizeRG(Console.ReadLine());
                 var checker = GeneralValidator.HasLetterOrSpecialCaracter(inputRG);
 
                 if (!checker)
@@ -111,7 +111,7 @@
             while (checking)
             {
                 Console.Write("Cadastre seu telefone com DDD.\nExemplo: 13991256286\nDigite: ");
-                inputPhoneNumber = GeneralValidator.IsValidPhoneNumber(Console.ReadLine());
+                inputPhoneNumber = UserValidator.IsValidPhoneNumber(Console.ReadLine());
                 var checker = GeneralValidator.HasLetterOrSpecialCaracter(inputPhoneNumber);
 
                 if (!checker)
@@ -132,14 +132,14 @@
         public string Email()
         {
             Console.Write("Cadastre seu email: ");
-            var inputEmail = GeneralValidator.IsValidEmail(Console.ReadLine().ToUpper());
+            var inputEmail = UserValidator.IsValidEmail(Console.ReadLine().ToUpper());
 
             return inputEmail;
         }
         public string Password()
         {
             Console.Write("Cadastre sua senha de 4 digitos: ");
-            var inputPassword = GeneralValidator.IsValidPassword(Console.ReadLine());
+            var inputPassword = UserValidator.IsValidPassword(Console.ReadLine());
 
             return inputPassword;
         }

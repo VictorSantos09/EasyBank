@@ -9,7 +9,7 @@
             bool logged = true;
             while (logged)
             {
-                var userIndex = GeneralValidator.GetActualUserIndex(users, userID);
+                var userIndex = UserValidator.GetActualUserIndex(users, userID);
                 Console.Clear();
                 Console.WriteLine($"Seja Bem Vindo {users[userIndex].Name}");
                 Console.WriteLine("O que deseja fazer?");
@@ -57,7 +57,7 @@
                 }
                 else
                 {
-                    GeneralValidator.ErrorGeneric("Opção indisponivel");
+                    MessageError.ErrorGeneric("Opção indisponivel");
                 }
             }
         }
