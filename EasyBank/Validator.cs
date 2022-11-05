@@ -25,10 +25,12 @@
         public static string IsValidAge(string input)
         {
             var checkingAge = true;
+
             while (checkingAge)
             {
                 var toCheck = DateTime.ParseExact(input, "dd/MM/yyyy", null);
                 int today = DateTime.Today.Year;
+
                 if (today - toCheck.Year < 18)
                 {
                     Console.WriteLine("Você precisa ter no minimo 18 anos para se registrar");
@@ -44,11 +46,11 @@
         }
         public static string IsValidEmail(string input)
         {
-            string[] formats = { "HOTMAIL", "GMAIL", "YAHOO", "OUTLOOK", "ICLOUD" };
+            string[] formats = { "@HOTMAIL.COM", "@GMAIL.COM", "@YAHOO.COM.BR", @"OUTLOOK.COM", "@ICLOUD.COM" };
             var checkingEmail = true;
             while (checkingEmail)
             {
-                if (input.Contains("@") && input.ToUpper().Contains(".COM") && ValidatorEmailFormat(formats, input))
+                if (ValidatorEmailFormat(formats, input))
                 {
                     checkingEmail = false;
                 }
@@ -74,13 +76,13 @@
         }
         public static string IsValidPassword(string input)
         {
-            var minimalSize = 4;
+            var size = 4;
             var checkingPassword = true;
             while (checkingPassword)
             {
-                if (input.Length < minimalSize)
+                if (input.Length < size || input.Length > size)
                 {
-                    Console.WriteLine($"Sua senha precisa ter no minimo {minimalSize} digitos");
+                    Console.WriteLine($"Sua senha precisa ter {size} digitos");
                     Console.Write("Digite: ");
                     input = Console.ReadLine();
                 }
@@ -114,7 +116,7 @@
             var checkingPhoneNumber = true;
             while (checkingPhoneNumber)
             {
-                if (input.Length < 11 || input.Length > 11)
+                if (input.Length < 11 || input.Length > 12)
                 {
                     Console.WriteLine("Telefone inválido, tente novamente");
                     Console.Write("Digite: ");
@@ -265,7 +267,7 @@
             }
             return input;
         }
-        public static int OutputNoLetterAndSpecialCaracter(string input)
+        public static string OutputNoLetterAndSpecialCaracter(string input)
         {
             var removingAll = true;
             while (removingAll)
@@ -288,8 +290,7 @@
                     }
                 }
             }
-            var inputConvertedToInt = Convert.ToInt32(input);
-            return inputConvertedToInt;
+            return input;
         }
         public static string OutputNoWhiteSpace(string input)
         {
@@ -345,30 +346,42 @@
                 var size2 = 8;
                 var size3 = 9;
                 var size4 = 13;
+                var size5 = 6;
                 string patternSize1 = @"00\.00\.00\-0";
                 string patternSize2 = @"00\.00\.000\-0";
                 string patternSize3 = @"00\.000\.000\-0";
                 string patternSize4 = @"000\.000\.000\-0000";
+                string patternSize5 = @"000\.00\-0";
 
                 if (input.Length == size1)
                 {
                     finalInput = Convert.ToInt64(input).ToString(patternSize1);
                     checking = false;
+                    break;
                 }
                 else if (input.Length == size2)
                 {
                     finalInput = Convert.ToInt64(input).ToString(patternSize2);
                     checking = false;
+                    break;
                 }
                 else if (input.Length == size3)
                 {
                     finalInput = Convert.ToInt64(input).ToString(patternSize3);
                     checking = false;
+                    break;
                 }
                 else if (input.Length == size4)
                 {
                     finalInput = Convert.ToInt64(input).ToString(patternSize4);
                     checking = false;
+                    break;
+                }
+                else if (input.Length == size5)
+                {
+                    finalInput = Convert.ToInt64(input).ToString(patternSize5);
+                    checking = false;
+                    break;
                 }
                 else
                 {

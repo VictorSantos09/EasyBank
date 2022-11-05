@@ -14,7 +14,7 @@ while (ProgramStarted)
 {
     string[] standardAdress = { "Blumenau", "SC", "Ponta Aguda", "AV Brasil", "788", "SENAC" };
     var userStantard = new User("Victor", "26/02/2004", "13991256286", "Victor@gmail.com", // Usuario padrão para economizar tempo
-        "1234", "6324587419", "745896245", 1500, standardAdress, Validator.ID_AUTOINCREMENT(users), new Adress());
+        "1234", "6324587419", "745896245", 1500, standardAdress, Validator.ID_AUTOINCREMENT(users), new Adress(),"0000");
     users.Add(userStantard);
     Thread.Sleep(1000);
     Console.Clear();

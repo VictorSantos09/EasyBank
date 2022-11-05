@@ -40,7 +40,7 @@
                 else if (InputOption == "5")
                 {
                     CreditCard creditCard = new CreditCard();
-                    var hasPendingPayment = creditCard.HasPendingPaymentsAndPrint(bills, users, userIndex);
+                    var hasPendingPayment = creditCard.HasPendingPaymentsAndPrint(bills, userID);
                     if (hasPendingPayment == false)
                     {
                         Console.WriteLine("Não há contas para pagar");
@@ -48,7 +48,7 @@
                     }
                     else
                     {
-                        creditCard.ManualMonthPaymentInvoice(users, creditCards, bills, userIndex, userID);
+                        creditCard.ManualMonthPaymentInvoice(users, creditCards, bills, userID);
                     }
                 }
                 else if (InputOption == "6")
