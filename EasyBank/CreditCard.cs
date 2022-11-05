@@ -2,7 +2,6 @@
 {
     public class CreditCard : EntidadeBase
     {
-        public int Id { get; set; }
         public int OwnerID { get; set; }
         public string NumberCard { get; set; }
         public double ValueInvoice { get; set; }
@@ -56,69 +55,59 @@
             string number = $"1322 {random.Next(min, max)} {random.Next(min, max)} {random.Next(min, max)}";
             return number;
         }
-        public double IncrementMonthInvoice(List<Bill> bills, List<User> users, int userID)
+        public double IncrementMonthInvoice(List<Bill> bills, List<CreditCard> creditCards, int userID)
         {
             //Este metodo será chamado a cada virada de mês, será necessario ver uma solução para armazenar e visualizar outras contas
             //fora o empréstimo
 
             var bill = bills.FindAll(x => x.OwnerID == userID);
-            var user = users.Find(x => x.Id == userID);
+            var creditCard = creditCards.Find(x => x.OwnerID == userID);
 
-            var totalToPay = 0.0;
             for (int i = 0; i < bill.Count; i++)
             {
-                if (bill[i].OwnerID == user.Id)
-                {
-                    if (bill[i].Value != 0)
-                    {
-                        totalToPay += bill[i].Value; // Ver se incrementa as outras contas
-                    }
-                }
+                creditCard.ValueInvoice += bill[i].Value; // Ver se incrementa as outras contas
             }
-            return totalToPay;
+            return creditCard.ValueInvoice;
         }
-        public void ViewInvoice(List<Bill> bills, List<User> users, int userID)
+        public void ViewInvoice(List<Bill> bills, int userID)
         {
             var bill = bills.FindAll(x => x.OwnerID == userID);
-            var user = users.Find(x => x.Id == userID);
 
-            var totalToPay = 0.0;
+            if (bill == null)
+                Console.WriteLine("Não há contas para pagar");
+
             for (int i = 0; i < bill.Count; i++)
             {
-                if (bill[i].OwnerID == user.Id)
-                {
-                    Console.WriteLine($"ITEM: {bill[i].Name} PARCELAS: {bill[i].NumberParcels} VALOR: {bill[i].Value}");
-                }
+                Console.WriteLine($"ITEM: {bill[i].Name} PARCELAS: {bill[i].NumberParcels} VALOR: {bill[i].Value}");
             }
         }
         public void ManualMonthPaymentInvoice(List<User> users, List<CreditCard> creditCards, List<Bill> bills, int userID)
         {
-            var valueToPay = 0.0;
-
-            var creditcard = creditCards.Find(x => x.OwnerID == userID);
-            var user = users.Find(x => x.Id == userID);
-            var bill = bills.FindAll(x => x.OwnerID == userID);
-
-            //if (creditcard == null)
-            //    return;
-
-            if (HasPendingPaymentsAndPrint(bills, userID) == true)
+            if (HasPendingPayments(bills, userID) == true)
             {
-                valueToPay = creditcard.ValueInvoice;
+                var creditcard = creditCards.Find(x => x.OwnerID == userID);
+                var user = users.Find(x => x.Id == userID);
+                var bill = bills.FindAll(x => x.OwnerID == userID);
 
-                Console.WriteLine($"TOTAL A PAGAR: {valueToPay}\nClique ENTER para pagar");
+
+                for (int i = 0; i < bill.Count; i++)
+                {
+                    Console.WriteLine($"ITEM: {bill[i].Name} PARCELA: {bill[i].NumberParcels} VALOR: {bill[i].Value} ");
+                }
+
+                Console.WriteLine($"TOTAL A PAGAR: {creditcard.ValueInvoice}\nClique ENTER para pagar");
                 Console.ReadKey();
 
-                if (user.CurrentAccount < valueToPay)
+                if (user.CurrentAccount < creditcard.ValueInvoice)
                 {
                     MessageError.ErrorGeneric("Saldo Indisponivel");
                 }
                 else
                 {
-                    user.CurrentAccount += -valueToPay;
+                    user.CurrentAccount += -creditcard.ValueInvoice;
                     for (int i = 0; i < bill.Count; i++)
                     {
-                        bill[i].NumberParcels--;
+                        RemoveBills(bills, userID);
                     }
                     creditcard.ValueInvoice = 0;
                     Console.WriteLine($"Pagamento efetuado");
@@ -130,23 +119,14 @@
             }
 
         }
-        public bool HasPendingPaymentsAndPrint(List<Bill> bills, int userID)
+        public bool HasPendingPayments(List<Bill> bills, int userID)
         {
             var bill = bills.FindAll(x => x.OwnerID == userID);
+
             if (bill == null)
-                Console.WriteLine("Não há contas pendentes");
-            return false;
+                return false;
 
-
-            var totalToPay = 0.0;
-            for (int i = 0; i < bill.Count; i++)
-            {
-                Console.WriteLine($"ITEM: {bill[i].Name} | PARCELAS RESTANTES: {bill[i].NumberParcels} | VALOR: {bill[i].Value}");
-                totalToPay += bill[i].Value;
-            }
             return true;
-
-            Console.WriteLine($"Total a pagar: R${totalToPay}");
         }
 
         public void AutoPaymentInvoice(List<Bill> bills, List<CreditCard> creditCards, List<User> users, int userID)
@@ -155,7 +135,7 @@
 
             var user = users.Find(x => x.Id == userID);
 
-            var totalToPay = IncrementMonthInvoice(bills, users, userID);
+            var totalToPay = IncrementMonthInvoice(bills, creditCards, userID);
             if (totalToPay != 0)
             {
                 creditCard.ValueInvoice = totalToPay;
