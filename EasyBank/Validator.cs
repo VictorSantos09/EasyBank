@@ -389,9 +389,18 @@
             var userID = users[userIndex].Id;
             return userID;
         }
-        public static int GetActualUserIndex(int userID)
+        public static int GetActualUserIndex(List<User> users, int userID)
         {
-          return --userID;
+            var finalIndex = 0;
+            for (int i = 0; i < users.Count; i++)
+            {
+                if (users[i].Id == userID)
+                {
+                    finalIndex = i;
+                    break;
+                }
+            }
+          return finalIndex;
         }
     }
 }

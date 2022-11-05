@@ -13,7 +13,7 @@
         private string SafetyKey { get; set; } //SenhaSegurança (senha 3 digitos) a mesma do usuario, aplicar aqui tambem
         public DateTime ExpireDate { get; set; } // Data de vencimento
         public CreditCard(int _Limit,
-            string _NameOwner, string _CVV, string _SafetyKey, DateTime _ExpireDate, int _id, string _numberCard)
+            string _NameOwner, string _CVV, string _SafetyKey, DateTime _ExpireDate, int _id, string _numberCard, int _ownerID)
         {
             Limit = _Limit;
             NameOwner = _NameOwner;
@@ -22,6 +22,7 @@
             ExpireDate = _ExpireDate;
             Id = _id;
             NumberCard = _numberCard;
+            OwnerID = _ownerID;
         }
         public CreditCard()
         {
@@ -73,34 +74,39 @@
             }
             return totalToPay;
         }
-        public void ManualMonthPaymentInvoice(List<User> users, List<CreditCard> creditCards, List<Bill> bills, int userIndex)
+        public void ManualMonthPaymentInvoice(List<User> users, List<CreditCard> creditCards, List<Bill> bills, int userIndex, int userID)
         {
             var valueToPay = 0.0;
-            if (creditCards[userIndex].OwnerID == users[userIndex].Id)
-            {
-                if (HasPendingPaymentsAndPrint(bills, users, userIndex) == true)
-                {
-                    valueToPay = creditCards[userIndex].ValueInvoice;
+            var actualIndex = Validator.GetActualUserIndex(users, userID);
 
-                    Console.WriteLine($"TOTAL A PAGAR: {valueToPay}\nClique ENTER para pagar");
-                    Console.ReadKey();
-                    if (users[userIndex].CurrentAccount < valueToPay)
-                    {
-                        Console.WriteLine("Saldo Indisponivel");
-                    }
-                    else
-                    {
-                        users[userIndex].CurrentAccount += -valueToPay;
-                        bills[userIndex].NumberParcels--;
-                        creditCards[userIndex].ValueInvoice = 0;
-                        Console.WriteLine($"Pagamento efetuado");
-                    }
+            var creditcard = creditCards.Find(x => x.OwnerID == userID);
+
+            if (creditcard == null) //mensagem pro boy
+                return;
+
+            if (HasPendingPaymentsAndPrint(bills, users, userIndex) == true)
+            {
+                valueToPay = creditcard.ValueInvoice;
+
+                Console.WriteLine($"TOTAL A PAGAR: {valueToPay}\nClique ENTER para pagar");
+                Console.ReadKey();
+                if (users[userIndex].CurrentAccount < valueToPay)
+                {
+                    Console.WriteLine("Saldo Indisponivel");
                 }
                 else
                 {
-                    Console.WriteLine("Não há faturas á pagar");
+                    users[userIndex].CurrentAccount += -valueToPay;
+                    bills[userIndex].NumberParcels--;
+                    creditcard.ValueInvoice = 0;
+                    Console.WriteLine($"Pagamento efetuado");
                 }
             }
+            else
+            {
+                Console.WriteLine("Não há faturas á pagar");
+            }
+
         }
         public bool HasPendingPaymentsAndPrint(List<Bill> bills, List<User> users, int userIndex)
         {
@@ -148,13 +154,14 @@
         }
         public void RemoveBills(List<Bill> bills, int userID)
         {
+            var bill = bills.Find(x => x.OwnerID == userID);
             for (int i = 0; i < bills.Count; i++)
             {
                 if (bills[i].OwnerID == userID)
                 {
                     if (bills[i].NumberParcels <= 1)
                     {
-                        var bill = bills[i];
+                        //var bill = bills[i];
                         bills.Remove(bill);
                     }
                     else

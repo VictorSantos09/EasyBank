@@ -12,7 +12,7 @@ List<Bill> bills = new List<Bill>();
 List<Loan> loans = new List<Loan>();
 while (ProgramStarted)
 {
-    string[] standardAdress = { "aBlumenau", "SC", "Ponta Aguda", "AV Brasil", "788", "SENAC" };
+    string[] standardAdress = { "Blumenau", "SC", "Ponta Aguda", "AV Brasil", "788", "SENAC" };
     var userStantard = new User("Victor", "26/02/2004", "13991256286", "Victor@gmail.com", // Usuario padrão para economizar tempo
         "1234", "6324587419", "745896245", 1500, standardAdress, Validator.ID_AUTOINCREMENT(users), new Adress());
     users.Add(userStantard);
@@ -35,10 +35,8 @@ while (ProgramStarted)
         }
         else
         {
-            var userIndex = Validator.GetActualUserIndex(userID);
             InsideApp insideApp = new InsideApp();
-
-            insideApp.Home(userID, userIndex, users, creditCards, loans, bills);
+            insideApp.Home(userID, users, creditCards, loans, bills);
         }
     }
     else if (userInputMainMenu == "3")
