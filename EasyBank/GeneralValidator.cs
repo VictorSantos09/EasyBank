@@ -11,65 +11,62 @@
             for (int i = 0; i < input.Length; i++)
             {
                 if (char.IsLetter(input[i]))
-                {
                     return true;
-                }
             }
+
             return false;
         }
         public static bool HasSpecialCaracter(string input)
         {
             string rules = @"!@#$%¨&*()_+=-´`~^[]{}º\|₢'/*-+.,;:¹²³£¢¬";
+
             for (int i = 0; i < input.Length; i++)
             {
                 char checker = rules[i];
                 if (input.Contains(checker))
-                {
                     return true;
-                }
             }
+
             return false;
         }
         public static bool HasNumber(string input)
         {
             string rules = "123456789";
+
             for (int i = 0; i < rules.Length; i++)
             {
                 for (int j = 0; j < input.Length; j++)
                 {
                     char checker = rules[i];
                     if (input.Contains(checker))
-                    {
                         return true;
-                    }
                 }
             }
+
             return false;
         }
         public static bool HasNumberOrSpecialCaracter(string input)
         {
             var number = HasNumber(input);
+
             if (number == true)
-            {
                 return true;
-            }
             else
             {
                 var specialCaracter = HasSpecialCaracter(input);
                 if (specialCaracter == true)
-                {
                     return true;
-                }
             }
+
             return false;
         }
         public static bool HasLetterOrSpecialCaracter(string input)
         {
             var letter = HasLetter(input);
+
             if (letter == true)
-            {
                 return true;
-            }
+            
             else
             {
                 var specialC = HasSpecialCaracter(input);
@@ -78,6 +75,7 @@
                     return true;
                 }
             }
+
             return false;
         }
         public static string OutputNoLetters(string input)
@@ -96,6 +94,7 @@
                     removingLetter = false;
                 }
             }
+
             return input;
         }
         public static string OutputNoSpecialCaracter(string input)
@@ -113,6 +112,7 @@
                     removingSpecialC = false;
                 }
             }
+
             return input;
         }
         public static string OutputNoNumberAndSpecialCaracteres(string input)
@@ -138,6 +138,7 @@
                     }
                 }
             }
+
             return input;
         }
         public static string OutputNoLetterAndSpecialCaracter(string input)
@@ -163,6 +164,7 @@
                     }
                 }
             }
+
             return input;
         }
         public static string OutputNoWhiteSpace(string input)
@@ -181,6 +183,7 @@
                     checking = false;
                 }
             }
+
             return input;
         }
     }

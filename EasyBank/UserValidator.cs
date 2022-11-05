@@ -6,6 +6,7 @@
         {
             var minimalSize = 5;
             var checkingName = true;
+
             while (checkingName)
             {
                 if (input.Length < minimalSize)
@@ -41,12 +42,14 @@
                     checkingAge = false;
                 }
             }
+
             return input;
         }
         public static string IsValidEmail(string input)
         {
             string[] formats = { "@HOTMAIL.COM", "@GMAIL.COM", "@YAHOO.COM.BR", @"OUTLOOK.COM", "@ICLOUD.COM" };
             var checkingEmail = true;
+
             while (checkingEmail)
             {
                 if (ValidatorEmailFormat(formats, input))
@@ -60,6 +63,7 @@
                     input = Console.ReadLine().ToUpper();
                 }
             }
+
             return input;
         }
         public static bool ValidatorEmailFormat(string[] formats, string input)
@@ -67,9 +71,7 @@
             foreach (var item in formats)
             {
                 if (input.Contains(item))
-                {
                     return true;
-                }
             }
             return false;
         }
@@ -77,6 +79,7 @@
         {
             var size = 4;
             var checkingPassword = true;
+
             while (checkingPassword)
             {
                 if (input.Length < size || input.Length > size)
@@ -90,6 +93,7 @@
                     checkingPassword = false;
                 }
             }
+
             return input;
         }
         public static string IsValidCPF(string input)
@@ -108,6 +112,7 @@
                     checkingCPF = false;
                 }
             }
+
             return input;
         }
         public static string IsValidPhoneNumber(string input)
@@ -126,6 +131,7 @@
                     checkingPhoneNumber = false;
                 }
             }
+
             return input;
         }
         public static string DynamicSizeRG(string input)
@@ -133,6 +139,7 @@
         {
             string finalInput = "";
             var checking = true;
+
             while (checking)
             {
                 var size1 = 7;
@@ -183,6 +190,7 @@
                     input = Console.ReadLine();
                 }
             }
+
             return finalInput;
         }
         public static int ID_AUTOINCREMENT<T>(List<T> list) where T : EntidadeBase
@@ -206,6 +214,7 @@
                     break;
                 }
             }
+
             return finalIndex;
         }
     }
