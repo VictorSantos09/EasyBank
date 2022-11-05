@@ -1,7 +1,4 @@
-﻿using EasyBank;
-using System.Runtime.ExceptionServices;
-
-namespace EasyBank
+﻿namespace EasyBank
 {
     public class SafetyPassword
     {
@@ -9,9 +6,9 @@ namespace EasyBank
         {
             string numberLetters;
             Console.WriteLine("Crie 3 letras de segurança");
-            numberLetters = Validator.OutputNoNumberAndSpecialCaracteres(Console.ReadLine().ToUpper());
+            numberLetters = GeneralValidator.OutputNoNumberAndSpecialCaracteres(Console.ReadLine().ToUpper());
             numberLetters = ConfirmNumberOfLetters(numberLetters);
-            numberLetters = Validator.OutputNoWhiteSpace(numberLetters).ToUpper();
+            numberLetters = GeneralValidator.OutputNoWhiteSpace(numberLetters).ToUpper();
             string confirmation = ConfirmationOfTheThreeLetters(numberLetters);
 
             if (confirmation == "sim".ToUpper())
@@ -27,8 +24,8 @@ namespace EasyBank
             {
                 Console.WriteLine("Favor insira novamente as 3 letras");
                 GenerateLetters();
-                numberLetters = Validator.OutputNoNumberAndSpecialCaracteres(Console.ReadLine().ToUpper());
-                numberLetters = Validator.OutputNoWhiteSpace(numberLetters);
+                numberLetters = GeneralValidator.OutputNoNumberAndSpecialCaracteres(Console.ReadLine().ToUpper());
+                numberLetters = GeneralValidator.OutputNoWhiteSpace(numberLetters);
                 numberLetters = ConfirmNumberOfLetters(numberLetters);
                 confirmation = ConfirmationOfTheThreeLetters(numberLetters);
                 confirmation = DifferentFromYesOrNo(confirmation);
@@ -43,7 +40,7 @@ namespace EasyBank
             {
                 Console.WriteLine("Favor informar apenas 3 letras");
                 GenerateLetters();
-                confirmQuantity = Validator.OutputNoNumberAndSpecialCaracteres(Console.ReadLine());
+                confirmQuantity = GeneralValidator.OutputNoNumberAndSpecialCaracteres(Console.ReadLine());
                 Console.Clear();
             }
             return confirmQuantity;
@@ -59,7 +56,7 @@ namespace EasyBank
             while (checkConfirmation != "não".ToUpper() && checkConfirmation != "sim".ToUpper())
             {
                 Console.WriteLine("Favor escreva sim ou não corretamente");
-                checkConfirmation = Validator.OutputNoNumberAndSpecialCaracteres(Console.ReadLine().ToUpper());
+                checkConfirmation = GeneralValidator.OutputNoNumberAndSpecialCaracteres(Console.ReadLine().ToUpper());
                 Console.Clear();
             }
             return checkConfirmation;
@@ -113,33 +110,31 @@ namespace EasyBank
                 Console.WriteLine(item);
             }
         }
-        public bool CheckLetters(List<User> users, int userIndex)
+        public bool CheckLetters(List<User> users, int userID)
         {
-            for (int i = 3; i > -1;)
+            var user = users.Find(x => x.Id == userID);
+            GenerateLetters();
+
+            Console.WriteLine("Informe as suas letras de segurança");
+
+            var confirmPasswordLetter = Console.ReadLine().ToUpper();
+            Console.WriteLine();
+
+            if (users[userIndex].SafetyKey == confirmPasswordLetter)
             {
-                GenerateLetters();
-
-                Console.WriteLine("Informe as suas letras de segurança");
-
-                var confirmPasswordLetter = Console.ReadLine().ToUpper();
-                Console.WriteLine();
-
-                if (users[userIndex].SafetyKey == confirmPasswordLetter)
-                {
-                    Console.WriteLine("Senha correta");
-                    return true;
-                    Environment.Exit(0);
-                }
-                else
-                {
-                    Console.WriteLine($"Senha incorreta, você possui {i--} chances ");
-                }
-                if (i == -1)
-                {
-                    Console.Clear();
-                    Console.WriteLine("Quantidade máxima de tentativas excedida! Você foi deslogado.");
-                    Thread.Sleep(2000);
-                }
+                Console.WriteLine("Senha correta");
+                return true;
+                Environment.Exit(0);
+            }
+            else
+            {
+                Console.WriteLine($"Senha incorreta, você possui {i--} chances ");
+            }
+            if (i == -1)
+            {
+                Console.Clear();
+                Console.WriteLine("Quantidade máxima de tentativas excedida! Você foi deslogado.");
+                Thread.Sleep(2000);
             }
             return false;
         }
