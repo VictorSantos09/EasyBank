@@ -66,7 +66,7 @@
 
             if (letter == true)
                 return true;
-            
+
             else
             {
                 var specialC = HasSpecialCaracter(input);
