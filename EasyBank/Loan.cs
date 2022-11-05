@@ -24,7 +24,9 @@
             var user = users.Find(x => x.Id == userID);
 
             if (user.OpenLoan == true)
-                Console.WriteLine("Não é possivel abrir mais de um empréstimo");
+            {
+                MessageError.ErrorGeneric("Não é possivel abrir mais de um empréstimo");
+            }
 
             else
             {
@@ -34,15 +36,17 @@
                 var twoYearsSalary = user.MonthlyIncome * 24;
 
                 if (loanValue > twoYearsSalary)
+                {
                     MessageError.ErrorGeneric("Quantia não disponivel para você");
+                }
 
                 else
                 {
-                    PaymentOption(loanValue, bills, loans, userID);
+                    PaymentOption(loanValue, bills, loans, userID, users);
                 }
             }
         }
-        public void PaymentOption(int loanValue, List<Bill> bills, List<Loan> loans, int userID)
+        public void PaymentOption(int loanValue, List<Bill> bills, List<Loan> loans, int userID, List<User> users)
         {
             var paymentOptions = "Crédito";
 
@@ -51,7 +55,7 @@
             var userInputChoice = Console.ReadLine();
 
             if (userInputChoice == "1")
-                ChooseQtdParcels(loanValue, paymentOptions, bills, loans, userID);
+                ChooseQtdParcels(loanValue, paymentOptions, bills, loans, userID, users);
         }
         public double AmountInterest(int qtdParcels)
         {
@@ -62,13 +66,15 @@
 
             return finalValue;
         }
-        public void ChooseQtdParcels(int loanValue, string paymentOptions, List<Bill> bills, List<Loan> loans, int userID)
+        public void ChooseQtdParcels(int loanValue, string paymentOptions, List<Bill> bills, List<Loan> loans, int userID, List<User> users)
         {
             Console.Write("Digite o numero de parcelas: ");
             var qtdParcels = Convert.ToInt32(Console.ReadLine());
 
             if (qtdParcels > 12 || qtdParcels < 1)
+            {
                 MessageError.ErrorGeneric("Escolha indisponivel");
+            }
 
             else
             {
@@ -80,7 +86,7 @@
                 var finalValue = loanValue + finalInterestValue;
 
                 if (ConfirmLoan() == true)
-                    ApplyLoan(bills, loans, qtdParcels, finalValue, userID);
+                    ApplyLoan(bills, loans, qtdParcels, finalValue, userID, users);
 
                 else
                 {
@@ -97,10 +103,12 @@
 
             return false;
         }
-        public void ApplyLoan(List<Bill> bills, List<Loan> loans, int qtdParcels, double finalValue, int userID)
+        public void ApplyLoan(List<Bill> bills, List<Loan> loans, int qtdParcels, double finalValue, int userID, List<User> users)
         {
             var loan = new Loan(finalValue, qtdParcels, userID, UserValidator.ID_AUTOINCREMENT(loans), true);
             loans.Add(loan);
+
+            var user = users.Find(x => x.Id == userID).OpenLoan = true;
 
             bills.Add(new Bill
             {

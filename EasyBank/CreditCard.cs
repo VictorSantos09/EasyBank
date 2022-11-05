@@ -73,13 +73,17 @@
         {
             var bill = bills.FindAll(x => x.OwnerID == userID);
 
-            if (bill == null)
+            if (bill == null || bill.Count == 0)
+            {
                 Console.WriteLine("Não há contas para pagar");
+                Thread.Sleep(1300);
+            }
 
             for (int i = 0; i < bill.Count; i++)
             {
                 Console.WriteLine($"ITEM: {bill[i].Name} PARCELAS: {bill[i].NumberParcels} VALOR: {bill[i].Value}");
             }
+            Thread.Sleep(1300);
         }
         public void ManualMonthPaymentInvoice(List<User> users, List<CreditCard> creditCards, List<Bill> bills, int userID)
         {
@@ -88,23 +92,25 @@
                 var creditcard = creditCards.Find(x => x.OwnerID == userID);
                 var user = users.Find(x => x.Id == userID);
                 var bill = bills.FindAll(x => x.OwnerID == userID);
-
+                var valueToPay = 0.0;
 
                 for (int i = 0; i < bill.Count; i++)
                 {
                     Console.WriteLine($"ITEM: {bill[i].Name} PARCELA: {bill[i].NumberParcels} VALOR: {bill[i].Value} ");
+                    valueToPay = bill[i].Value;
                 }
 
-                Console.WriteLine($"TOTAL A PAGAR: {creditcard.ValueInvoice}\nClique ENTER para pagar");
+                Console.WriteLine($"TOTAL A PAGAR: {valueToPay}\nClique ENTER para pagar");
                 Console.ReadKey();
 
-                if (user.CurrentAccount < creditcard.ValueInvoice)
+                if (user.CurrentAccount < valueToPay)
                 {
                     MessageError.ErrorGeneric("Saldo Indisponivel");
+                    Thread.Sleep(1300);
                 }
                 else
                 {
-                    user.CurrentAccount += -creditcard.ValueInvoice;
+                    user.CurrentAccount += -valueToPay;
                     for (int i = 0; i < bill.Count; i++)
                     {
                         RemoveBills(bills, userID);

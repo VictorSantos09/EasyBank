@@ -6,6 +6,7 @@
         {
             var mainMessage = "Tente novamente";
             Console.WriteLine($"{mainMessage} {message}");
+            Thread.Sleep(1500);
         }
         public static string ErrorGenericWrite(string? message, string input)
         {
