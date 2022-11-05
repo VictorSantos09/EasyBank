@@ -11,6 +11,29 @@
             Console.WriteLine($"valor em conta: {ValorEmConta}");
             valorInformado = Convert.ToDouble(Console.ReadLine());
             valorInformado = VerificarQuantidadeEmConta(valorInformado);
+            var VerificarChavePix = VerificarPix();
+            MostrarChavePix(VerificarChavePix);
+            MostrarValorPix(valorInformado);
+
+            Console.WriteLine("Digite 1 para transferir ou 2 para voltar ao menu");
+            string escolha = Console.ReadLine();
+
+            if (escolha == "1")
+            {
+                Console.WriteLine("Transferencia realizada.");
+                ValorEmConta = ValorEmConta - valorInformado;
+            }
+            
+            else
+            {
+                while (escolha != "1" && escolha != "2")
+                {
+                    Console.WriteLine("Escolha uma das opções acima");
+                    escolha = Console.ReadLine();
+                }
+            }
+
+            Console.WriteLine($"Você possui {ValorEmConta} em conta");
             return valorInformado;
         }
         public double VerificarQuantidadeEmConta(double quantidadeEmConta)
@@ -28,33 +51,33 @@
             return quantidadeEmConta;
         }
 
-        public void VerificarPix()
+        public string VerificarPix()
         {
-            bool pixOk = false;
+            bool pixCorreto = false;
             Console.WriteLine("Digite o pix que gostaria de transferir (E-MAIL, CPF/CNPJ OU TELEFONE)");
             string pix = Console.ReadLine();
 
-            while (pixOk != true)
+            while (pixCorreto != true)
             {
                 if (pix.Contains("@"))
                 {
                     Console.WriteLine("E-mail Válido");
-                    pixOk = true;
+                    pixCorreto = true;
                 }
                 else if (pix.Length == 14 && pix.Contains("."))
                 {
                     Console.WriteLine("CPF Válido");
-                    pixOk = true;
+                    pixCorreto = true;
                 }
                 else if (pix.Length == 18 && pix.Contains("/"))
                 {
                     Console.WriteLine("CNPJ Válido");
-                    pixOk = true;
+                    pixCorreto = true;
                 }
                 else if (pix.Length == 11)
                 {
                     Console.WriteLine("Número de telefone válido");
-                    pixOk = true;
+                    pixCorreto = true;
                 }
                 else
                 {
@@ -62,6 +85,20 @@
                     pix = Console.ReadLine();
                 }
             }
+
+            return pix;
+        }
+
+        public void MostrarChavePix(string confirmacaoPix)
+        {
+            Console.WriteLine($"Voce está transferindo para o pix: {confirmacaoPix}");
+        }
+
+        public void MostrarValorPix(double confirmacaoValorPix)
+        {
+            Console.WriteLine($"Voce está transferindo o valor de {confirmacaoValorPix}");
+            Console.WriteLine();
         }
     }
 }
+
