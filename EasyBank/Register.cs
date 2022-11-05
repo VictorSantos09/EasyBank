@@ -15,7 +15,7 @@
             users.Add(user);
             var creditCardID = Validator.ID_AUTOINCREMENT(creditCards);
             var creditCardConstructor = new CreditCard(creditCard.R_Limit(userMonthlyIncome), userName,
-                creditCard.R_CVV(), null, creditCard.R_ExpireDate(), creditCardID, creditCard.R_CardNumber(),userID);
+                creditCard.R_CVV(), null, creditCard.R_ExpireDate(), creditCardID, creditCard.R_CardNumber(), userID);
 
             creditCards.Add(creditCardConstructor);
         }

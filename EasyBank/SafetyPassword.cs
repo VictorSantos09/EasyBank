@@ -1,7 +1,4 @@
-﻿using EasyBank;
-using System.Runtime.ExceptionServices;
-
-namespace EasyBank
+﻿namespace EasyBank
 {
     public class SafetyPassword
     {

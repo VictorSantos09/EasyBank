@@ -2,7 +2,7 @@
 {
     public class Profile
     {
-        public void ViewProfile(List<User> users, List<CreditCard>creditCards, int userIndex)
+        public void ViewProfile(List<User> users, List<CreditCard> creditCards, int userIndex)
         {
             User user = new User();
             CreditCard creditCard = new CreditCard();

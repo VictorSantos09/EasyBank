@@ -400,7 +400,7 @@
                     break;
                 }
             }
-          return finalIndex;
+            return finalIndex;
         }
     }
 }
