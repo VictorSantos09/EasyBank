@@ -9,10 +9,10 @@
             var userMonthlyIncome = MonthlyIncome();
 
             var userID = UserValidator.ID_AUTOINCREMENT(users);
-            //SafetyPassword safetyPassword = new SafetyPassword();
+            SafetyPassword safetyPassword = new SafetyPassword();
 
             var user = new User(userName, R_Age_DateBorn(), PhoneNumber(), Email(),
-                 Password(), CPF(), RG(), userMonthlyIncome, Adress(), userID, adress, null);
+                 Password(), CPF(), RG(), userMonthlyIncome, Adress(), userID, adress, safetyPassword.LetterCreation());
 
             users.Add(user);
 
