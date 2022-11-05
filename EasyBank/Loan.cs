@@ -32,7 +32,7 @@
                 var twoYearsSalary = users[userIndex].MonthlyIncome * 24;
                 if (loanValue > twoYearsSalary)
                 {
-                    Validator.ErrorGeneric("Quantia não disponivel para você");
+                    GeneralValidator.ErrorGeneric("Quantia não disponivel para você");
                 }
                 else
                 {
@@ -65,7 +65,7 @@
             var qtdParcels = Convert.ToInt32(Console.ReadLine());
             if (qtdParcels > 12 || qtdParcels < 1)
             {
-                Validator.ErrorGeneric("Escolha indisponivel");
+                GeneralValidator.ErrorGeneric("Escolha indisponivel");
             }
             else
             {
@@ -95,7 +95,7 @@
         }
         public void ApplyLoan(List<Bill> bills, List<Loan> loans, int qtdParcels, double finalValue, int userID)
         {
-            var loan = new Loan(finalValue, qtdParcels, userID, Validator.ID_AUTOINCREMENT(loans), true);
+            var loan = new Loan(finalValue, qtdParcels, userID, GeneralValidator.ID_AUTOINCREMENT(loans), true);
             loans.Add(loan);
             bills.Add(new Bill
             {
@@ -103,7 +103,7 @@
                 NumberParcels = qtdParcels,
                 OwnerID = userID,
                 Value = finalValue,
-                Id = Validator.ID_AUTOINCREMENT(bills),
+                Id = GeneralValidator.ID_AUTOINCREMENT(bills),
             });
         }
     }

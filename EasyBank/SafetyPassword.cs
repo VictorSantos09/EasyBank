@@ -6,9 +6,9 @@
         {
             string numberLetters;
             Console.WriteLine("Crie 3 letras de segurança");
-            numberLetters = Validator.OutputNoNumberAndSpecialCaracteres(Console.ReadLine().ToUpper());
+            numberLetters = GeneralValidator.OutputNoNumberAndSpecialCaracteres(Console.ReadLine().ToUpper());
             numberLetters = ConfirmNumberOfLetters(numberLetters);
-            numberLetters = Validator.OutputNoWhiteSpace(numberLetters).ToUpper();
+            numberLetters = GeneralValidator.OutputNoWhiteSpace(numberLetters).ToUpper();
             string confirmation = ConfirmationOfTheThreeLetters(numberLetters);
 
             if (confirmation == "sim".ToUpper())
@@ -24,8 +24,8 @@
             {
                 Console.WriteLine("Favor insira novamente as 3 letras");
                 GenerateLetters();
-                numberLetters = Validator.OutputNoNumberAndSpecialCaracteres(Console.ReadLine().ToUpper());
-                numberLetters = Validator.OutputNoWhiteSpace(numberLetters);
+                numberLetters = GeneralValidator.OutputNoNumberAndSpecialCaracteres(Console.ReadLine().ToUpper());
+                numberLetters = GeneralValidator.OutputNoWhiteSpace(numberLetters);
                 numberLetters = ConfirmNumberOfLetters(numberLetters);
                 confirmation = ConfirmationOfTheThreeLetters(numberLetters);
                 confirmation = DifferentFromYesOrNo(confirmation);
@@ -40,7 +40,7 @@
             {
                 Console.WriteLine("Favor informar apenas 3 letras");
                 GenerateLetters();
-                confirmQuantity = Validator.OutputNoNumberAndSpecialCaracteres(Console.ReadLine());
+                confirmQuantity = GeneralValidator.OutputNoNumberAndSpecialCaracteres(Console.ReadLine());
                 Console.Clear();
             }
             return confirmQuantity;
@@ -56,7 +56,7 @@
             while (checkConfirmation != "não".ToUpper() && checkConfirmation != "sim".ToUpper())
             {
                 Console.WriteLine("Favor escreva sim ou não corretamente");
-                checkConfirmation = Validator.OutputNoNumberAndSpecialCaracteres(Console.ReadLine().ToUpper());
+                checkConfirmation = GeneralValidator.OutputNoNumberAndSpecialCaracteres(Console.ReadLine().ToUpper());
                 Console.Clear();
             }
             return checkConfirmation;

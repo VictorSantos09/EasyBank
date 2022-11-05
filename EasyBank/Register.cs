@@ -8,7 +8,7 @@
             var userName = R_Name();
             var userMonthlyIncome = MonthlyIncome();
 
-            var userID = Validator.ID_AUTOINCREMENT(users);
+            var userID = GeneralValidator.ID_AUTOINCREMENT(users);
             SafetyPassword safetyPassword = new SafetyPassword();
 
             var user = new User(userName, R_Age_DateBorn(), PhoneNumber(), Email(),
@@ -16,7 +16,7 @@
 
             users.Add(user);
 
-            var creditCardID = Validator.ID_AUTOINCREMENT(creditCards);
+            var creditCardID = GeneralValidator.ID_AUTOINCREMENT(creditCards);
             CreditCard creditCard = new CreditCard();
 
             var creditCardConstructor = new CreditCard(creditCard.R_Limit(userMonthlyIncome), userName,
@@ -32,8 +32,8 @@
             while (checking)
             {
                 Console.Write("Cadastre seu nome completo: ");
-                inputName = Validator.IsValidName(Console.ReadLine());
-                var checker = Validator.HasNumberOrSpecialCaracter(inputName);
+                inputName = GeneralValidator.IsValidName(Console.ReadLine());
+                var checker = GeneralValidator.HasNumberOrSpecialCaracter(inputName);
 
                 if (!checker)
                 {
@@ -51,7 +51,7 @@
         public string R_Age_DateBorn()
         {
             Console.Write("Cadastre sua data de nascimento no formato 00/00/0000\nDigite: ");
-            string userInputDateBorn = Validator.IsValidAge(Console.ReadLine());
+            string userInputDateBorn = GeneralValidator.IsValidAge(Console.ReadLine());
 
             return userInputDateBorn;
         }
@@ -63,8 +63,8 @@
             while (checking)
             {
                 Console.Write("Cadastre seu CPF: ");
-                inputCPF = Validator.IsValidCPF(Console.ReadLine());
-                var checker = Validator.HasLetterOrSpecialCaracter(inputCPF);
+                inputCPF = GeneralValidator.IsValidCPF(Console.ReadLine());
+                var checker = GeneralValidator.HasLetterOrSpecialCaracter(inputCPF);
 
                 if (!checker)
                 {
@@ -88,8 +88,8 @@
             while (checking)
             {
                 Console.Write("Cadastre seu RG: ");
-                inputRG = Validator.DynamicSizeRG(Console.ReadLine());
-                var checker = Validator.HasLetterOrSpecialCaracter(inputRG);
+                inputRG = GeneralValidator.DynamicSizeRG(Console.ReadLine());
+                var checker = GeneralValidator.HasLetterOrSpecialCaracter(inputRG);
 
                 if (!checker)
                 {
@@ -111,8 +111,8 @@
             while (checking)
             {
                 Console.Write("Cadastre seu telefone com DDD.\nExemplo: 13991256286\nDigite: ");
-                inputPhoneNumber = Validator.IsValidPhoneNumber(Console.ReadLine());
-                var checker = Validator.HasLetterOrSpecialCaracter(inputPhoneNumber);
+                inputPhoneNumber = GeneralValidator.IsValidPhoneNumber(Console.ReadLine());
+                var checker = GeneralValidator.HasLetterOrSpecialCaracter(inputPhoneNumber);
 
                 if (!checker)
                 {
@@ -132,14 +132,14 @@
         public string Email()
         {
             Console.Write("Cadastre seu email: ");
-            var inputEmail = Validator.IsValidEmail(Console.ReadLine().ToUpper());
+            var inputEmail = GeneralValidator.IsValidEmail(Console.ReadLine().ToUpper());
 
             return inputEmail;
         }
         public string Password()
         {
             Console.Write("Cadastre sua senha de 4 digitos: ");
-            var inputPassword = Validator.IsValidPassword(Console.ReadLine());
+            var inputPassword = GeneralValidator.IsValidPassword(Console.ReadLine());
 
             return inputPassword;
         }
@@ -147,7 +147,7 @@
         {
             Console.WriteLine("Cadastre sua renda mensal bruta");
             Console.Write("Digite: ");
-            var inputMonthlyIncome = Validator.OutputNoLetterAndSpecialCaracter(Console.ReadLine());
+            var inputMonthlyIncome = GeneralValidator.OutputNoLetterAndSpecialCaracter(Console.ReadLine());
 
             return Convert.ToInt32(inputMonthlyIncome);
         }
@@ -169,42 +169,42 @@
         public string City()
         {
             Console.Write("Cidade: ");
-            var inputCity = Validator.OutputNoNumberAndSpecialCaracteres(Console.ReadLine()).ToUpper();
+            var inputCity = GeneralValidator.OutputNoNumberAndSpecialCaracteres(Console.ReadLine()).ToUpper();
 
             return inputCity;
         }
         public string State()
         {
             Console.Write("Estado: ");
-            var inputState = Validator.OutputNoNumberAndSpecialCaracteres(Console.ReadLine()).ToUpper();
+            var inputState = GeneralValidator.OutputNoNumberAndSpecialCaracteres(Console.ReadLine()).ToUpper();
 
             return inputState;
         }
         public string Neighborhood()
         {
             Console.Write("Bairro: ");
-            var inputNeighborhood = Validator.OutputNoNumberAndSpecialCaracteres(Console.ReadLine()).ToUpper();
+            var inputNeighborhood = GeneralValidator.OutputNoNumberAndSpecialCaracteres(Console.ReadLine()).ToUpper();
 
             return inputNeighborhood;
         }
         public string StreetOrAvenue()
         {
             Console.Write("Rua/Avenida: ");
-            var inputStreetOrAvenue = Validator.OutputNoSpecialCaracter(Console.ReadLine().ToUpper());
+            var inputStreetOrAvenue = GeneralValidator.OutputNoSpecialCaracter(Console.ReadLine().ToUpper());
 
             return inputStreetOrAvenue;
         }
         public string HouseNumber()
         {
             Console.Write("Numero: ");
-            var inputHouseNumber = Validator.OutputNoLetterAndSpecialCaracter(Console.ReadLine());
+            var inputHouseNumber = GeneralValidator.OutputNoLetterAndSpecialCaracter(Console.ReadLine());
 
             return inputHouseNumber;
         }
         public string Complement()
         {
             Console.Write("Complemento: ");
-            var inputComplement = Validator.OutputNoSpecialCaracter(Console.ReadLine()).ToUpper();
+            var inputComplement = GeneralValidator.OutputNoSpecialCaracter(Console.ReadLine()).ToUpper();
 
             return inputComplement;
         }
