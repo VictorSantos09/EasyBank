@@ -57,18 +57,22 @@
             DateTime _ExpireDate = DateTime.Today.AddYears(3);
             return _ExpireDate;
         }
-        public double IncrementMonthInvoice(List<Bill> bills, List<User> users, int userIndex)
+        public double IncrementMonthInvoice(List<Bill> bills, List<User> users, int userID)
         {
             //Este metodo será chamado a cada virada de mês, será necessario ver uma solução para armazenar e visualizar outras contas
             //fora o empréstimo
+            var bill = bills.FindAll(x => x.OwnerID == userID);
+
+            var user = users.Find(x => x.Id == userID);
+
             var totalToPay = 0.0;
-            for (int i = 0; i < bills.Count; i++)
+            for (int i = 0; i < bill.Count; i++)
             {
-                if (bills[i].OwnerID == users[userIndex].Id)
+                if (bill[i].OwnerID == user.Id)
                 {
-                    if (bills[i].Value != 0)
+                    if (bill[i].Value != 0)
                     {
-                        totalToPay += bills[i].Value;
+                        totalToPay += bill[i].Value; // Ver se incrementa as outras contas
                     }
                 }
             }
@@ -108,19 +112,21 @@
             }
 
         }
-        public bool HasPendingPaymentsAndPrint(List<Bill> bills, List<User> users, int userIndex)
+        public bool HasPendingPaymentsAndPrint(List<Bill> bills, List<User> users, int userID)
         {
+            var bill = bills.Find(x => x.OwnerID == userID);
+            if (bill == null)
+                return false;
+
+            var user = users.Find(x => x.Id == userID);
             var totalToPay = 0.0;
-            for (int i = 0; i < bills.Count; i++)
+            if (bill.OwnerID == user.Id)
             {
-                if (bills[i].OwnerID == users[userIndex].Id)
+                if (bill.Name != string.Empty || bill.Name != null)
                 {
-                    if (bills[i].Name != string.Empty || bills[i].Name != null)
-                    {
-                        Console.WriteLine($"ITEM: {bills[i].Name} | PARCELAS RESTANTES: {bills[i].NumberParcels} | VALOR: {bills[i].Value}");
-                        totalToPay += bills[i].Value;
-                        return true;
-                    }
+                    Console.WriteLine($"ITEM: {bill.Name} | PARCELAS RESTANTES: {bill.NumberParcels} | VALOR: {bill.Value}");
+                    totalToPay += bill.Value;
+                    return true;
                 }
             }
             Console.WriteLine($"Total a pagar: R${totalToPay}");
@@ -136,14 +142,18 @@
         }
         public void AutoPaymentInvoice(List<Bill> bills, List<CreditCard> creditCards, List<User> users, int userID, int userIndex)
         {
+            var creditCard = creditCards.Find(x => x.OwnerID == userID);
+
+            var user = users.Find(x => x.Id == userID);
+
             var totalToPay = IncrementMonthInvoice(bills, users, userIndex);
             if (totalToPay != 0)
             {
-                creditCards[userIndex].ValueInvoice = totalToPay;
-                if (users[userIndex].CurrentAccount >= totalToPay)
+                creditCard.ValueInvoice = totalToPay;
+                if (user.CurrentAccount >= totalToPay)
                 {
-                    users[userIndex].CurrentAccount = -totalToPay;
-                    creditCards[userIndex].ValueInvoice = 0;
+                    user.CurrentAccount = -totalToPay;
+                    creditCard.ValueInvoice = 0;
                     RemoveBills(bills, userID);
                 }
                 else
@@ -155,19 +165,21 @@
         public void RemoveBills(List<Bill> bills, int userID)
         {
             var bill = bills.Find(x => x.OwnerID == userID);
-            for (int i = 0; i < bills.Count; i++)
+
+            if (bill == null)
             {
-                if (bills[i].OwnerID == userID)
+                Console.WriteLine("DADO VAZIO");
+                return;
+            }
+            else
+            {
+                if (bill.NumberParcels <= 1)
                 {
-                    if (bills[i].NumberParcels <= 1)
-                    {
-                        //var bill = bills[i];
-                        bills.Remove(bill);
-                    }
-                    else
-                    {
-                        bills[i].NumberParcels--;
-                    }
+                    bills.Remove(bill);
+                }
+                else
+                {
+                    bill.NumberParcels--;
                 }
             }
         }
