@@ -80,10 +80,12 @@
             {
                 var finalInterestValue = AmountInterest(qtdParcels);
 
-                Console.WriteLine($"Valor do emprestimo: {loanValue}\nForma de Pagamento: {paymentOptions}\n" +
-                    $"Parcelas: {qtdParcels}\nJuros: {finalInterestValue}");
-
                 var finalValue = loanValue + finalInterestValue;
+
+                Console.WriteLine($"Valor do emprestimo: {loanValue}\nForma de Pagamento: {paymentOptions}\n" +
+                    $"Parcelas: {qtdParcels}\nValor Parcela:{finalValue / qtdParcels}\n" +
+                    $"Juros: {finalInterestValue}\nTotal: {loanValue + finalInterestValue}");
+
 
                 if (ConfirmLoan() == true)
                     ApplyLoan(bills, loans, qtdParcels, finalValue, userID, users);
@@ -117,6 +119,7 @@
                 OwnerID = userID,
                 Value = finalValue,
                 Id = UserValidator.ID_AUTOINCREMENT(bills),
+                ValueParcel = finalValue / qtdParcels,
             });
         }
     }

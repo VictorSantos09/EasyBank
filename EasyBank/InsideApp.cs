@@ -16,7 +16,7 @@
                 Console.WriteLine("2 - Emprestimo");
                 Console.WriteLine("3 - Pix");
                 Console.WriteLine("4 - Poupança");
-                Console.WriteLine("5 - Cartão de Credito");
+                Console.WriteLine("5 - Pagar Fatura");
                 Console.WriteLine("6 - Ver Contas");
                 Console.WriteLine("7 - Sair");
                 var InputOption = Console.ReadLine();
