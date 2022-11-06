@@ -48,5 +48,10 @@
         {
 
         }
+        public void InsertMoneyToCurrentAcoount(List<User> users, int userID, double moneyAmount)
+        {
+            var user = users.Find(x => x.Id == userID);
+            user.CurrentAccount += moneyAmount;
+        }
     }
 }
