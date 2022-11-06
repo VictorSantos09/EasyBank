@@ -55,6 +55,8 @@
             string number = $"1322 {random.Next(min, max)} {random.Next(min, max)} {random.Next(min, max)}";
             return number;
         }
+
+
         public double IncrementMonthInvoice(List<Bill> bills, List<CreditCard> creditCards, int userID)
         {
             //Este metodo será chamado a cada virada de mês, será necessario ver uma solução para armazenar e visualizar outras contas
@@ -81,9 +83,41 @@
 
             for (int i = 0; i < bill.Count; i++)
             {
-                Console.WriteLine($"ITEM: {bill[i].Name} PARCELAS: {bill[i].NumberParcels} VALOR: {bill[i].Value}");
+                Console.WriteLine($"ITEM: {bill[i].Name} PARCELAS: {bill[i].NumberParcels} VALOR: {bill[i].Value} VALOR PARCELA: {bill[i].ValueParcel}");
             }
             Thread.Sleep(1300);
+        }
+        public void AutoPaymentInvoice(List<Bill> bills, List<CreditCard> creditCards, List<User> users, int userID)
+        {
+            var creditCard = creditCards.Find(x => x.OwnerID == userID);
+            var user = users.Find(x => x.Id == userID);
+
+            var valueToPay = 0.0;
+
+            foreach (var item in bills)
+            {
+                valueToPay += item.ValueParcel;
+            }
+
+            if (user.CurrentAccount < valueToPay)
+                Console.WriteLine("Não foi possivel efetuar o pagamento automatico, saldo insuficiente");
+
+            else
+            {
+                user.CurrentAccount = -valueToPay;
+
+                Bill bill = new Bill();
+
+                foreach (var item in bills)
+                {
+                    if (item.NumberParcels <= 1)
+                        bill.RemoveAutoDebits(bills, item);
+
+                    else
+                        item.NumberParcels--;
+                }
+                creditCard.ValueInvoice = 0.0;
+            }
         }
         public void ManualMonthPaymentInvoice(List<User> users, List<CreditCard> creditCards, List<Bill> bills, int userID)
         {
@@ -91,13 +125,14 @@
             {
                 var creditcard = creditCards.Find(x => x.OwnerID == userID);
                 var user = users.Find(x => x.Id == userID);
-                var bill = bills.FindAll(x => x.OwnerID == userID);
+                var billsUser = bills.FindAll(x => x.OwnerID == userID);
+
                 var valueToPay = 0.0;
 
-                for (int i = 0; i < bill.Count; i++)
+                for (int i = 0; i < billsUser.Count; i++)
                 {
-                    Console.WriteLine($"ITEM: {bill[i].Name} PARCELA: {bill[i].NumberParcels} VALOR: {bill[i].Value} ");
-                    valueToPay = bill[i].Value;
+                    Console.WriteLine($"ITEM: {billsUser[i].Name} PARCELA: {billsUser[i].NumberParcels} VALOR: {billsUser[i].ValueParcel} ");
+                    valueToPay += billsUser[i].ValueParcel;
                 }
 
                 Console.WriteLine($"TOTAL A PAGAR: {valueToPay}\nClique ENTER para pagar");
@@ -110,20 +145,19 @@
                 }
                 else
                 {
-                    user.CurrentAccount += -valueToPay;
-                    for (int i = 0; i < bill.Count; i++)
+                    Bill bill = new Bill();
+                    user.CurrentAccount = -valueToPay;
+                    for (int i = 0; i < billsUser.Count; i++)
                     {
-                        RemoveBills(bills, userID);
+                        bill.RemoveBills(bills, userID);
                     }
+
                     creditcard.ValueInvoice = 0;
                     Console.WriteLine($"Pagamento efetuado");
                 }
             }
             else
-            {
                 Console.WriteLine("Não há faturas á pagar");
-            }
-
         }
         public bool HasPendingPayments(List<Bill> bills, int userID)
         {
@@ -134,57 +168,22 @@
 
             return true;
         }
-
-        public void AutoPaymentInvoice(List<Bill> bills, List<CreditCard> creditCards, List<User> users, int userID)
+        public void MonthlyAction(List<CreditCard> creditCards, List<User> users, List<Bill> bills, List<AutoDebit> autoDebits, int userID)
         {
-            var creditCard = creditCards.Find(x => x.OwnerID == userID);
+            CreditCard creditCard = new CreditCard();
 
-            var user = users.Find(x => x.Id == userID);
+            creditCard.IncrementMonthInvoice(bills, creditCards, userID);
 
-            var totalToPay = IncrementMonthInvoice(bills, creditCards, userID);
-            if (totalToPay != 0)
-            {
-                creditCard.ValueInvoice = totalToPay;
+            Bill bill = new Bill();
 
-                if (user.CurrentAccount >= totalToPay)
-                {
-                    user.CurrentAccount = -totalToPay;
-                    creditCard.ValueInvoice = 0;
-                }
-                else
-                {
-                    MessageError.ErrorGeneric("pagamento automatico falhou, saldo insuficiente");
-                }
-            }
-        }
-        public void RemoveBills(List<Bill> bills, int userID)
-        {
-            var bill = bills.Find(x => x.OwnerID == userID);
+            if (bill.HasAutoDebitActivated(autoDebits, userID) == true)
+                AutoPaymentInvoice(bills, creditCards, users, userID);
 
-            if (bill.NumberParcels <= 1)
-            {
-                bills.Remove(bill);
-            }
+            else if (HasPendingPayments(bills,userID) == true)
+                Console.WriteLine("Novas Faturas, vá até a opção de Pagar Fatura em seu perfil");
+            
             else
-            {
-                bill.NumberParcels--;
-            }
-        }
-        public void IncreaseDeleteParcel(List<Bill> bills, int userID)
-        {
-            var bill = bills.FindAll(x => x.OwnerID == userID);
-
-            for (int i = 0; i < bill.Count; i++)
-            {
-                if (bill[i].NumberParcels > 1)
-                {
-                    bill[i].NumberParcels--;
-                }
-                else
-                {
-                    RemoveBills(bills, userID);
-                }
-            }
+                Console.WriteLine("Nenhuma nova fatura");
         }
     }
 }
