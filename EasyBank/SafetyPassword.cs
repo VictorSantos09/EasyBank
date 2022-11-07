@@ -31,7 +31,6 @@
                 confirmation = DifferentFromYesOrNo(confirmation);
                 Console.Clear();
             }
-            // users[userIndex].SafetyKey = numberLetters;
             return numberLetters;
         }
         public static string ConfirmNumberOfLetters(string confirmQuantity)
@@ -115,26 +114,28 @@
             var user = users.Find(x => x.Id == userID);
             GenerateLetters();
 
-            Console.WriteLine("Informe as suas letras de segurança");
+            for (int i = 3; i > -1;)
+            {
+                Console.WriteLine("Informe as suas letras de segurança");
+                var confirmPasswordLetter = Console.ReadLine().ToUpper();
+                Console.WriteLine();
 
-            var confirmPasswordLetter = Console.ReadLine().ToUpper();
-            Console.WriteLine();
-
-            if (users[userIndex].SafetyKey == confirmPasswordLetter)
-            {
-                Console.WriteLine("Senha correta");
-                return true;
-                Environment.Exit(0);
-            }
-            else
-            {
-                Console.WriteLine($"Senha incorreta, você possui {i--} chances ");
-            }
-            if (i == -1)
-            {
-                Console.Clear();
-                Console.WriteLine("Quantidade máxima de tentativas excedida! Você foi deslogado.");
-                Thread.Sleep(2000);
+                if (users[userID].SafetyKey == confirmPasswordLetter)
+                {
+                    Console.WriteLine("Senha correta");
+                    return true;
+                    Environment.Exit(0);
+                }
+                else
+                {
+                    Console.WriteLine($"Senha incorreta, você possui {i--} chances ");
+                }
+                if (i == -1)
+                {
+                    Console.Clear();
+                    Console.WriteLine("Quantidade máxima de tentativas excedida! Você foi deslogado.");
+                    Thread.Sleep(2000);
+                }
             }
             return false;
         }
