@@ -120,7 +120,7 @@
                 var confirmPasswordLetter = Console.ReadLine().ToUpper();
                 Console.WriteLine();
 
-                if (users[userID].SafetyKey == confirmPasswordLetter)
+                if (user.SafetyKey == confirmPasswordLetter)
                 {
                     Console.WriteLine("Senha correta");
                     return true;
