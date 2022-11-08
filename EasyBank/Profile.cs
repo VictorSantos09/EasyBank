@@ -25,7 +25,7 @@
                 if (option == "2")
                 {
                     Console.Clear();
-                    Console.Write($"Limite do cartão de crédito\n\n-> {creditCard.Limite}");
+                    Console.Write($"Limite do cartão de crédito\n\n-> {creditCard.Limit}");
                     Console.Write("\n\nPressione ENTER para voltar");
                     Console.ReadLine();
                 }
@@ -50,11 +50,6 @@
                     if (profileConfigOption == "3")
                     {
                         profileConfig.ChangePhoneNumber(users[userIndex].PhoneNumber);
-                    }
-
-                    if (profileConfigOption == "4")
-                    {
-
                     }
                 }
 
@@ -175,7 +170,7 @@
 
             for (int i = 0; i < creditCards.Count; i++)
             {
-                if (creditCards[i].OwnerId == users[userIndex].Id)
+                if (creditCards[i].OwnerID == users[userIndex].Id)
                 {
                     creditCards.RemoveAt(i);
                 }
