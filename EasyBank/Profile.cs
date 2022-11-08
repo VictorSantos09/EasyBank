@@ -2,15 +2,15 @@
 {
     public class Profile
     {
-        public void ViewProfile(List<User> users, List<CreditCard> creditCards, int userIndex)
+        public void ViewProfile(List<User> users, List<CreditCard> creditCards, int userID)
         {
-            User user = new User();
             CreditCard creditCard = new CreditCard();
             ProfileConfig profileConfig = new ProfileConfig();
+
+            var user = users.Find(x => x.Id == userID);
+
             bool menuProfile = true;
-
             while (menuProfile)
-
             {
                 Console.Write($"Olá {users[userIndex].Name}\n");
                 Console.Write($"\nNome: {users[userIndex].Name}\nE-mail: {users[userIndex].Email}\nTelefone: {users[userIndex].PhoneNumber}\nData de Nascimento: {users[userIndex].DateBorn}");
@@ -66,8 +66,10 @@
 
         }
 
-        public void CardInfo(List<CreditCard> creditCards, int userIndex)
+        public void CardInfo(List<CreditCard> creditCards, int userID)
         {
+            var creditCard = creditCards.Find(x => x.OwnerID == userID);
+
             Console.Clear();
             Console.Write($"\nNúmero: {creditCards[userIndex].NumberCard}\nCVV: {creditCards[userIndex].CVV}\nData de Vencimento: {creditCards[userIndex].ExpireDate}\nNome: {creditCards[userIndex].NameOwner}");
             Console.Write("\n\nPressione ENTER para voltar");
@@ -163,21 +165,18 @@
             }
         }
 
-        public void AccountCancellation(List<User> users, List<CreditCard> creditCards, int userIndex)
+        public void AccountCancellation(List<User> users, List<CreditCard> creditCards, int userID)
         {
+            var user = users.Find(x => x.Id == userID);
+            var creditCard = creditCards.Find(x => x.OwnerID == userID);
+
 
             users.RemoveAt(userIndex);
 
-            for (int i = 0; i < creditCards.Count; i++)
+            if (creditCards[i].OwnerID == users[userIndex].Id)
             {
-                if (creditCards[i].OwnerID == users[userIndex].Id)
-                {
-                    creditCards.RemoveAt(i);
-                }
-
+                creditCards.RemoveAt(i);
             }
-
-
         }
     }
 }
