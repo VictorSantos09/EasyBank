@@ -12,7 +12,7 @@
                 if (counter <= 0)
                 {
                     Console.Clear();
-                    Console.WriteLine("Você atingiu o limite de tentativas!");
+                    MessageError.ErrorGeneric("Você atingiu o limite de tentativas.");
                     checking = false;
                     Thread.Sleep(1500);
                 }
@@ -36,7 +36,7 @@
                                 }
                                 else
                                 {
-                                    Console.WriteLine("Senha incorreta. Tente novamente");
+                                    MessageError.ErrorGeneric("Senha incorreta.");
                                     counter--;
                                     break;
                                 }
@@ -44,7 +44,7 @@
                         }
                         else
                         {
-                             string userCPF = Convert.ToInt64(userCPForEmail).ToString(@"000\.000\.000\-00");
+                            string userCPF = Convert.ToInt64(userCPForEmail).ToString(@"000\.000\.000\-00");
                             if (userCPF == users[i].CPF)
                             {
                                 if (userPassword == users[i].Password)
@@ -55,7 +55,7 @@
                                 }
                                 else
                                 {
-                                    Console.WriteLine("Senha incorreta. Tente novamente");
+                                    MessageError.ErrorGeneric("Senha incorreta.");
                                     counter--;
                                     break;
                                 }
