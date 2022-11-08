@@ -11,15 +11,6 @@ List<CreditCard> creditCards = new List<CreditCard>();
 List<Bill> bills = new List<Bill>();
 List<Loan> loans = new List<Loan>();
 
-var tester = true;
-while (tester)
-{
-    Console.Write("PALAVRA:");
-    var a = Console.ReadLine();
-    Console.WriteLine(GeneralValidator.RemoveWhiteSpace(a));
-}
-
-
 while (ProgramStarted)
 {
     string[] standardAdress = { "Blumenau", "SC", "Ponta Aguda", "AV Brasil", "788", "SENAC" };
