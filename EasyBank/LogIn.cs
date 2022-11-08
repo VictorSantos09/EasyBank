@@ -19,7 +19,7 @@
                 else
                 {
                     Console.WriteLine("Digite o seu e-mail ou CPF");
-                    var userCPForEmail = Console.ReadLine();
+                    var userCPForEmail = Console.ReadLine().ToUpper();
                     Console.WriteLine("Digite a sua senha");
                     var userPassword = Console.ReadLine();
                     for (int i = 0; i < users.Count; i++)
