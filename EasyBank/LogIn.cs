@@ -44,7 +44,8 @@
                         }
                         else
                         {
-                            if (userCPForEmail == users[i].CPF)
+                             string userCPF = Convert.ToInt64(userCPForEmail).ToString(@"000\.000\.000\-00");
+                            if (userCPF == users[i].CPF)
                             {
                                 if (userPassword == users[i].Password)
                                 {
