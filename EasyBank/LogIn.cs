@@ -12,14 +12,14 @@
                 if (counter <= 0)
                 {
                     Console.Clear();
-                    Console.WriteLine("Você atingiu o limite de tentativas!");
+                    MessageError.ErrorGeneric("Você atingiu o limite de tentativas.");
                     checking = false;
                     Thread.Sleep(1500);
                 }
                 else
                 {
                     Console.WriteLine("Digite o seu e-mail ou CPF");
-                    var userCPForEmail = Console.ReadLine();
+                    var userCPForEmail = Console.ReadLine().ToUpper();
                     Console.WriteLine("Digite a sua senha");
                     var userPassword = Console.ReadLine();
                     for (int i = 0; i < users.Count; i++)
@@ -36,7 +36,7 @@
                                 }
                                 else
                                 {
-                                    Console.WriteLine("Senha incorreta. Tente novamente");
+                                    MessageError.ErrorGeneric("Senha incorreta.");
                                     counter--;
                                     break;
                                 }
@@ -44,7 +44,8 @@
                         }
                         else
                         {
-                            if (userCPForEmail == users[i].CPF)
+                            string userCPF = Convert.ToInt64(userCPForEmail).ToString(@"000\.000\.000\-00");
+                            if (userCPF == users[i].CPF)
                             {
                                 if (userPassword == users[i].Password)
                                 {
@@ -54,7 +55,7 @@
                                 }
                                 else
                                 {
-                                    Console.WriteLine("Senha incorreta. Tente novamente");
+                                    MessageError.ErrorGeneric("Senha incorreta.");
                                     counter--;
                                     break;
                                 }
