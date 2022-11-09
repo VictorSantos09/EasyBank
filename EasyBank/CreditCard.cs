@@ -163,7 +163,7 @@
         {
             var bill = bills.FindAll(x => x.OwnerID == userID);
 
-            if (bill == null)
+            if (bill == null || bill.Count == 0)
                 return false;
 
             return true;

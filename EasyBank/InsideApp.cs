@@ -39,11 +39,17 @@
                 }
                 else if (InputOption == "5")
                 {
-                    creditCard.ManualMonthPaymentInvoice(users, creditCards, bills, userID);
+                    if (creditCard.HasPendingPayments(bills, userID) == true)
+                        creditCard.ManualMonthPaymentInvoice(users, creditCards, bills, userID);
+                    else
+                    {
+                        Console.WriteLine("Nenhuma fatura pendente");
+                        Thread.Sleep(1300);
+                    }
                 }
                 else if (InputOption == "6")
                 {
-                    creditCard.ViewInvoice(bills,userID);
+                    creditCard.ViewInvoice(bills, userID);
                     Thread.Sleep(1000);
                 }
                 else if (InputOption == "7")
