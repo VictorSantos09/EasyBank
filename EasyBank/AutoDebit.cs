@@ -4,6 +4,8 @@ namespace EasyBank
 {
     public class AutoDebit
     {
+        public int OwnerID { get; set; }
+        public bool Activated { get; set; }
         public void Menu(RegisterNewAutoDebit registerNewAutoDebit,
             List<ArrayClassOfAutoDebit> arrayClassOfAutoDebit, int ownerID, string NameExpense,
             string option)
