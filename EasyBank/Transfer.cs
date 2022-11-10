@@ -2,80 +2,80 @@
 {
     public class Transfer
     {
-        public double Transferir(double valorInformado, List<User> users, int userID)
+        public double Valuetransfer(double informedValue, List<User> users, int userID)
         {
             var user = users.Find(x => x.Id == userID);
-            valorInformado = user.CurrentAccount;
+            informedValue = user.CurrentAccount;
             Console.WriteLine("Informe o valor que você gostaria de transferir");
             Console.WriteLine($"valor em conta: {user.CurrentAccount}");
-            valorInformado = Convert.ToDouble(Console.ReadLine());
-            valorInformado = VerificarQuantidadeEmConta(valorInformado, users, userID);
-            var VerificarChavePix = VerificarPix();
-            MostrarChavePix(VerificarChavePix);
-            MostrarValorPix(valorInformado);
+            informedValue = Convert.ToDouble(Console.ReadLine());
+            informedValue = checkAmountInAccount(informedValue, users, userID);
+            var check_KeyPix = CheckPix();
+            ShowkeyPix(check_KeyPix);
+            ShowValuePix(informedValue);
 
             Console.WriteLine("Digite 1 para transferir ou 2 para voltar ao menu");
-            string escolha = Console.ReadLine();
+            string choice = Console.ReadLine();
 
-            if (escolha == "1")
+            if (choice == "1")
             {
                 Console.WriteLine("Transferencia realizada.");
-                user.CurrentAccount = user.CurrentAccount - valorInformado;
+                user.CurrentAccount = user.CurrentAccount - informedValue;
             }
             else
             {
-                while (escolha != "1" && escolha != "2")
+                while (choice != "1" && choice != "2")
                 {
                     Console.WriteLine("Escolha uma das opções acima");
-                    escolha = Console.ReadLine();
+                    choice = Console.ReadLine();
                 }
             }
 
             Console.WriteLine($"Você possui {user.CurrentAccount} em conta");
-            return valorInformado;
+            return informedValue;
         }
-        public double VerificarQuantidadeEmConta(double quantidadeEmConta, List<User> users, int userID)
+        public double checkAmountInAccount(double choiceQuantity, List<User> users, int userID)
         {
             var user = users.Find(x => x.Id == userID);
-            while (quantidadeEmConta > user.CurrentAccount)
+            while (choiceQuantity > user.CurrentAccount)
             {
                 Console.WriteLine("Valor maior que o disponível em conta, favor informe um valor válido");
-                quantidadeEmConta = Convert.ToDouble(Console.ReadLine());
+                choiceQuantity = Convert.ToDouble(Console.ReadLine());
             }
-            while (quantidadeEmConta <= 0)
+            while (choiceQuantity <= 0)
             {
                 Console.WriteLine("Favor informe um valor válido");
-                quantidadeEmConta = Convert.ToDouble(Console.ReadLine());
+                choiceQuantity = Convert.ToDouble(Console.ReadLine());
             }
-            return quantidadeEmConta;
+            return choiceQuantity;
         }
-        public string VerificarPix()
+        public string CheckPix()
         {
-            bool pixCorreto = false;
+            bool pixCorrect = false;
             Console.WriteLine("Digite o pix que gostaria de transferir (E-MAIL, CPF/CNPJ OU TELEFONE)");
             string pix = Console.ReadLine();
 
-            while (pixCorreto != true)
+            while (pixCorrect != true)
             {
                 if (pix.Contains("@"))
                 {
                     Console.WriteLine("E-mail Válido");
-                    pixCorreto = true;
+                    pixCorrect = true;
                 }
                 else if (pix.Length == 14 && pix.Contains("."))
                 {
                     Console.WriteLine("CPF Válido");
-                    pixCorreto = true;
+                    pixCorrect = true;
                 }
                 else if (pix.Length == 18 && pix.Contains("/"))
                 {
                     Console.WriteLine("CNPJ Válido");
-                    pixCorreto = true;
+                    pixCorrect = true;
                 }
                 else if (pix.Length == 11)
                 {
                     Console.WriteLine("Número de telefone válido");
-                    pixCorreto = true;
+                    pixCorrect = true;
                 }
                 else
                 {
@@ -86,15 +86,14 @@
 
             return pix;
         }
-
-        public void MostrarChavePix(string confirmacaoPix)
+        public void ShowkeyPix(string confirmationPix)
         {
-            Console.WriteLine($"Voce está transferindo para o pix: {confirmacaoPix}");
+            Console.WriteLine($"Voce está transferindo para o pix: {confirmationPix}");
         }
 
-        public void MostrarValorPix(double confirmacaoValorPix)
+        public void ShowValuePix(double confirmationValuePix)
         {
-            Console.WriteLine($"Voce está transferindo o valor de {confirmacaoValorPix}");
+            Console.WriteLine($"Voce está transferindo o valor de {confirmationValuePix}");
             Console.WriteLine();
         }
     }
