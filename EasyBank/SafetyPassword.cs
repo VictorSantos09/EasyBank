@@ -1,128 +1,106 @@
-﻿using EasyBank;
-using System.Runtime.ExceptionServices;
-
-
-//SafetyPassword pass = new SafetyPassword();
-//pass.CriacaoTresLetras(user);
-//pass.VerificarLetras(user);
-namespace EasyBank
+﻿namespace EasyBank
 {
     public class SafetyPassword
     {
-
-        public string CriacaoTresLetras(User user)
+        public string LetterCreation()
         {
-            string quantidadeLetras;
+            string numberLetters;
             Console.WriteLine("Crie 3 letras de segurança");
-            quantidadeLetras = Validator.OutputNoNumberAndSpecialCaracteres(Console.ReadLine().ToUpper());
-            quantidadeLetras = ConfirmarQuantLetras(quantidadeLetras);
-            quantidadeLetras = Validator.OutputNoWhiteSpace(quantidadeLetras).ToUpper();
+            numberLetters = GeneralValidator.OutputNoNumberAndSpecialCaracteres(Console.ReadLine().ToUpper());
+            numberLetters = ConfirmNumberOfLetters(numberLetters);
+            numberLetters = GeneralValidator.OutputNoWhiteSpace(numberLetters).ToUpper();
+            string confirmation = ConfirmationOfTheThreeLetters(numberLetters);
 
-            string confirmacao = ConfirmacaoTresLetras(quantidadeLetras);
-
-            if (confirmacao == "sim".ToUpper())
+            if (confirmation == "sim".ToUpper())
             {
                 Console.WriteLine("Confirmando..."); Thread.Sleep(2000);
                 Console.WriteLine("Confirmado.");
                 Console.WriteLine();
             }
 
-            confirmacao = DiferenteSimOuNao(confirmacao);
+            confirmation = DifferentFromYesOrNo(confirmation);
 
-            while (confirmacao == "não".ToUpper())
+            while (confirmation == "não".ToUpper())
             {
                 Console.WriteLine("Favor insira novamente as 3 letras");
-                GerarLetras();
-                quantidadeLetras = Validator.OutputNoNumberAndSpecialCaracteres(Console.ReadLine().ToUpper());
-                quantidadeLetras = Validator.OutputNoWhiteSpace(quantidadeLetras);
-                quantidadeLetras = ConfirmarQuantLetras(quantidadeLetras);
-                confirmacao = ConfirmacaoTresLetras(quantidadeLetras);
-                confirmacao = DiferenteSimOuNao(confirmacao);
-
+                GenerateLetters();
+                numberLetters = GeneralValidator.OutputNoNumberAndSpecialCaracteres(Console.ReadLine().ToUpper());
+                numberLetters = GeneralValidator.OutputNoWhiteSpace(numberLetters);
+                numberLetters = ConfirmNumberOfLetters(numberLetters);
+                confirmation = ConfirmationOfTheThreeLetters(numberLetters);
+                confirmation = DifferentFromYesOrNo(confirmation);
                 Console.Clear();
-
             }
-
-            user.SafetyKey = quantidadeLetras;
-            return quantidadeLetras;
+            // users[userIndex].SafetyKey = numberLetters;
+            return numberLetters;
         }
-
-        public static string ConfirmarQuantLetras(string confirmarQuantidade)
+        public static string ConfirmNumberOfLetters(string confirmQuantity)
         {
-            while (confirmarQuantidade.Length < 3 || confirmarQuantidade.Length > 3)
+            while (confirmQuantity.Length < 3 || confirmQuantity.Length > 3)
             {
                 Console.WriteLine("Favor informar apenas 3 letras");
-                GerarLetras();
-                confirmarQuantidade = Validator.OutputNoNumberAndSpecialCaracteres(Console.ReadLine());
+                GenerateLetters();
+                confirmQuantity = GeneralValidator.OutputNoNumberAndSpecialCaracteres(Console.ReadLine());
                 Console.Clear();
-
             }
-            return confirmarQuantidade;
+            return confirmQuantity;
         }
-
-        public static string ConfirmacaoTresLetras(string ConfigDasTresLetras)
+        public static string ConfirmationOfTheThreeLetters(string confirmationThreeLetters)
         {
-            Console.WriteLine($"Voce escolheu as Letras    '{ConfigDasTresLetras}'  Digite sim para confirmar ou não para inserir novamente");
-            ConfigDasTresLetras = Console.ReadLine().ToUpper();
-            return ConfigDasTresLetras;
+            Console.WriteLine($"Voce escolheu as Letras    '{confirmationThreeLetters}'  Digite sim para confirmar ou não para inserir novamente");
+            confirmationThreeLetters = Console.ReadLine().ToUpper();
+            return confirmationThreeLetters;
         }
-
-        public static string DiferenteSimOuNao(string VerificacaoConfirmacao)
+        public static string DifferentFromYesOrNo(string checkConfirmation)
         {
-
-            while (VerificacaoConfirmacao != "não".ToUpper() && VerificacaoConfirmacao != "sim".ToUpper())
+            while (checkConfirmation != "não".ToUpper() && checkConfirmation != "sim".ToUpper())
             {
-
                 Console.WriteLine("Favor escreva sim ou não corretamente");
-                VerificacaoConfirmacao = Validator.OutputNoNumberAndSpecialCaracteres(Console.ReadLine().ToUpper());
+                checkConfirmation = GeneralValidator.OutputNoNumberAndSpecialCaracteres(Console.ReadLine().ToUpper());
                 Console.Clear();
-
             }
-            return VerificacaoConfirmacao;
+            return checkConfirmation;
         }
-
-        static void GerarLetras()
+        static void GenerateLetters()
         {
-            var characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-            var finalCharacters = characters;
+            var lettersAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            var finalCharacters = lettersAlphabet;
             string[] charsarr = new string[5];
-
             var random = new Random();
 
             for (int i = 0; i < 5; i++)
             {
                 for (int j = 0; j < 5; j++)
                 {
-                    int posicaoLetra = random.Next(0, characters.Length);
-                    string letra = characters[posicaoLetra].ToString();
+                    int positionLetter = random.Next(0, lettersAlphabet.Length);
+                    string letters = lettersAlphabet[positionLetter].ToString();
 
-                    if (charsarr[i] != null && charsarr[i].Contains(letra))
+                    if (charsarr[i] != null && charsarr[i].Contains(letters))
                     {
                         j--;
-
                         continue;
                     }
 
-                    charsarr[i] = charsarr[i] + letra;
-                    characters = characters.Replace(letra, string.Empty);
+                    charsarr[i] = charsarr[i] + letters;
+                    lettersAlphabet = lettersAlphabet.Replace(letters, string.Empty);
 
-                    if (characters.Count() == 1)
+                    if (lettersAlphabet.Count() == 1)
                     {
                         for (int x = 0; x < charsarr.Length; x++)
                         {
                             if (x == 0)
                             {
-                                letra = characters[0].ToString();
+                                letters = lettersAlphabet[0].ToString();
 
-                                charsarr[x] = charsarr[x] + letra;
+                                charsarr[x] = charsarr[x] + letters;
 
                                 x++;
                             }
 
-                            int posicaoLetraFinal = random.Next(0, finalCharacters.Length);
-                            string letraFinal = finalCharacters[posicaoLetraFinal].ToString();
+                            int positionLetterFinal = random.Next(0, finalCharacters.Length);
+                            string letterFinal = finalCharacters[positionLetterFinal].ToString();
 
-                            charsarr[x] = charsarr[x] + letraFinal;
+                            charsarr[x] = charsarr[x] + letterFinal;
                         }
                     }
                 }
@@ -132,37 +110,31 @@ namespace EasyBank
                 Console.WriteLine(item);
             }
         }
-
-        public bool VerificarLetras(User user)
+        public bool CheckLetters(List<User> users, int userID)
         {
+            var user = users.Find(x => x.Id == userID);
+            GenerateLetters();
 
-            for (int i = 3; i > -1;)
+            Console.WriteLine("Informe as suas letras de segurança");
+
+            var confirmPasswordLetter = Console.ReadLine().ToUpper();
+            Console.WriteLine();
+
+            if (users[userIndex].SafetyKey == confirmPasswordLetter)
             {
-                GerarLetras();
-
-                Console.WriteLine("Informe as suas letras de segurança");
-
-                var ConfirmarSenhaLetras = Console.ReadLine().ToUpper();
-                Console.WriteLine();
-
-
-                if (user.SafetyKey == ConfirmarSenhaLetras)
-                {
-                    Console.WriteLine("Senha correta");
-                    return true;
-                    Environment.Exit(0);
-                }
-                else
-                {
-                    Console.WriteLine($"Senha incorreta, você possui {i--} chances ");
-
-                }
-                if (i == -1)
-                {
-                    Console.Clear();
-                    Console.WriteLine("Quantidade máxima de tentativas excedida! Você foi deslogado.");
-                    Thread.Sleep(2000);
-                }
+                Console.WriteLine("Senha correta");
+                return true;
+                Environment.Exit(0);
+            }
+            else
+            {
+                Console.WriteLine($"Senha incorreta, você possui {i--} chances ");
+            }
+            if (i == -1)
+            {
+                Console.Clear();
+                Console.WriteLine("Quantidade máxima de tentativas excedida! Você foi deslogado.");
+                Thread.Sleep(2000);
             }
             return false;
         }
