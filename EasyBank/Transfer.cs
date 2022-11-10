@@ -2,15 +2,14 @@
 {
     public class Transfer
     {
-        public double ValorEmConta { get; set; } = 100.00;
-
-        public double Transferir(double valorInformado)
+        public double Transferir(double valorInformado, List<User> users, int userID)
         {
-            valorInformado = ValorEmConta;
+            var user = users.Find(x => x.Id == userID);
+            valorInformado = user.CurrentAccount;
             Console.WriteLine("Informe o valor que você gostaria de transferir");
-            Console.WriteLine($"valor em conta: {ValorEmConta}");
+            Console.WriteLine($"valor em conta: {user.CurrentAccount}");
             valorInformado = Convert.ToDouble(Console.ReadLine());
-            valorInformado = VerificarQuantidadeEmConta(valorInformado);
+            valorInformado = VerificarQuantidadeEmConta(valorInformado, users, userID);
             var VerificarChavePix = VerificarPix();
             MostrarChavePix(VerificarChavePix);
             MostrarValorPix(valorInformado);
@@ -21,9 +20,8 @@
             if (escolha == "1")
             {
                 Console.WriteLine("Transferencia realizada.");
-                ValorEmConta = ValorEmConta - valorInformado;
+                user.CurrentAccount = user.CurrentAccount - valorInformado;
             }
-            
             else
             {
                 while (escolha != "1" && escolha != "2")
@@ -33,12 +31,13 @@
                 }
             }
 
-            Console.WriteLine($"Você possui {ValorEmConta} em conta");
+            Console.WriteLine($"Você possui {user.CurrentAccount} em conta");
             return valorInformado;
         }
-        public double VerificarQuantidadeEmConta(double quantidadeEmConta)
+        public double VerificarQuantidadeEmConta(double quantidadeEmConta, List<User> users, int userID)
         {
-            while (quantidadeEmConta > ValorEmConta)
+            var user = users.Find(x => x.Id == userID);
+            while (quantidadeEmConta > user.CurrentAccount)
             {
                 Console.WriteLine("Valor maior que o disponível em conta, favor informe um valor válido");
                 quantidadeEmConta = Convert.ToDouble(Console.ReadLine());
@@ -50,7 +49,6 @@
             }
             return quantidadeEmConta;
         }
-
         public string VerificarPix()
         {
             bool pixCorreto = false;
