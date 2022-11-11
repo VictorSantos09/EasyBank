@@ -22,7 +22,8 @@
                 var InputOption = Console.ReadLine();
                 if (InputOption == "1")
                 {
-
+                    Profile profile = new Profile();
+                    profile.ViewProfile(users, creditCards, userID);
                 }
                 else if (InputOption == "2")
                 {

@@ -4,10 +4,10 @@
     {
         public void ViewProfile(List<User> users, List<CreditCard> creditCards, int userID)
         {
-            CreditCard creditCard = new CreditCard();
             ProfileConfig profileConfig = new ProfileConfig();
 
             var user = users.Find(x => x.Id == userID);
+            var creditCard = creditCards.Find(x => x.OwnerID == userID);
 
             bool menuProfile = true;
             while (menuProfile)
@@ -119,8 +119,8 @@
         }
         public void ThreeChancesPasswords(List<User> users, List<CreditCard> creditCards, int userID)
         {
-            User user = new User();
             int counter = 0;
+            var user = users.Find(x => x.Id == userID);
 
             while (counter != 3)
             {
@@ -164,11 +164,11 @@
             var user = users.Find(x => x.Id == userID);
             var creditCard = creditCards.Find(x => x.OwnerID == userID);
 
-            users.RemoveAt(userID);
+            users.Remove(user);
 
-            if (creditCard.OwnerID == user.Id)
+            if (creditCard.OwnerID == userID)
             {
-                creditCards.RemoveAt(userID);
+                creditCards.Remove(creditCard);
             }
         }
     }
