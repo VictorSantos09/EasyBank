@@ -12,14 +12,14 @@
             bool menuProfile = true;
             while (menuProfile)
             {
-                Console.Write($"Olá {users[userIndex].Name}\n");
-                Console.Write($"\nNome: {users[userIndex].Name}\nE-mail: {users[userIndex].Email}\nTelefone: {users[userIndex].PhoneNumber}\nData de Nascimento: {users[userIndex].DateBorn}");
+                Console.Write($"Olá {user.Name}\n");
+                Console.Write($"\nNome: {user.Name}\nE-mail: {user.Email}\nTelefone: {user.PhoneNumber}\nData de Nascimento: {user.DateBorn}");
                 Console.Write("\n\n1- Ver dados do cartão\n2- Ver limite\n3- Alterar Cadastro\n4- Cancelar Conta\n 5- Voltar");
                 string option = Console.ReadLine();
 
                 if (option == "1")
                 {
-                    CardInfo(creditCards, userIndex);
+                    CardInfo(creditCards, userID);
                 }
 
                 if (option == "2")
@@ -32,30 +32,31 @@
 
                 if (option == "3")
                 {
+                    Register register = new Register();
                     Console.Clear();
-                    Console.Write($"\n1- Nome: {users[userIndex].Name}\n2- E-mail: {users[userIndex].Email}\n3- Telefone: {users[userIndex].PhoneNumber}\n4- Data de Nascimento: {users[userIndex].DateBorn}");
+                    Console.Write($"\n1- Nome: {user.Name}\n2- E-mail: {user.Email}\n3- Telefone: {user.PhoneNumber}\n");
                     Console.Write("O que será alterado?\n-> ");
                     string profileConfigOption = Console.ReadLine();
 
                     if (profileConfigOption == "1")
                     {
-                        profileConfig.ChangeName(users[userIndex].Name);
+                        register.Password();
                     }
 
                     if (profileConfigOption == "2")
                     {
-                        profileConfig.ChangeEmail(users[userIndex].Email);
+                        register.Email();
                     }
 
                     if (profileConfigOption == "3")
                     {
-                        profileConfig.ChangePhoneNumber(users[userIndex].PhoneNumber);
+                        register.PhoneNumber();
                     }
                 }
 
                 if (option == "4")
                 {
-                    AccountCancellationValidator(users, creditCards, userIndex);
+                    AccountCancellationValidator(users, creditCards, userID);
                 }
 
                 if (option == "5")
@@ -63,22 +64,19 @@
                     menuProfile = false;
                 }
             }
-
         }
-
         public void CardInfo(List<CreditCard> creditCards, int userID)
         {
             var creditCard = creditCards.Find(x => x.OwnerID == userID);
 
             Console.Clear();
-            Console.Write($"\nNúmero: {creditCards[userIndex].NumberCard}\nCVV: {creditCards[userIndex].CVV}\nData de Vencimento: {creditCards[userIndex].ExpireDate}\nNome: {creditCards[userIndex].NameOwner}");
+            Console.Write($"\nNúmero: {creditCard.NumberCard}\nCVV: {creditCard.CVV}\nData de Vencimento: {creditCard.ExpireDate}\nNome: {creditCard.NameOwner}");
             Console.Write("\n\nPressione ENTER para voltar");
             Console.ReadLine();
         }
-
-        public void AccountCancellationValidator(List<User> users, List<CreditCard> creditCards, int userIndex)
+        public void AccountCancellationValidator(List<User> users, List<CreditCard> creditCards, int userID)
         {
-
+            var user = users.Find(x => x.Id == userID);
             bool emailAndCpfValidationMenu = true;
 
             while (emailAndCpfValidationMenu)
@@ -89,9 +87,9 @@
                 Console.Write("Digite o seu cpf: ");
                 string userCpf = Console.ReadLine();
 
-                if (userEmail == users[userIndex].Email && userCpf == users[userIndex].CPF)
+                if (userEmail == user.Email && userCpf == user.CPF)
                 {
-                    ValidationAccountCancellation(emailAndCpfValidationMenu, users, creditCards, userIndex);
+                    ValidationAccountCancellation(emailAndCpfValidationMenu, users, creditCards, userID);
                 }
                 else
                 {
@@ -102,8 +100,7 @@
                 }
             }
         }
-
-        public void ValidationAccountCancellation(bool backToViewProflie, List<User> users, List<CreditCard> creditCards, int userIndex)
+        public void ValidationAccountCancellation(bool backToViewProflie, List<User> users, List<CreditCard> creditCards, int userID)
         {
             Console.Clear();
             Console.Write("Você tem certeza que deseja cancelar a conta? Após desativa-la não é possível recuperação!");
@@ -117,12 +114,10 @@
 
             if (cancellationAccountOption == "2")
             {
-                ThreeChancesPasswords(users, creditCards, userIndex);
+                ThreeChancesPasswords(users, creditCards, userID);
             }
         }
-
-
-        public void ThreeChancesPasswords(List<User> users, List<CreditCard> creditCards, int userIndex)
+        public void ThreeChancesPasswords(List<User> users, List<CreditCard> creditCards, int userID)
         {
             User user = new User();
             int counter = 0;
@@ -141,7 +136,7 @@
                 }
                 else
                 {
-                    AccountCancellation(users, creditCards, userIndex);
+                    AccountCancellation(users, creditCards, userID);
                 }
             }
             counter = 0;
@@ -160,22 +155,20 @@
                 }
                 else
                 {
-                    AccountCancellation(users, creditCards, userIndex);
+                    AccountCancellation(users, creditCards, userID);
                 }
             }
         }
-
         public void AccountCancellation(List<User> users, List<CreditCard> creditCards, int userID)
         {
             var user = users.Find(x => x.Id == userID);
             var creditCard = creditCards.Find(x => x.OwnerID == userID);
 
+            users.RemoveAt(userID);
 
-            users.RemoveAt(userIndex);
-
-            if (creditCards[i].OwnerID == users[userIndex].Id)
+            if (creditCard.OwnerID == user.Id)
             {
-                creditCards.RemoveAt(i);
+                creditCards.RemoveAt(userID);
             }
         }
     }
