@@ -2,25 +2,20 @@
 {
     public class ProfileConfig
     {
-        public void ChangeName(string name)
+        public void ChangePassword()
         {
-            Console.Clear();
-            Console.Write("Novo nome: ");
-            name = Console.ReadLine();
+            Register register = new Register();
+            register.Password();
         }
-
-        public void ChangeEmail(string email)
+        public void ChangeEmail()
         {
-            Console.Clear();
-            Console.Write("Novo E-mail: ");
-            email = Console.ReadLine();
+            Register register = new Register();
+            register.Email();
         }
-
-        public void ChangePhoneNumber(string phoneNumber)
+        public void ChangePhoneNumber()
         {
-            Console.Clear();
-            Console.Write("Novo número de telefone: ");
-            phoneNumber = Console.ReadLine();
+            Register register = new Register();
+            register.PhoneNumber();
         }
 
     }
