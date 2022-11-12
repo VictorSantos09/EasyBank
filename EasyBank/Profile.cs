@@ -35,23 +35,26 @@
                 {
                     Register register = new Register();
                     Console.Clear();
-                    Console.Write($"\n1- Nome: {user.Name}\n2- E-mail: {user.Email}\n3- Telefone: {user.PhoneNumber}\n");
+                    Console.Write($"\n1- Senha: {user.Password}\n2- E-mail: {user.Email}\n3- Telefone: {user.PhoneNumber}\n");
                     Console.Write("O que será alterado?\n-> ");
                     string profileConfigOption = Console.ReadLine();
 
                     if (profileConfigOption == "1")
                     {
-                        register.Password();
+                        var newPassword = register.Password();
+                        user.Password = newPassword;
                     }
 
                     if (profileConfigOption == "2")
                     {
-                        register.Email();
+                        var newEmail = register.Email();
+                        user.Email = newEmail;
                     }
 
                     if (profileConfigOption == "3")
                     {
-                        register.PhoneNumber();
+                        var newPhoneNumber = register.PhoneNumber();
+                        user.PhoneNumber = newPhoneNumber; 
                     }
                 }
 
