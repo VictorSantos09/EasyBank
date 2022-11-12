@@ -57,12 +57,21 @@
             if (userInputChoice == "1")
                 ChooseQtdParcels(loanValue, paymentOptions, bills, loans, userID, users);
         }
-        public double AmountInterest(int qtdParcels)
+        public double AmountInterest(int value)
         {
-            var rateBase = 25;
-            var rateMonthIncrease = 5;
+            // gerador automatico de calculo para juros
 
-            var finalValue = (rateMonthIncrease * qtdParcels) + qtdParcels * rateBase;
+            /*Random random = new();
+            var percentual = random.Next(10);
+            var calculator = random.Next(8);
+
+            var amount = (value / percentual) * calculator;
+            */
+
+            var standardCalculate = 3;
+            var percentualBase = 2;
+
+            var finalValue = (value / percentualBase) * standardCalculate;
 
             return finalValue;
         }
