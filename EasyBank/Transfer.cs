@@ -2,10 +2,10 @@
 {
     public class Transfer
     {
-        public double Valuetransfer(double informedValue, List<User> users, int userID)
+        public double Valuetransfer(List<User> users, int userID)
         {
             var user = users.Find(x => x.Id == userID);
-            informedValue = user.CurrentAccount;
+            var informedValue = user.CurrentAccount;
             Console.WriteLine("Informe o valor que você gostaria de transferir");
             Console.WriteLine($"valor em conta: {user.CurrentAccount}");
             informedValue = Convert.ToDouble(Console.ReadLine());
@@ -21,6 +21,7 @@
             {
                 Console.WriteLine("Transferencia realizada.");
                 user.CurrentAccount = user.CurrentAccount - informedValue;
+                Thread.Sleep(2000);
             }
             else
             {
@@ -32,6 +33,7 @@
             }
 
             Console.WriteLine($"Você possui {user.CurrentAccount} em conta");
+            Thread.Sleep(2000);
             return informedValue;
         }
         public double checkAmountInAccount(double choiceQuantity, List<User> users, int userID)
@@ -62,17 +64,17 @@
                     Console.WriteLine("E-mail Válido");
                     pixCorrect = true;
                 }
-                else if (pix.Length == 14 && pix.Contains("."))
+                else if (pix.Length == 11)
                 {
                     Console.WriteLine("CPF Válido");
                     pixCorrect = true;
                 }
-                else if (pix.Length == 18 && pix.Contains("/"))
+                else if (pix.Length == 14)
                 {
                     Console.WriteLine("CNPJ Válido");
                     pixCorrect = true;
                 }
-                else if (pix.Length == 11)
+                else if (pix.Length == 12)
                 {
                     Console.WriteLine("Número de telefone válido");
                     pixCorrect = true;
