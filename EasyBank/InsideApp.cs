@@ -35,7 +35,8 @@
                 }
                 else if (InputOption == "3")
                 {
-
+                    Transfer transfer = new Transfer();
+                    transfer.Valuetransfer(users, userID);
                 }
                 else if (InputOption == "4")
                 {
