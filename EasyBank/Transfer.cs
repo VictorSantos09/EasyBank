@@ -9,7 +9,7 @@
             Console.WriteLine("Informe o valor que você gostaria de transferir");
             Console.WriteLine($"valor em conta: {user.CurrentAccount}");
             informedValue = Convert.ToDouble(Console.ReadLine());
-            informedValue = checkAmountInAccount(informedValue, users, userID);
+            informedValue = CheckAmountInAccount(informedValue, users, userID);
             var check_KeyPix = CheckPix();
             ShowkeyPix(check_KeyPix);
             ShowValuePix(informedValue);
@@ -36,7 +36,7 @@
             Thread.Sleep(2000);
             return informedValue;
         }
-        public double checkAmountInAccount(double choiceQuantity, List<User> users, int userID)
+        public double CheckAmountInAccount(double choiceQuantity, List<User> users, int userID)
         {
             var user = users.Find(x => x.Id == userID);
             while (choiceQuantity > user.CurrentAccount)
