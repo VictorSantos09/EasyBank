@@ -9,8 +9,10 @@
             {
                 CreditCard creditCard = new CreditCard();
                 var userIndex = UserValidator.GetActualUserIndex(users, userID);
+
+                var user = users.Find(x => x.Id == userID);
                 Console.Clear();
-                Console.WriteLine($"Seja Bem Vindo {users[userIndex].Name}");
+                Console.WriteLine($"Seja Bem Vindo {user.Name}");
                 Console.WriteLine("O que deseja fazer?");
                 Console.WriteLine("1 - Perfil");
                 Console.WriteLine("2 - Emprestimo");
@@ -23,7 +25,8 @@
                 if (InputOption == "1")
                 {
                     Profile profile = new Profile();
-                    profile.ViewProfile(users, creditCards, userID);
+                    if (profile.ViewProfile(users, creditCards, userID, logged) == true)
+                        logged = false;
                 }
                 else if (InputOption == "2")
                 {
@@ -44,7 +47,7 @@
                 }
                 else if (InputOption == "6")
                 {
-                    creditCard.ViewInvoice(bills,userID);
+                    creditCard.ViewInvoice(bills, userID);
                     Thread.Sleep(1000);
                 }
                 else if (InputOption == "7")
