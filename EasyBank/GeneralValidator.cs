@@ -186,5 +186,9 @@
 
             return input;
         }
+        public static string RemoveWhiteSpace(string input)
+        {
+            return input.Replace(" ", "");
+        }
     }
 }
