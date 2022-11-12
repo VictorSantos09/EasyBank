@@ -91,11 +91,12 @@
             {
                 Console.Clear();
                 Console.Write("Digite o seu e-mail: ");
-                string userEmail = Console.ReadLine();
+                string userEmail = Console.ReadLine().ToUpper();
                 Console.Write("Digite o seu cpf: ");
                 string userCpf = Console.ReadLine();
+                string finalUserCpf = Convert.ToInt64(userCpf).ToString(@"000\.000\.000\-00");
 
-                if (userEmail == user.Email && userCpf == user.CPF)
+                if (userEmail == user.Email && finalUserCpf == user.CPF)
                 {
                     ValidationAccountCancellation(emailAndCpfValidationMenu, users, creditCards, userID, logged, menuProfile);
                     emailAndCpfValidationMenu = false;
