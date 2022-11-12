@@ -43,6 +43,7 @@
             Age = DateTime.Today.Year - DateBorn.Year;
             Id = _id;
             SafetyKey = _safetyKey;
+            CurrentAccount = _monthlyIncome;
         }
         public User()
         {
