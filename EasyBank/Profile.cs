@@ -1,4 +1,6 @@
-﻿namespace EasyBank
+﻿using System.ComponentModel;
+
+namespace EasyBank
 {
     public class Profile
     {
@@ -15,7 +17,7 @@
             {
                 Console.Write($"Olá {user.Name}\n");
                 Console.Write($"\nNome: {user.Name}\nE-mail: {user.Email}\nTelefone: {user.PhoneNumber}\nData de Nascimento: {user.DateBorn}");
-                Console.Write("\n\n1- Ver dados do cartão\n2- Ver limite\n3- Alterar Cadastro\n4- Cancelar Conta\n 5- Voltar\n->");
+                Console.Write("\n\n1- Ver dados do cartão\n2- Ver limite\n3- Alterar Cadastro\n4- Cancelar Conta\n5 - Ver Dados\n6- Voltar\n->");
                 string option = Console.ReadLine();
 
                 if (option == "1")
@@ -23,7 +25,7 @@
                     CardInfo(creditCards, userID);
                 }
 
-                if (option == "2")
+                else if (option == "2")
                 {
                     Console.Clear();
                     Console.Write($"Limite do cartão de crédito\n\n-> {creditCard.Limit}");
@@ -31,7 +33,7 @@
                     Console.ReadLine();
                 }
 
-                if (option == "3")
+                else if (option == "3")
                 {
                     Register register = new Register();
                     Console.Clear();
@@ -54,11 +56,11 @@
                     if (profileConfigOption == "3")
                     {
                         var newPhoneNumber = register.PhoneNumber();
-                        user.PhoneNumber = newPhoneNumber; 
+                        user.PhoneNumber = newPhoneNumber;
                     }
                 }
 
-                if (option == "4")
+                else if (option == "4")
                 {
                     AccountCancellationValidator(users, creditCards, userID, logged, menuProfile);
                     if (SucessDeleted == true)
@@ -67,9 +69,14 @@
                         menuProfile = false;
                     }
                 }
-
-                if (option == "5")
+                else if (option == "5")
+                {
+                    PrintUserData(users, userID);
+                }
+                else if (option == "6")
                     menuProfile = false;
+                else
+                    MessageError.ErrorGeneric("Opção indisponivel");
             }
             return false;
         }
@@ -180,6 +187,50 @@
             creditCards.Remove(creditCard);
             SucessDeleted = true;
 
+        }
+        public bool AskSafetyKey(List<User> users, int userID)
+        {
+            var user = users.Find(x => x.Id == userID);
+
+            Console.Write("Digite sua senha de segurança\n-> ");
+            var inputSafetyKey = Console.ReadLine().ToUpper();
+
+            if (inputSafetyKey == user.SafetyKey)
+                return true;
+
+            return false;
+        }
+        public void PrintUserData(List<User> users, int userID)
+        {
+            var user = users.Find(x => x.Id == userID);
+
+            if (AskSafetyKey(users, userID) != true)
+                MessageError.ErrorGeneric("Senha incorreta");
+
+            else
+            {
+                Console.WriteLine($"Nome: {user.Name}");
+                Console.WriteLine($"Idade: {user.Age}");
+                Console.WriteLine($"Data de Nascimento: {user.DateBorn}");
+                Console.WriteLine($"Telefone: {user.PhoneNumber}");
+                Console.WriteLine($"Email: {user.Email}");
+                Console.WriteLine($"Senha: {user.Password}");
+                Console.WriteLine($"Senha de Segurança: {user.SafetyKey}");
+                Console.WriteLine($"CPF: {user.CPF}");
+                Console.WriteLine($"RG: {user.RG}");
+                Console.WriteLine($"Renda Mensal: {user.MonthlyIncome}");
+                Console.WriteLine($"ID: {user.Id}");
+                Console.WriteLine($"Saldo em Conta: {user.CurrentAccount}");
+                Console.WriteLine($"Páis: {user.Adress.Country}");
+                Console.WriteLine($"Estado: {user.Adress.State}");
+                Console.WriteLine($"Cidade: {user.Adress.City}");
+                Console.WriteLine($"Bairro: {user.Adress.Neiborhood}");
+                Console.WriteLine($"Rua: {user.Adress.Street}");
+                Console.WriteLine($"Numero: {user.Adress.HouseNumber}");
+                Console.WriteLine($"Complemento: {user.Adress.HouseComplement}");
+                Console.WriteLine("Clique ENTER para voltar");
+                Console.ReadKey();
+            }
         }
     }
 }
