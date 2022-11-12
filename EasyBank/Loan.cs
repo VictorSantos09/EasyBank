@@ -87,7 +87,7 @@
 
             else
             {
-                var finalInterestValue = AmountInterest(qtdParcels);
+                var finalInterestValue = AmountInterest(loanValue);
 
                 var finalValue = loanValue + finalInterestValue;
 
