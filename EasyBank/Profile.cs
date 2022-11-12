@@ -2,99 +2,104 @@
 {
     public class Profile
     {
-        public void ViewProfile(List<User> users, List<CreditCard> creditCards, int userIndex)
+        public bool SucessDeleted { get; set; }
+        public bool ViewProfile(List<User> users, List<CreditCard> creditCards, int userID, bool logged)
         {
-            User user = new User();
-            CreditCard creditCard = new CreditCard();
             ProfileConfig profileConfig = new ProfileConfig();
+
+            var user = users.Find(x => x.Id == userID);
+            var creditCard = creditCards.Find(x => x.OwnerID == userID);
+
             bool menuProfile = true;
-
             while (menuProfile)
-
             {
-                Console.Write($"Olá {users[userIndex].Name}\n");
-                Console.Write($"\nNome: {users[userIndex].Name}\nE-mail: {users[userIndex].Email}\nTelefone: {users[userIndex].PhoneNumber}\nData de Nascimento: {users[userIndex].DateBorn}");
-                Console.Write("\n\n1- Ver dados do cartão\n2- Ver limite\n3- Alterar Cadastro\n4- Cancelar Conta\n 5- Voltar");
+                Console.Write($"Olá {user.Name}\n");
+                Console.Write($"\nNome: {user.Name}\nE-mail: {user.Email}\nTelefone: {user.PhoneNumber}\nData de Nascimento: {user.DateBorn}");
+                Console.Write("\n\n1- Ver dados do cartão\n2- Ver limite\n3- Alterar Cadastro\n4- Cancelar Conta\n 5- Voltar\n->");
                 string option = Console.ReadLine();
 
                 if (option == "1")
                 {
-                    CardInfo(creditCards, userIndex);
+                    CardInfo(creditCards, userID);
                 }
 
                 if (option == "2")
                 {
                     Console.Clear();
-                    Console.Write($"Limite do cartão de crédito\n\n-> {creditCard.Limite}");
+                    Console.Write($"Limite do cartão de crédito\n\n-> {creditCard.Limit}");
                     Console.Write("\n\nPressione ENTER para voltar");
                     Console.ReadLine();
                 }
 
                 if (option == "3")
                 {
+                    Register register = new Register();
                     Console.Clear();
-                    Console.Write($"\n1- Nome: {users[userIndex].Name}\n2- E-mail: {users[userIndex].Email}\n3- Telefone: {users[userIndex].PhoneNumber}\n4- Data de Nascimento: {users[userIndex].DateBorn}");
+                    Console.Write($"\n1- Senha: {user.Password}\n2- E-mail: {user.Email}\n3- Telefone: {user.PhoneNumber}\n");
                     Console.Write("O que será alterado?\n-> ");
                     string profileConfigOption = Console.ReadLine();
 
                     if (profileConfigOption == "1")
                     {
-                        profileConfig.ChangeName(users[userIndex].Name);
+                        var newPassword = register.Password();
+                        user.Password = newPassword;
                     }
 
                     if (profileConfigOption == "2")
                     {
-                        profileConfig.ChangeEmail(users[userIndex].Email);
+                        var newEmail = register.Email();
+                        user.Email = newEmail;
                     }
 
                     if (profileConfigOption == "3")
                     {
-                        profileConfig.ChangePhoneNumber(users[userIndex].PhoneNumber);
-                    }
-
-                    if (profileConfigOption == "4")
-                    {
-
+                        var newPhoneNumber = register.PhoneNumber();
+                        user.PhoneNumber = newPhoneNumber; 
                     }
                 }
 
                 if (option == "4")
                 {
-                    AccountCancellationValidator(users, creditCards, userIndex);
+                    AccountCancellationValidator(users, creditCards, userID, logged, menuProfile);
+                    if (SucessDeleted == true)
+                    {
+                        return true;
+                        menuProfile = false;
+                    }
                 }
 
                 if (option == "5")
-                {
                     menuProfile = false;
-                }
             }
-
+            return false;
         }
-
-        public void CardInfo(List<CreditCard> creditCards, int userIndex)
+        public void CardInfo(List<CreditCard> creditCards, int userID)
         {
+            var creditCard = creditCards.Find(x => x.OwnerID == userID);
+
             Console.Clear();
-            Console.Write($"\nNúmero: {creditCards[userIndex].NumberCard}\nCVV: {creditCards[userIndex].CVV}\nData de Vencimento: {creditCards[userIndex].ExpireDate}\nNome: {creditCards[userIndex].NameOwner}");
+            Console.Write($"\nNúmero: {creditCard.NumberCard}\nCVV: {creditCard.CVV}\nData de Vencimento: {creditCard.ExpireDate}\nNome: {creditCard.NameOwner}");
             Console.Write("\n\nPressione ENTER para voltar");
             Console.ReadLine();
         }
-
-        public void AccountCancellationValidator(List<User> users, List<CreditCard> creditCards, int userIndex)
+        public void AccountCancellationValidator(List<User> users, List<CreditCard> creditCards, int userID, bool logged, bool menuProfile)
         {
-
+            var user = users.Find(x => x.Id == userID);
             bool emailAndCpfValidationMenu = true;
 
             while (emailAndCpfValidationMenu)
             {
                 Console.Clear();
                 Console.Write("Digite o seu e-mail: ");
-                string userEmail = Console.ReadLine();
+                string userEmail = Console.ReadLine().ToUpper();
                 Console.Write("Digite o seu cpf: ");
                 string userCpf = Console.ReadLine();
+                string finalUserCpf = Convert.ToInt64(userCpf).ToString(@"000\.000\.000\-00");
 
-                if (userEmail == users[userIndex].Email && userCpf == users[userIndex].CPF)
+                if (userEmail == user.Email && finalUserCpf == user.CPF)
                 {
-                    ValidationAccountCancellation(emailAndCpfValidationMenu, users, creditCards, userIndex);
+                    ValidationAccountCancellation(emailAndCpfValidationMenu, users, creditCards, userID, logged, menuProfile);
+                    emailAndCpfValidationMenu = false;
                 }
                 else
                 {
@@ -105,8 +110,7 @@
                 }
             }
         }
-
-        public void ValidationAccountCancellation(bool backToViewProflie, List<User> users, List<CreditCard> creditCards, int userIndex)
+        public void ValidationAccountCancellation(bool backToViewProflie, List<User> users, List<CreditCard> creditCards, int userID, bool logged, bool menuProfile)
         {
             Console.Clear();
             Console.Write("Você tem certeza que deseja cancelar a conta? Após desativa-la não é possível recuperação!");
@@ -120,15 +124,13 @@
 
             if (cancellationAccountOption == "2")
             {
-                ThreeChancesPasswords(users, creditCards, userIndex);
+                ThreeChancesPasswords(users, creditCards, userID, logged, menuProfile);
             }
         }
-
-
-        public void ThreeChancesPasswords(List<User> users, List<CreditCard> creditCards, int userIndex)
+        public void ThreeChancesPasswords(List<User> users, List<CreditCard> creditCards, int userID, bool logged, bool menuProfile)
         {
-            User user = new User();
             int counter = 0;
+            var user = users.Find(x => x.Id == userID);
 
             while (counter != 3)
             {
@@ -144,44 +146,39 @@
                 }
                 else
                 {
-                    AccountCancellation(users, creditCards, userIndex);
-                }
-            }
-            counter = 0;
+                    counter = 0;
 
-            while (counter != 3)
-            {
-                Console.Clear();
-                Console.Write("Insira a sua senha de segurança\n\n-> ");
-                string checkoutSafetyKey = Console.ReadLine();
+                    while (counter != 3)
+                    {
+                        Console.Clear();
+                        Console.Write("Insira a sua senha de segurança\n\n-> ");
+                        string checkoutSafetyKey = Console.ReadLine().ToUpper();
 
-                if (checkoutSafetyKey != user.SafetyKey)
-                {
-                    Console.Write("Algo deu errado favor insira a senha novamente!\n\nPressione ENTER");
-                    Console.ReadLine();
-                    counter++;
-                }
-                else
-                {
-                    AccountCancellation(users, creditCards, userIndex);
+                        if (checkoutSafetyKey != user.SafetyKey)
+                        {
+                            Console.Write("Algo deu errado favor insira a senha novamente!\n\nPressione ENTER");
+                            Console.ReadLine();
+                            counter++;
+                        }
+                        else
+                        {
+                            AccountCancellation(users, creditCards, userID);
+                            counter = 3;
+                            logged = false;
+                            menuProfile = false;
+                        }
+                    }
                 }
             }
         }
-
-        public void AccountCancellation(List<User> users, List<CreditCard> creditCards, int userIndex)
+        public void AccountCancellation(List<User> users, List<CreditCard> creditCards, int userID)
         {
+            var user = users.Find(x => x.Id == userID);
+            var creditCard = creditCards.Find(x => x.OwnerID == userID);
 
-            users.RemoveAt(userIndex);
-
-            for (int i = 0; i < creditCards.Count; i++)
-            {
-                if (creditCards[i].OwnerId == users[userIndex].Id)
-                {
-                    creditCards.RemoveAt(i);
-                }
-
-            }
-
+            users.Remove(user);
+            creditCards.Remove(creditCard);
+            SucessDeleted = true;
 
         }
     }
