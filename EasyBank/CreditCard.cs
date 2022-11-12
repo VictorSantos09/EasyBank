@@ -163,13 +163,17 @@
         {
             var bill = bills.FindAll(x => x.OwnerID == userID);
 
-            if (bill == null)
+            if (bill == null || bill.Count == 0)
                 return false;
 
             return true;
         }
         public void MonthlyAction(List<CreditCard> creditCards, List<User> users, List<Bill> bills, List<AutoDebit> autoDebits, int userID)
         {
+            var user = users.Find(x => x.Id == userID);
+
+            user.CurrentAccount = user.MonthlyIncome;
+
             CreditCard creditCard = new CreditCard();
 
             creditCard.IncrementMonthInvoice(bills, creditCards, userID);
