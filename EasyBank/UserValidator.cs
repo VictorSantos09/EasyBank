@@ -29,9 +29,14 @@
             while (checkingAge)
             {
                 var toCheck = DateTime.ParseExact(input, "dd/MM/yyyy", null);
-                int today = DateTime.Today.Year;
 
-                if (today - toCheck.Year < 18)
+                var today = DateTime.Today;
+
+                var age = today.Year - toCheck.Year;
+
+                if (toCheck.Date > today.AddYears(-age)) age--;
+
+                if (age < 18)
                 {
                     Console.WriteLine("Você precisa ter no minimo 18 anos para se registrar");
                     Console.Write("Digite: ");
