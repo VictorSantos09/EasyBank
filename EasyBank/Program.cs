@@ -16,7 +16,6 @@ while (ProgramStarted)
     var userStantard = new User("Victor", "26/02/2004", "13991256286", "VICTOR@GMAIL.COM", // Usuario padrão para economizar tempo
         "1234", "6324587419", "745896245", 1500, standardAdress, UserValidator.ID_AUTOINCREMENT(users), new Adress(), "0000");
     users.Add(userStantard);
-    user.InsertMoneyToCurrentAcoount(users, 1, 1000);
 
     var creditCardID = UserValidator.ID_AUTOINCREMENT(creditCards);
     CreditCard creditCard = new CreditCard();
