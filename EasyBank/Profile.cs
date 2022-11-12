@@ -152,7 +152,7 @@
                     {
                         Console.Clear();
                         Console.Write("Insira a sua senha de segurança\n\n-> ");
-                        string checkoutSafetyKey = Console.ReadLine();
+                        string checkoutSafetyKey = Console.ReadLine().ToUpper();
 
                         if (checkoutSafetyKey != user.SafetyKey)
                         {
