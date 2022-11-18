@@ -7,7 +7,7 @@ namespace EasyBank.Services
     {
         public bool Activated { get; set; }
         public string OptionAcceptDebitOrNot { get; set; }
-        public void RegistrationMenu(List<ArrayClassOfAutoDebit> arrayClassOfAutoDebits, int ownerID)
+        public void RegistrationMenu(List<AutoDebit> AutoDebits, int ownerID)
         {
             Console.WriteLine("Cadastrar novo Débito Automático");
             Console.WriteLine("Nos diga qual é sua conta (digite o número que corresponde a sua opção):");
@@ -15,7 +15,7 @@ namespace EasyBank.Services
             string option = Console.ReadLine();
             if (option == "1")
             {
-                FillStoreList("Fatura", arrayClassOfAutoDebits, ownerID);
+                FillStoreList("Fatura", AutoDebits, ownerID);
                 //Aplicar método que faça a ligação entre DébitoAuto e Crédito;
                 //Se usuário escolher este método, a fatura do cartão todo mês
                 // será paga por aqui;
@@ -24,17 +24,17 @@ namespace EasyBank.Services
             }
             else if (option == "2")
             {
-                FillStoreList("Água", arrayClassOfAutoDebits, ownerID);
+                FillStoreList("Água", AutoDebits, ownerID);
             }
             else if (option == "3")
             {
-                FillStoreList("Seguro de Vida", arrayClassOfAutoDebits, ownerID);
+                FillStoreList("Seguro de Vida", AutoDebits, ownerID);
             }
             else if (option == "4")
             {
                 Console.WriteLine("Informe-nos a conta que deseja cadastrar:");
                 option = Console.ReadLine();
-                FillStoreList(option, arrayClassOfAutoDebits, ownerID);
+                FillStoreList(option, AutoDebits, ownerID);
             }
             else
             {
@@ -64,11 +64,11 @@ namespace EasyBank.Services
             return amountDebited;
         }
         public void FillStoreList(string NameExpense,
-            List<ArrayClassOfAutoDebit> arrayClassOfAutoDebits, int ownerID)
+            List<AutoDebit> AutoDebits, int ownerID)
         {
             float accountValue = FillInInformation(NameExpense);
-            var datasAutoDebit = new ArrayClassOfAutoDebit(NameExpense, null, ownerID, accountValue);
-            arrayClassOfAutoDebits.Add(datasAutoDebit);
+            var datasAutoDebit = new AutoDebit(NameExpense, null, ownerID, accountValue);
+            AutoDebits.Add(datasAutoDebit);
         }
     }
 }

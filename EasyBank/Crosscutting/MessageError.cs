@@ -15,5 +15,10 @@
 
             return input;
         }
+        public static void ErrorThread(string message, int threadLevel)
+        {
+            Console.WriteLine(message);
+            Thread.Sleep(threadLevel);
+        }
     }
 }
