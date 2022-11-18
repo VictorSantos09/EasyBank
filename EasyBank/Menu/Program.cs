@@ -3,8 +3,7 @@ using EasyBank.Entities;
 using EasyBank.Menu;
 using EasyBank.Services;
 
-RegisterNewAutoDebit RegisterNewAutoDebit = new RegisterNewAutoDebit();
-List<ArrayClassOfAutoDebit> autoDebits = new List<ArrayClassOfAutoDebit>();
+List<AutoDebit> autoDebits = new List<AutoDebit>();
 Register register = new Register();
 LogIn login = new LogIn();
 Adress adress = new Adress();

@@ -26,7 +26,8 @@ namespace EasyBank.Menu
                 Console.WriteLine("4 - Poupança");
                 Console.WriteLine("5 - Pagar Fatura");
                 Console.WriteLine("6 - Ver Contas");
-                Console.WriteLine("7 - Sair");
+                Console.WriteLine("7 - Débito Automático");
+                Console.WriteLine("8 - Sair");
                 var InputOption = Console.ReadLine();
                 if (InputOption == "1")
                 {
@@ -67,6 +68,11 @@ namespace EasyBank.Menu
                     Thread.Sleep(1000);
                 }
                 else if (InputOption == "7")
+                {
+                    AutoDebit autoDebit = new AutoDebit();
+                    autoDebit.Menu(autoDebits, userID);
+                }
+                else if (InputOption == "8")
                 {
                     logged = false;
                 }
