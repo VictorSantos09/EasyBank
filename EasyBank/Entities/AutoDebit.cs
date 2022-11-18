@@ -1,10 +1,7 @@
-<<<<<<< HEAD:EasyBank/Entities/AutoDebit.cs
-﻿namespace EasyBank.Entities
-=======
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
+using EasyBank.Services;
 
-namespace EasyBank
->>>>>>> 33ae82c46c52f84b8144d19b0deaf89123dafb38:EasyBank/AutoDebit.cs
+namespace EasyBank.Entities
 {
     public class AutoDebit
     {

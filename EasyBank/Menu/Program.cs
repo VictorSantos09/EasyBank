@@ -3,13 +3,8 @@ using EasyBank.Entities;
 using EasyBank.Menu;
 using EasyBank.Services;
 
-<<<<<<< HEAD:EasyBank/Menu/Program.cs
-=======
-User user = new User();
 RegisterNewAutoDebit RegisterNewAutoDebit = new RegisterNewAutoDebit();
 List<ArrayClassOfAutoDebit> autoDebits = new List<ArrayClassOfAutoDebit>();
-var ProgramStarted = true;
->>>>>>> 33ae82c46c52f84b8144d19b0deaf89123dafb38:EasyBank/Program.cs
 Register register = new Register();
 LogIn login = new LogIn();
 Adress adress = new Adress();
