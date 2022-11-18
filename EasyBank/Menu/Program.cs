@@ -41,7 +41,6 @@ while (true)
 
     switch (userInputMainMenu)
     {
-<<<<<<< HEAD:EasyBank/Menu/Program.cs
         case "1":
             register.UserRegister(users, creditCards, adress);
             break;
@@ -55,7 +54,7 @@ while (true)
             else
             {
                 InsideApp insideApp = new InsideApp();
-                insideApp.Home(userID, users, creditCards, loans, bills);
+                insideApp.Home(userID, users, creditCards, loans, bills, autoDebits);
             }
             break;
 
@@ -66,30 +65,5 @@ while (true)
         default:
             MessageError.ErrorGeneric("Opção indisponivel");
             break;
-=======
-        register.UserRegister(users, creditCards, adress);
     }
-    else if (userInputMainMenu == "2")
-    {
-        var userID = login.CheckLogin(users);
-        if (userID == 0)
-        {
-            Console.WriteLine("Dados não cadastrados ou senha incorreta");
-        }
-        else
-        {
-            InsideApp insideApp = new InsideApp();
-            insideApp.Home(userID, users, creditCards, loans, bills);
-        }
-    }
-    else if (userInputMainMenu == "3")
-    {
-
-    }
-    else
-    {
-        Console.WriteLine("opção não disponível, tente novamente");
->>>>>>> 33ae82c46c52f84b8144d19b0deaf89123dafb38:EasyBank/Program.cs
-    }
-
 }

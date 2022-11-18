@@ -6,13 +6,15 @@ namespace EasyBank.Menu
 {
     public class InsideApp
     {
-        public void Home(int userID, List<User> users, List<CreditCard> creditCards, List<Loan> loans, List<Bill> bills)
+        public void Home(int userID, List<User> users, List<CreditCard> creditCards, List<Loan> loans, List<Bill> bills, List<AutoDebit> autoDebits)
         {
+            DateTime dateLogged = DateTime.Now;
             bool logged = true;
             while (logged)
             {
                 CreditCard creditCard = new CreditCard();
                 var userIndex = UserValidator.GetActualUserIndex(users, userID);
+                creditCard.MonthlyAction(creditCards, users, bills, autoDebits, userID, dateLogged);
 
                 var user = users.Find(x => x.Id == userID);
                 Console.Clear();
@@ -39,8 +41,11 @@ namespace EasyBank.Menu
                 }
                 else if (InputOption == "3")
                 {
+                    var datePixChoosed = DateTime.Now;
+
                     Transfer transfer = new Transfer();
                     transfer.Valuetransfer(users, userID);
+
                 }
                 else if (InputOption == "4")
                 {

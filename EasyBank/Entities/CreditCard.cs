@@ -1,4 +1,5 @@
 ﻿using EasyBank.Crosscutting;
+using EasyBank.Menu;
 
 namespace EasyBank.Entities
 {
@@ -170,26 +171,33 @@ namespace EasyBank.Entities
 
             return true;
         }
-        public void MonthlyAction(List<CreditCard> creditCards, List<User> users, List<Bill> bills, List<AutoDebit> autoDebits, int userID)
+        public void MonthlyAction(List<CreditCard> creditCards, List<User> users, List<Bill> bills, List<AutoDebit> autoDebits, int userID, DateTime timeLogged)
         {
-            var user = users.Find(x => x.Id == userID);
 
-            user.CurrentAccount = user.MonthlyIncome;
+            if (timeLogged.Minute >= 1)
+            {
 
-            CreditCard creditCard = new CreditCard();
+                var user = users.Find(x => x.Id == userID);
 
-            creditCard.IncrementMonthInvoice(bills, creditCards, userID);
+                user.CurrentAccount = user.MonthlyIncome;
 
-            Bill bill = new Bill();
+                CreditCard creditCard = new CreditCard();
 
-            if (bill.HasAutoDebitActivated(autoDebits, userID) == true)
-                AutoPaymentInvoice(bills, creditCards, users, userID);
+                creditCard.IncrementMonthInvoice(bills, creditCards, userID);
 
-            else if (HasPendingPayments(bills, userID) == true)
-                Console.WriteLine("Novas Faturas, vá até a opção de Pagar Fatura em seu perfil");
+                Bill bill = new Bill();
 
-            else
-                Console.WriteLine("Nenhuma nova fatura");
+                if (bill.HasAutoDebitActivated(autoDebits, userID) == true)
+                    AutoPaymentInvoice(bills, creditCards, users, userID);
+
+                else if (HasPendingPayments(bills, userID) == true)
+                    Console.WriteLine("Novas Faturas, vá até a opção de Pagar Fatura em seu perfil");
+
+                else
+                    Console.WriteLine("Nenhuma nova fatura");
+
+            }
+
         }
     }
 }
