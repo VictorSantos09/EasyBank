@@ -142,7 +142,7 @@ namespace EasyBank.Entities
 
                 if (user.CurrentAccount < valueToPay)
                 {
-                    MessageError.ErrorGeneric("Saldo Indisponivel");
+                    Message.ErrorGeneric("Saldo Indisponivel");
                     Thread.Sleep(1300);
                 }
                 else

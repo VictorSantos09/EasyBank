@@ -62,7 +62,7 @@ while (true)
             break;
 
         default:
-            MessageError.ErrorGeneric("Opção indisponivel");
+            Message.ErrorGeneric("Opção indisponivel");
             break;
     }
 }
