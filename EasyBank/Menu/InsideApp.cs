@@ -65,7 +65,7 @@ namespace EasyBank.Menu
                 else if (InputOption == "7")
                 {
                     AutoDebit autoDebit = new AutoDebit();
-                    autoDebit.Menu(autoDebits, userID, users);
+                    autoDebit.Menu(autoDebits, userID, users, bills);
                 }
                 else if (InputOption == "8")
                 {

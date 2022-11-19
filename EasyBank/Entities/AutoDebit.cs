@@ -20,7 +20,7 @@ namespace EasyBank.Entities
         {
 
         }
-        public void Menu(List<AutoDebit> autoDebits, int userID, List<User> users)
+        public void Menu(List<AutoDebit> autoDebits, int userID, List<User> users, List<Bill> bills)
         {
             Console.Clear();
 
@@ -43,7 +43,7 @@ namespace EasyBank.Entities
                         break;
 
                     case "3":
-                        RegistrationMenu(autoDebits, userID, users);
+                        RegistrationMenu(autoDebits, userID, users, bills);
                         break;
 
                     case "4":
@@ -73,24 +73,6 @@ namespace EasyBank.Entities
             Console.WriteLine("Quer remover uma conta do débito automático? Acesse a opção '4'. \n \n");
             Thread.Sleep(1300);
         }
-        public void RemoveAutoDebit(List<AutoDebit> autoDebits, int userID)
-        {
-            var userAutoDebits = autoDebits.FindAll(x => x.OwnerID == userID);
-
-            if (userAutoDebits.Count == 0)
-                Message.ErrorThread("Nenhuma conta cadastrada");
-
-            else
-            {
-                DisplaysDebits(autoDebits, userID);
-                Console.WriteLine("Informe qual conta deseja desativar:");
-                var option = Convert.ToInt32(Console.ReadLine());
-
-                var autoDebit = autoDebits[--option];
-
-                autoDebits.Remove(autoDebit);
-            }
-        }
         public void DisplaysDebits(List<AutoDebit> autoDebits, int userID)
         {
             var userAutoDebits = autoDebits.FindAll(x => x.OwnerID == userID);
@@ -108,7 +90,7 @@ namespace EasyBank.Entities
                 }
             }
         }
-        public void RegistrationMenu(List<AutoDebit> AutoDebits, int userID, List<User> users)
+        public void RegistrationMenu(List<AutoDebit> AutoDebits, int userID, List<User> users, List<Bill> bills)
         {
             Console.WriteLine("Cadastrar novo Débito Automático");
 
@@ -119,25 +101,25 @@ namespace EasyBank.Entities
             switch (userOption)
             {
                 case "1":
-                    FillStoreList("Fatura", AutoDebits, userID,users);
+                    AddAutoDebit("Fatura", AutoDebits, userID, users, bills);
                     //Aplicar método que faça a ligação entre DébitoAuto e Crédito;
                     //Se usuário escolher este método, a fatura do cartão todo mês
                     // será paga por aqui;
                     break;
 
                 case "2":
-                    FillStoreList("Água", AutoDebits, userID, users);
+                    AddAutoDebit("Água", AutoDebits, userID, users, bills);
                     break;
 
                 case "3":
-                    FillStoreList("Seguro de Vida", AutoDebits, userID, users);
+                    AddAutoDebit("Seguro de Vida", AutoDebits, userID, users, bills);
                     break;
 
                 case "4":
                     Console.WriteLine("Informe-nos a conta que deseja cadastrar:");
                     var otherOption = Console.ReadLine();
 
-                    FillStoreList(otherOption, AutoDebits, userID, users);
+                    AddAutoDebit(otherOption, AutoDebits, userID, users,bills);
                     break;
 
                 default:
@@ -149,7 +131,7 @@ namespace EasyBank.Entities
         {
             var user = users.Find(x => x.Id == userID);
             var amountDebit = 0.0;
-            
+
             while (true)
             {
                 Console.Clear();
@@ -158,7 +140,7 @@ namespace EasyBank.Entities
 
                 if (amountDebit > user.MonthlyIncome)
                     Message.ErrorGeneric("Valor muito alto para sua renda mensal");
-                
+
                 else
                 {
                     Console.WriteLine($"A conta de {option}, no valor de {amountDebit} será paga automaticamente no mesmo dia que " +
@@ -181,7 +163,25 @@ namespace EasyBank.Entities
 
             return false;
         }
-        public void FillStoreList(string NameExpense, List<AutoDebit> AutoDebits, int userID, List<User> users)
+        public void RemoveAutoDebit(List<AutoDebit> autoDebits, int userID)
+        {
+            var userAutoDebits = autoDebits.FindAll(x => x.OwnerID == userID);
+
+            if (userAutoDebits.Count == 0)
+                Message.ErrorThread("Nenhuma conta cadastrada");
+
+            else
+            {
+                DisplaysDebits(autoDebits, userID);
+                Console.WriteLine("Informe qual conta deseja desativar:");
+                var option = Convert.ToInt32(Console.ReadLine());
+
+                var autoDebit = autoDebits[--option];
+
+                autoDebits.Remove(autoDebit);
+            }
+        }
+        public void AddAutoDebit(string NameExpense, List<AutoDebit> AutoDebits, int userID, List<User> users, List<Bill> bills)
         {
             var accountValue = FillInInformation(NameExpense, users, userID);
 
@@ -190,8 +190,10 @@ namespace EasyBank.Entities
                 var id = UserValidator.ID_AUTOINCREMENT(AutoDebits);
 
                 var datasAutoDebit = new AutoDebit(NameExpense, null, userID, accountValue, id);
-
                 AutoDebits.Add(datasAutoDebit);
+
+                var biil = new Bill(accountValue, NameExpense, 1, null, userID, accountValue, true);
+                bills.Add(biil);
             }
 
         }
