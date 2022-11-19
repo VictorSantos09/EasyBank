@@ -9,12 +9,10 @@ namespace EasyBank.Menu
         public void Home(int userID, List<User> users, List<CreditCard> creditCards, List<Loan> loans, List<Bill> bills, List<AutoDebit> autoDebits)
         {
             bool logged = true;
-            DateTime dateLogged = DateTime.Now;
             while (logged)
             {
                 CreditCard creditCard = new CreditCard();
                 var userIndex = UserValidator.GetActualUserIndex(users, userID);
-                creditCard.MonthlyAction(creditCards, users, bills, autoDebits, userID, dateLogged);
 
                 var user = users.Find(x => x.Id == userID);
                 Console.Clear();
