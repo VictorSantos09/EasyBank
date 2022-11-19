@@ -1,4 +1,6 @@
-﻿namespace EasyBank
+﻿using EasyBank.Crosscutting;
+
+namespace EasyBank.Entities
 {
     public class Loan : EntidadeBase
     {
@@ -71,7 +73,7 @@
             var standardCalculate = 3;
             var percentualBase = 2;
 
-            var finalValue = (value / percentualBase) * standardCalculate;
+            var finalValue = value / percentualBase * standardCalculate;
 
             return finalValue;
         }

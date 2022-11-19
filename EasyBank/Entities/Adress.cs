@@ -1,4 +1,4 @@
-﻿namespace EasyBank
+﻿namespace EasyBank.Entities
 {
     public class Adress
     {

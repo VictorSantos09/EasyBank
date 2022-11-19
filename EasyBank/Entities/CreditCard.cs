@@ -1,4 +1,6 @@
-﻿namespace EasyBank
+﻿using EasyBank.Crosscutting;
+
+namespace EasyBank.Entities
 {
     public class CreditCard : EntidadeBase
     {
@@ -183,9 +185,9 @@
             if (bill.HasAutoDebitActivated(autoDebits, userID) == true)
                 AutoPaymentInvoice(bills, creditCards, users, userID);
 
-            else if (HasPendingPayments(bills,userID) == true)
+            else if (HasPendingPayments(bills, userID) == true)
                 Console.WriteLine("Novas Faturas, vá até a opção de Pagar Fatura em seu perfil");
-            
+
             else
                 Console.WriteLine("Nenhuma nova fatura");
         }

@@ -1,4 +1,8 @@
-﻿namespace EasyBank
+﻿using EasyBank.Crosscutting;
+using EasyBank.Entities;
+using EasyBank.Services;
+
+namespace EasyBank.Menu
 {
     public class InsideApp
     {

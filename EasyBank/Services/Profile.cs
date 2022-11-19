@@ -1,6 +1,8 @@
 ﻿using System.ComponentModel;
+using EasyBank.Crosscutting;
+using EasyBank.Entities;
 
-namespace EasyBank
+namespace EasyBank.Services
 {
     public class Profile
     {

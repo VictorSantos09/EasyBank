@@ -1,4 +1,4 @@
-﻿namespace EasyBank
+﻿namespace EasyBank.Crosscutting
 {
     public class MessageError
     {

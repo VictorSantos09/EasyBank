@@ -1,4 +1,4 @@
-﻿namespace EasyBank
+﻿namespace EasyBank.Crosscutting
 {
     public static class GeneralValidator
     {
@@ -120,14 +120,14 @@
             var removingAll = true;
             while (removingAll)
             {
-                var hasNumber = GeneralValidator.HasNumber(input);
+                var hasNumber = HasNumber(input);
                 if (hasNumber == true)
                 {
                     input = MessageError.ErrorGenericWrite("Não pode conter numeros", input);
                 }
                 else
                 {
-                    var hasSpecialC = GeneralValidator.HasSpecialCaracter(input);
+                    var hasSpecialC = HasSpecialCaracter(input);
                     if (hasSpecialC == true)
                     {
                         input = MessageError.ErrorGenericWrite("Não pode conter caracteres especiais", input);
@@ -175,8 +175,7 @@
                 var checker = HasWhiteSpace(input);
                 if (checker == true)
                 {
-                    MessageError.ErrorGenericWrite("Não pode conter espaços em branco", input);
-                    input = IsNullOrEmpty.OutputNotNull(Console.ReadLine());
+                    input = GeneralValidator.RemoveWhiteSpace(input);
                 }
                 else
                 {

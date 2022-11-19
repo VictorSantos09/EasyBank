@@ -1,4 +1,7 @@
-﻿namespace EasyBank
+﻿using EasyBank.Crosscutting;
+using EasyBank.Entities;
+
+namespace EasyBank.Services
 {
     public class SafetyPassword
     {
