@@ -15,7 +15,7 @@
 
             return input;
         }
-        public static void ErrorThread(string message, int threadLevel)
+        public static void ErrorThread(string message, int threadLevel = 1300)
         {
             Console.WriteLine(message);
             Thread.Sleep(threadLevel);
