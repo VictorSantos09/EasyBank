@@ -7,13 +7,14 @@ namespace EasyBank.Entities
     public class AutoDebit : Bill
     {
         public bool Activated { get; set; }
-        public AutoDebit(string _name, string _info, int _userID, double _value)
+        public AutoDebit(string _name, string _info, int _userID, double _value, int _id)
         {
             Name = _name;
             Info = _info;
             OwnerID = _userID;
             Value = _value;
             Activated = true;
+            Id = _id;
         }
         public AutoDebit()
         {
@@ -83,7 +84,11 @@ namespace EasyBank.Entities
             {
                 DisplaysDebits(autoDebits, userID);
                 Console.WriteLine("Informe qual conta deseja desativar:");
-                string option = Console.ReadLine();
+                var option = Convert.ToInt32(Console.ReadLine());
+
+                var autoDebit = autoDebits[--option];
+
+                autoDebits.Remove(autoDebit);
             }
         }
         public void DisplaysDebits(List<AutoDebit> autoDebits, int userID)
@@ -182,7 +187,9 @@ namespace EasyBank.Entities
 
             if (ConfirmAutoDebit() == true)
             {
-                var datasAutoDebit = new AutoDebit(NameExpense, null, userID, accountValue);
+                var id = UserValidator.ID_AUTOINCREMENT(AutoDebits);
+
+                var datasAutoDebit = new AutoDebit(NameExpense, null, userID, accountValue, id);
 
                 AutoDebits.Add(datasAutoDebit);
             }
