@@ -47,7 +47,7 @@ namespace EasyBank.Entities
                 else if (optionMenu == "5")
                 {
                     Console.WriteLine("Voltando ao Menu Principal...");
-                    MessageError.ErrorThread("Voltando ao Menu Principal...",1300)
+                    MessageError.ErrorThread("Voltando ao Menu Principal...", 1300);
                     selectMenu = false;
                 }
                 else

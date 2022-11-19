@@ -174,12 +174,17 @@ namespace EasyBank.Entities
         public void MonthlyAction(List<CreditCard> creditCards, List<User> users, List<Bill> bills, List<AutoDebit> autoDebits, int userID, DateTime timeLogged)
         {
 
-            if (timeLogged.Minute >= 1)
+
+            var a = DateTime.Now.Subtract(timeLogged);
+
+            Console.WriteLine(a.Seconds);
+
+            if (a.Seconds >= 15)
             {
 
                 var user = users.Find(x => x.Id == userID);
 
-                user.CurrentAccount = user.MonthlyIncome;
+                user.CurrentAccount += user.MonthlyIncome;
 
                 CreditCard creditCard = new CreditCard();
 
