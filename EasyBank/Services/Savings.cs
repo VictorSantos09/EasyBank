@@ -20,7 +20,7 @@ namespace EasyBank.Services
         {
 
         }
-        public void Menu(List<Savings> savings, int userID)
+        public void Menu(List<Savings> savings, int userID, List<User> users)
         {
             Console.WriteLine("POUPANÇA\n");
             Console.WriteLine("1 - Investir\n2 - Ver Rendimento\n3 - Voltar\nDigite: ");
@@ -31,7 +31,7 @@ namespace EasyBank.Services
                 switch (Console.ReadLine())
                 {
                     case "1":
-                        SavingStagesSteps(savings, userID);
+                        SavingStagesSteps(savings, userID, users);
                         break;
 
                     case "2":
@@ -84,7 +84,7 @@ namespace EasyBank.Services
 
             saving.Value += CalculateTaxes(saving.Value);
         }
-        public void SavingStagesSteps(List<Savings> savings, int userID)
+        public void SavingStagesSteps(List<Savings> savings, int userID, List<User> users)
         {
             if (HasExistentSaving(savings, userID) == true)
                 Message.ErrorThread("Você já contém uma poupança");
@@ -96,7 +96,10 @@ namespace EasyBank.Services
                 var taxesAmount = CalculateTaxes(amount);
 
                 if (ConfirmApplySaving() == true)
+                {
                     AddSavingToList(userID, amount, savings, taxesAmount);
+                    TransferMoneyToSavings(users, savings, userID, amount);
+                }
             }
         }
         public bool HasExistentSaving(List<Savings> savings, int userID)
@@ -119,6 +122,16 @@ namespace EasyBank.Services
                 Console.WriteLine($"Saldo Inicial: {saving.StartValue}");
                 Console.WriteLine($"Juros Totais: {saving.TaxesValue}");
             }
+        }
+        public void TransferMoneyToSavings(List<User> users, List<Savings> savings, int userID, double investMoneyAmount)
+        {
+            var user = users.Find(x => x.Id == userID);
+            var saving = savings.Find(x => x.OwnerID == userID);
+
+            user.CurrentAccount = -investMoneyAmount;
+            saving.Value += investMoneyAmount;
+            saving.StartValue = investMoneyAmount;
+
         }
     }
 }
