@@ -1,5 +1,6 @@
 ﻿using EasyBank.Crosscutting;
 using EasyBank.Entities;
+using Microsoft.VisualBasic;
 using System.Windows.Input;
 
 namespace EasyBank.Services
@@ -25,27 +26,30 @@ namespace EasyBank.Services
         public void Menu(List<Savings> savings, int userID, List<User> users)
         {
             Console.WriteLine("POUPANÇA\n");
-            Console.WriteLine("1 - Investir\n2 - Ver Rendimento\n3 - Voltar\nDigite: ");
+            Console.WriteLine("1 - Investir\n2 - Ver Rendimento\n3 - Resgatar\n4 - Voltar\nDigite: ");
             var choice = Console.ReadLine();
 
-            while (choice != "1" || choice != "2")
+            switch (choice)
+            {
+                case "1":
+                    SavingSteps(savings, userID, users);
+                    break;
 
-                switch (Console.ReadLine())
-                {
-                    case "1":
-                        SavingSteps(savings, userID, users);
-                        break;
+                case "2":
+                    PrintBenefits(savings, userID);
+                    break;
 
-                    case "2":
-                        PrintBenefits(savings, userID);
-                        break;
-                    case "3":
-                        break;
+                case "3":
+                    MenuRescue(users, savings, userID);
+                    break;
 
-                    default:
-                        Message.ErrorGeneric("Opção indisponivel");
-                        break;
-                }
+                case "4":
+                    break;
+
+                default:
+                    Message.ErrorGeneric("Opção indisponivel");
+                    break;
+            }
         }
         public double CalculateTaxes(double userValueInvested)
         {
@@ -136,22 +140,7 @@ namespace EasyBank.Services
 
                 if (HasExistentSaving(savings, userID) == true)
                 {
-                    Message.ErrorThread("Você já contém uma poupança, deseja aplicar dinheiro nela?\n1 - Sim\n2 - Não, sair\nDigite: ");
-
-                    switch (Console.ReadLine())
-                    {
-                        case "1":
-                            InsertMoney(users, savings, userID);
-                            break;
-
-                        case "2":
-                            return;
-
-                        default:
-                            Message.ErrorGeneric("Opção indisponível");
-                            break;
-                    }
-                    break;
+                    Message.ErrorThread("Você já contém uma poupança");
                 }
 
                 else
@@ -279,6 +268,24 @@ namespace EasyBank.Services
         public double TransferAllMoney(List<Savings> savings, int userID)
         {
             return savings.Find(x => x.OwnerID == userID).Value;
+        }
+        public void MenuRescue(List<User> users, List<Savings> savings, int userID)
+        {
+            Message.ErrorThread("Você já contém uma poupança, deseja aplicar dinheiro nela?\n1 - Sim\n2 - Não, sair\nDigite: ");
+
+            switch (Console.ReadLine())
+            {
+                case "1":
+                    InsertMoney(users, savings, userID);
+                    break;
+
+                case "2":
+                    return;
+
+                default:
+                    Message.ErrorGeneric("Opção indisponível");
+                    break;
+            }
         }
     }
 }
