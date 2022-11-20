@@ -10,7 +10,6 @@ namespace EasyBank.Services
         public double Value { get; set; }
         public double TaxesValue { get; set; }
         public double StartValue { get; set; }
-        //public static List<Savings> _Savings { get; set; }
         public MoneyBaseEntity MoneyBaseEntity { get; set; }
         public Savings(int userID, double _value, int _id, double _taxesValue)
         {
@@ -118,12 +117,18 @@ namespace EasyBank.Services
             Console.WriteLine("Deseja confirmar o investimento na poupança?\n1 - Sim\n2 - Não\nDigite: ");
             var confirmed = Console.ReadLine();
 
-            if (confirmed == "1")
-                return true;
+            switch (confirmed)
+            {
+                case "1":
+                    return true;
 
-            else if (confirmed != "1" || confirmed != "2")
-                Message.ErrorGeneric();
+                    case "2":
+                    break;
 
+                default:
+                    Message.ErrorGeneric();
+                    break;
+            }
             return false;
         }
         public void MonthlyAction(List<Savings> savings, int userID)
