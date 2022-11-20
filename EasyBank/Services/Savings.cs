@@ -38,7 +38,6 @@ namespace EasyBank.Services
                         PrintBenefits(savings, userID);
                         break;
                     case "3":
-                        return;
                         break;
 
                     default:
@@ -177,6 +176,16 @@ namespace EasyBank.Services
             saving.Value += investMoneyAmount;
             saving.StartValue = investMoneyAmount;
 
+        }
+        public void InsertMoney()
+        {
+            // Implement
+            // Fazer com que seja possivel o usuario adicionar valor á poupança existente para maior rendimento
+        }
+        public void RescueMoney()
+        {
+            // Implement
+            // Remover o dinheiro total ou parcial da poupança para a conta corrente
         }
     }
 }
