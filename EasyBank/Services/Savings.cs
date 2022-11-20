@@ -1,6 +1,7 @@
 ﻿using EasyBank.Crosscutting;
 using EasyBank.Entities;
 using Microsoft.VisualBasic;
+using System;
 using System.Windows.Input;
 
 namespace EasyBank.Services
@@ -11,12 +12,13 @@ namespace EasyBank.Services
         public double TaxesValue { get; set; }
         public double StartValue { get; set; }
         public MoneyBaseEntity MoneyBaseEntity { get; set; }
-        public Savings(int userID, double _value, int _id, double _taxesValue)
+        public Savings(int userID, double _value, int _id, double _taxesValue, double _startValue)
         {
             OwnerID = userID;
             Value += _value;
             Id = _id;
             TaxesValue += _taxesValue;
+            StartValue = _startValue;
         }
         public Savings()
         {
@@ -56,14 +58,14 @@ namespace EasyBank.Services
         }
         public double CalculateTaxes(double userValueInvested)
         {
-            var mainTaxPrice = 0.21;
-            var incrementer = 0.27;
+            var mainTaxPrice = 1.21;
+            var incrementer = 1.17;
 
             return (userValueInvested * mainTaxPrice) * incrementer;
         }
         public void AddSavingToList(int userID, double userValueInvested, List<Savings> savings, double taxesValue)
         {
-            var saving = new Savings(userID, userValueInvested, UserValidator.ID_AUTOINCREMENT(savings), taxesValue);
+            var saving = new Savings(userID, userValueInvested, UserValidator.ID_AUTOINCREMENT(savings), taxesValue, userValueInvested);
 
             savings.Add(saving);
         }
@@ -136,6 +138,9 @@ namespace EasyBank.Services
         }
         public void MonthlyAction(List<Savings> savings, int userID)
         {
+            // Somar juros e valor
+            // Calcular novos juros
+            // Aplicar novo valor
             var saving = savings.Find(x => x.OwnerID == userID);
 
             saving.Value += CalculateTaxes(saving.Value);
@@ -147,27 +152,35 @@ namespace EasyBank.Services
             {
                 Console.Clear();
 
+                Console.WriteLine("INVESTIR");
+
                 if (HasExistentSaving(savings, userID) == true)
                 {
-                    Message.ErrorThread("Você já contém uma poupança");
+                    Message.ErrorThread("Você já contém uma poupança", 0);
+
+                    Console.WriteLine("Deseja adicionar mais dinheiro?\n1 - Sim\n2 - Não, sair");
+                    Console.Write("Digite: ");
+
+                    if (Console.ReadLine() == "1")
+                        InsertMoney(users, savings, userID);
                     break;
                 }
 
                 else
                 {
-                    var Value = ChooseValue(users, userID);
+                    var value = ChooseValue(users, userID);
 
-                    if (Value > user.CurrentAccount)
+                    if (value > user.CurrentAccount)
                         Message.ErrorGeneric("Valor maior que em conta");
 
                     else
                     {
-                        var taxesValue = CalculateTaxes(Value);
+                        var taxesValue = CalculateTaxes(value);
 
                         if (ConfirmApplySaving() == true)
                         {
                             AddSavingToList(userID, Value, savings, taxesValue);
-                            TransferMoneyToSavings(users, savings, userID, Value);
+                            DiscountMoneyFromUser(users, userID, Value);
                             break;
                         }
 
@@ -198,18 +211,17 @@ namespace EasyBank.Services
                 Console.WriteLine($"Juros Totais: {saving.TaxesValue}");
             }
         }
-        public void TransferMoneyToSavings(List<User> users, List<Savings> savings, int userID, double investMoneyValue)
+        public void DiscountMoneyFromUser(List<User> users,int userID, double investMoneyValue)
         {
             var user = users.Find(x => x.Id == userID);
-            var saving = savings.Find(x => x.OwnerID == userID);
-
-            user.CurrentAccount = -investMoneyValue;
-            saving.Value += investMoneyValue;
-            saving.StartValue = investMoneyValue;
-
+            user.CurrentAccount -=  investMoneyValue;
         }
         public void InsertMoney(List<User> users, List<Savings> savings, int userID)
         {
+            Console.Clear();
+
+            Console.WriteLine("ADICIONAR DINHEIRO");
+
             var user = users.Find(x => x.Id == userID);
             var saving = savings.Find(x => x.OwnerID == userID);
 
@@ -232,13 +244,14 @@ namespace EasyBank.Services
             var user = users.Find(x => x.Id == userID);
             var saving = savings.Find(x => x.OwnerID == userID);
 
+            Console.Clear();
             Console.WriteLine("RESGATE\n");
 
             if (saving != null)
             {
                 PrintBenefits(savings, userID);
 
-                Console.WriteLine("Deseja resgatar todo o rendimento?\n1 - Sim\n 2 - Não\n3 - Voltar");
+                Console.WriteLine("Deseja resgatar todo o rendimento?\n1 - Sim\n2 - Não\n3 - Voltar");
                 Console.Write("Digite: ");
                 var choice = Console.ReadLine();
 
@@ -248,7 +261,7 @@ namespace EasyBank.Services
                 switch (choice)
                 {
                     case "1":
-                        allMoney = TransferAllMoney(savings, userID);
+                        TransferAllMoney(savings, userID, users);
                         break;
 
                     case "2":
@@ -296,9 +309,13 @@ namespace EasyBank.Services
 
             return true;
         }
-        public double TransferAllMoney(List<Savings> savings, int userID)
+        public void TransferAllMoney(List<Savings> savings, int userID, List<User> users)
         {
-            return savings.Find(x => x.OwnerID == userID).Value;
+            var saving = savings.Find(x => x.OwnerID == userID);
+            var user = users.Find(x => x.Id == userID);
+
+            user.CurrentAccount += saving.Value;
+            saving.Value = 0.0;
         }
         public void MenuInsertMoney(List<User> users, List<Savings> savings, int userID)
         {
