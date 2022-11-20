@@ -2,11 +2,12 @@
 {
     public class Message
     {
+        public static int ThreadLevel { get; set; } = 1300;
         public static void ErrorGeneric(string? message)
         {
             var mainMessage = "Tente novamente.";
             Console.WriteLine($"{mainMessage} {message}");
-            Thread.Sleep(1500);
+            Thread.Sleep(ThreadLevel);
         }
         public static string ErrorGenericWrite(string? message, string input)
         {
