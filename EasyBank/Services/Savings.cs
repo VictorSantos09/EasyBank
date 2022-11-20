@@ -1,5 +1,6 @@
 ﻿using EasyBank.Crosscutting;
 using EasyBank.Entities;
+using System.Windows.Input;
 
 namespace EasyBank.Services
 {
@@ -31,7 +32,7 @@ namespace EasyBank.Services
                 switch (Console.ReadLine())
                 {
                     case "1":
-                        SavingStagesSteps(savings, userID, users);
+                        SavingSteps(savings, userID, users);
                         break;
 
                     case "2":
@@ -52,13 +53,13 @@ namespace EasyBank.Services
 
             return (userValueInvested * mainTaxPrice) * incrementer;
         }
-        public void AddSavingToList(int userID, double userValueInvested, List<Savings> savings, double taxesAmount)
+        public void AddSavingToList(int userID, double userValueInvested, List<Savings> savings, double taxesValue)
         {
-            var saving = new Savings(userID, userValueInvested, UserValidator.ID_AUTOINCREMENT(savings), taxesAmount);
+            var saving = new Savings(userID, userValueInvested, UserValidator.ID_AUTOINCREMENT(savings), taxesValue);
 
             savings.Add(saving);
         }
-        public double ChooseExtraAmount(List<User> users, int userID)
+        public double ChooseExtraValue(List<User> users, int userID)
         {
             var value = 0.0;
             while (true)
@@ -69,14 +70,10 @@ namespace EasyBank.Services
 
                 var user = users.Find(x => x.Id == userID);
 
-                if (value > user.CurrentAccount)
-                    Message.ErrorGeneric("Valor maior que em conta");
-
-                else
-                    return value;
+                return value;
             }
         }
-        public double ChooseAmount(List<User> users, int userID)
+        public double ChooseValue(List<User> users, int userID)
         {
             while (true)
             {
@@ -101,7 +98,7 @@ namespace EasyBank.Services
                         return 250.00;
 
                     case "5":
-                        return ChooseExtraAmount(users, userID);
+                        return ChooseExtraValue(users, userID);
 
                     default:
                         Message.ErrorGeneric("Opção Indisponível");
@@ -128,21 +125,36 @@ namespace EasyBank.Services
 
             saving.Value += CalculateTaxes(saving.Value);
         }
-        public void SavingStagesSteps(List<Savings> savings, int userID, List<User> users)
+        public void SavingSteps(List<Savings> savings, int userID, List<User> users)
         {
-            if (HasExistentSaving(savings, userID) == true)
-                Message.ErrorThread("Você já contém uma poupança");
-
-            else
+            var user = users.Find(x => x.Id == userID);
+            while (Console.ReadKey().Key != ConsoleKey.Q)
             {
-                var amount = ChooseAmount(users, userID);
+                Console.WriteLine("Clique Q a qualquer momento para sair");
 
-                var taxesAmount = CalculateTaxes(amount);
-
-                if (ConfirmApplySaving() == true)
+                if (HasExistentSaving(savings, userID) == true)
                 {
-                    AddSavingToList(userID, amount, savings, taxesAmount);
-                    TransferMoneyToSavings(users, savings, userID, amount);
+                    Message.ErrorThread("Você já contém uma poupança");
+                    break;
+                }
+
+                else
+                {
+                    var Value = ChooseValue(users, userID);
+
+                    if (Value > user.CurrentAccount)
+                        Message.ErrorGeneric("Valor maior que em conta");
+
+                    else
+                    {
+                        var taxesValue = CalculateTaxes(Value);
+
+                        if (ConfirmApplySaving() == true)
+                        {
+                            AddSavingToList(userID, Value, savings, taxesValue);
+                            TransferMoneyToSavings(users, savings, userID, Value);
+                        }
+                    }
                 }
             }
         }
@@ -167,25 +179,45 @@ namespace EasyBank.Services
                 Console.WriteLine($"Juros Totais: {saving.TaxesValue}");
             }
         }
-        public void TransferMoneyToSavings(List<User> users, List<Savings> savings, int userID, double investMoneyAmount)
+        public void TransferMoneyToSavings(List<User> users, List<Savings> savings, int userID, double investMoneyValue)
         {
             var user = users.Find(x => x.Id == userID);
             var saving = savings.Find(x => x.OwnerID == userID);
 
-            user.CurrentAccount = -investMoneyAmount;
-            saving.Value += investMoneyAmount;
-            saving.StartValue = investMoneyAmount;
+            user.CurrentAccount = -investMoneyValue;
+            saving.Value += investMoneyValue;
+            saving.StartValue = investMoneyValue;
 
         }
-        public void InsertMoney()
+        public void InsertMoney(List<User> users, List<Savings> savings, int userID)
         {
-            // Implement
-            // Fazer com que seja possivel o usuario adicionar valor á poupança existente para maior rendimento
+            var user = users.Find(x => x.Id == userID);
+            var saving = savings.Find(x => x.OwnerID == userID);
+
+            var value = ChooseValue(users, userID);
+
+            if (UserHasEnoughMoney(value, users, userID) == true)
+            {
+                user.CurrentAccount = -value;
+                saving.Value += value;
+            }
         }
         public void RescueMoney()
         {
             // Implement
             // Remover o dinheiro total ou parcial da poupança para a conta corrente
+        }
+        public bool UserHasEnoughMoney(double value, List<User> users, int userID)
+        {
+            var user = users.Find(x => x.Id == userID);
+
+            if (value > user.CurrentAccount)
+            {
+                Message.ErrorGeneric("Valor maior que em conta");
+                return false;
+            }
+
+            return true;
         }
     }
 }
