@@ -12,6 +12,7 @@ List<User> users = new List<User>();
 List<CreditCard> creditCards = new List<CreditCard>();
 List<Bill> bills = new List<Bill>();
 List<Loan> loans = new List<Loan>();
+List<Savings> savings = new List<Savings>();
 
 while (true)
 {
@@ -53,7 +54,7 @@ while (true)
             else
             {
                 InsideApp insideApp = new InsideApp();
-                insideApp.Home(userID, users, creditCards, loans, bills, autoDebits);
+                insideApp.Home(userID, users, creditCards, loans, bills, autoDebits, savings);
             }
             break;
 

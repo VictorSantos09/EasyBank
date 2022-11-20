@@ -6,7 +6,8 @@ namespace EasyBank.Menu
 {
     public class InsideApp
     {
-        public void Home(int userID, List<User> users, List<CreditCard> creditCards, List<Loan> loans, List<Bill> bills, List<AutoDebit> autoDebits)
+        public void Home(int userID, List<User> users, List<CreditCard> creditCards, List<Loan> loans, 
+            List<Bill> bills, List<AutoDebit> autoDebits,List<Savings> savings)
         {
             bool logged = true;
             while (logged)
@@ -15,6 +16,7 @@ namespace EasyBank.Menu
                 var userIndex = UserValidator.GetActualUserIndex(users, userID);
 
                 var user = users.Find(x => x.Id == userID);
+
                 Console.Clear();
                 Console.WriteLine($"Seja Bem Vindo {user.Name}");
                 Console.WriteLine("O que deseja fazer?");
@@ -45,7 +47,8 @@ namespace EasyBank.Menu
                 }
                 else if (InputOption == "4")
                 {
-
+                    Savings saving = new Savings();
+                    saving.Menu(savings, userID, users);
                 }
                 else if (InputOption == "5")
                 {
@@ -70,20 +73,6 @@ namespace EasyBank.Menu
                 else if (InputOption == "8")
                 {
                     logged = false;
-                }
-                else if (InputOption == "0")
-                {
-                    Console.WriteLine($"usuario conta corrente: {user.CurrentAccount}");
-                    Console.WriteLine($"usuario auto debit: {user.AutoDebit}");
-                    Console.WriteLine($"usuario id: {user.Id}");
-                    Console.WriteLine($"usuario open loan: {user.OpenLoan}");
-                    Console.WriteLine($"contagem auto debits: {autoDebits.Count}");
-                    Console.WriteLine($"{bills.Count}");
-                    var cc = creditCards.Find(x => x.OwnerID == userID);
-                    Console.WriteLine($"cartão de credito Valor Parcela: {cc.ValueInvoice}");
-                    Console.WriteLine($"cartão de credito ID dono: {cc.OwnerID}");
-                    Console.WriteLine($"cartão de credito ID: {cc.Id}");
-                    Console.ReadKey();
                 }
                 else
                 {

@@ -1,6 +1,6 @@
 ﻿namespace EasyBank.Entities
 {
-    public class User : EntidadeBase
+    public class User : BaseEntity
     {
         public int CashbackLevel { get; set; }
         public int MonthMovimentation { get; set; }

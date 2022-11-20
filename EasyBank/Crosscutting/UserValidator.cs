@@ -200,7 +200,7 @@ namespace EasyBank.Crosscutting
 
             return finalInput;
         }
-        public static int ID_AUTOINCREMENT<T>(List<T> list) where T : EntidadeBase
+        public static int ID_AUTOINCREMENT<T>(List<T> list) where T : BaseEntity
         {
             var lastItem = list.LastOrDefault();
             return lastItem is null ? 1 : lastItem.Id + 1;
@@ -223,6 +223,19 @@ namespace EasyBank.Crosscutting
             }
 
             return finalIndex;
+        }
+        public static bool IsCorrectSafeyKey(List<User> users, int userID)
+        {
+            var user = users.Find(x => x.Id == userID);
+
+            Console.WriteLine("Digite sua senha de segurança");
+            Console.Write("Digite: ");
+            var key = Console.ReadLine().ToUpper();
+
+            if (key == user.SafetyKey)
+                return true;
+
+            return false;
         }
     }
 }
