@@ -11,7 +11,6 @@ namespace EasyBank.Services
         public double Value { get; set; }
         public double TaxesValue { get; set; }
         public double StartValue { get; set; }
-        public MoneyBaseEntity MoneyBaseEntity { get; set; }
         public Savings(int userID, double _value, int _id, double _taxesValue, double _startValue)
         {
             OwnerID = userID;
@@ -49,6 +48,7 @@ namespace EasyBank.Services
                     break;
 
                 case "4":
+                    CancelSaving(savings, users, userID);
                     break;
 
                 case "5":
@@ -141,9 +141,6 @@ namespace EasyBank.Services
         }
         public void MonthlyAction(List<Savings> savings, int userID)
         {
-            // Somar juros e valor
-            // Calcular novos juros
-            // Aplicar novo valor
             var saving = savings.Find(x => x.OwnerID == userID);
 
             saving.Value += CalculateTaxes(saving.Value);
@@ -346,6 +343,7 @@ namespace EasyBank.Services
         {
             var saving = savings.Find(x => x.Id == userID);
 
+            Console.Clear();
             Console.WriteLine("Tem certeza que deseja cancelar sua poupança?\n1 - Sim\n2 - Não");
             Console.Write("Digite: ");
             var choice = Console.ReadLine();
