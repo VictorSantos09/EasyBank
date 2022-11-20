@@ -4,12 +4,13 @@ using System.Windows.Input;
 
 namespace EasyBank.Services
 {
-    public class Savings : EntidadeBase
+    public class Savings : BaseEntity
     {
         public double Value { get; set; }
         public double TaxesValue { get; set; }
         public double StartValue { get; set; }
         public static List<Savings> _Savings { get; set; }
+        public MoneyBaseEntity MoneyBaseEntity { get; set; }
         public Savings(int userID, double _value, int _id, double _taxesValue)
         {
             OwnerID = userID;
@@ -130,11 +131,26 @@ namespace EasyBank.Services
             var user = users.Find(x => x.Id == userID);
             while (Console.ReadKey().Key != ConsoleKey.Q)
             {
+                Console.Clear();
                 Console.WriteLine("Clique Q a qualquer momento para sair");
 
                 if (HasExistentSaving(savings, userID) == true)
                 {
-                    Message.ErrorThread("Você já contém uma poupança");
+                    Message.ErrorThread("Você já contém uma poupança, deseja aplicar dinheiro nela?\n1 - Sim\n2 - Não, sair\nDigite: ");
+
+                    switch (Console.ReadLine())
+                    {
+                        case "1":
+                            InsertMoney(users, savings, userID);
+                            break;
+
+                        case "2":
+                            return;
+
+                        default:
+                            Message.ErrorGeneric("Opção indisponível");
+                            break;
+                    }
                     break;
                 }
 
@@ -196,24 +212,39 @@ namespace EasyBank.Services
 
             var value = ChooseValue(users, userID);
 
-            if (UserHasEnoughMoney(value, users, userID) == true)
+            if (HasEnoughMoney(value, users, userID) == true)
             {
                 user.CurrentAccount = -value;
                 saving.Value += value;
             }
         }
-        public void RescueMoney()
+        public void RescueMoney(List<User> users,List<Savings> savings, int userID)
         {
+            var user = users.Find(x => x.Id == userID);
+            var saving = savings.Find(x => x.OwnerID == userID);
+
+            Console.WriteLine("RESGATE");
+
+            PrintBenefits(savings, userID);
+
+            var value = ChooseValue(users, userID);
+
+            if (HasEnoughMoney(value,users,userID) == true)
+            {
+                user.CurrentAccount += value;
+                saving.Value -= value;
+            }
+
             // Implement
             // Remover o dinheiro total ou parcial da poupança para a conta corrente
         }
-        public bool UserHasEnoughMoney(double value, List<User> users, int userID)
+        public bool HasEnoughMoney<T>(double value, List<T> lists, int userID) where T : MoneyBaseEntity
         {
-            var user = users.Find(x => x.Id == userID);
+            var list = lists.Find(x => x.OwnerID == userID);
 
-            if (value > user.CurrentAccount)
+            if (value > list.ValueDouble)
             {
-                Message.ErrorGeneric("Valor maior que em conta");
+                Message.ErrorGeneric("Valor indisponível");
                 return false;
             }
 

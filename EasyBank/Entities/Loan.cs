@@ -2,7 +2,7 @@
 
 namespace EasyBank.Entities
 {
-    public class Loan : EntidadeBase
+    public class Loan : BaseEntity
     {
         public int OwnerID { get; set; }
         public double Value { get; set; }

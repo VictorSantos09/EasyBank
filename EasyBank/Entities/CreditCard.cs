@@ -2,7 +2,7 @@
 
 namespace EasyBank.Entities
 {
-    public class CreditCard : EntidadeBase
+    public class CreditCard : BaseEntity
     {
         public int OwnerID { get; set; }
         public string NumberCard { get; set; }
