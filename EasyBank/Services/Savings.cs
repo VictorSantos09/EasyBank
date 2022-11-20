@@ -59,12 +59,12 @@ namespace EasyBank.Services
 
             savings.Add(saving);
         }
-        public double ChooseAmount(List<User> users, int userID)
+        public double ChooseExtraAmount(List<User> users, int userID)
         {
             var value = 0.0;
             while (true)
             {
-                Console.WriteLine("Quanto você deseja investir mensalmente?\nDigite: ");
+                Console.WriteLine("Digite a quantia: ");
 
                 value = Convert.ToDouble(Console.ReadLine());
 
@@ -73,9 +73,42 @@ namespace EasyBank.Services
                 if (value > user.CurrentAccount)
                     Message.ErrorGeneric("Valor maior que em conta");
 
-                break;
+                else
+                    return value;
             }
-            return value;
+        }
+        public double ChooseAmount(List<User> users, int userID)
+        {
+            while (true)
+            {
+                Console.WriteLine("1 - 100");
+                Console.WriteLine("2 - 150");
+                Console.WriteLine("3 - 200");
+                Console.WriteLine("4 - 250");
+                Console.WriteLine("5 - Outro Valor");
+                Console.Write("Digite: ");
+
+                var choice = Console.ReadLine();
+
+                switch (choice)
+                {
+                    case "1":
+                        return 100.00;
+                    case "2":
+                        return 150.00;
+                    case "3":
+                        return 200.00;
+                    case "4":
+                        return 250.00;
+
+                    case "5":
+                        return ChooseExtraAmount(users, userID);
+
+                    default:
+                        Message.ErrorGeneric("Opção Indisponível");
+                        break;
+                }
+            }
         }
         public bool ConfirmApplySaving()
         {
