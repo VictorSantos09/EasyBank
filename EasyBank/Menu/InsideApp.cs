@@ -6,7 +6,7 @@ namespace EasyBank.Menu
 {
     public class InsideApp
     {
-        public void Home(int userID, List<User> users, List<CreditCard> creditCards, List<Loan> loans, List<Bill> bills)
+        public void Home(int userID, List<User> users, List<CreditCard> creditCards, List<Loan> loans, List<Bill> bills, List<AutoDebit> autoDebits)
         {
             bool logged = true;
             while (logged)
@@ -24,7 +24,8 @@ namespace EasyBank.Menu
                 Console.WriteLine("4 - Poupança");
                 Console.WriteLine("5 - Pagar Fatura");
                 Console.WriteLine("6 - Ver Contas");
-                Console.WriteLine("7 - Sair");
+                Console.WriteLine("7 - Débito Automático");
+                Console.WriteLine("8 - Sair");
                 var InputOption = Console.ReadLine();
                 if (InputOption == "1")
                 {
@@ -63,11 +64,30 @@ namespace EasyBank.Menu
                 }
                 else if (InputOption == "7")
                 {
+                    AutoDebit autoDebit = new AutoDebit();
+                    autoDebit.Menu(autoDebits, userID, users, bills);
+                }
+                else if (InputOption == "8")
+                {
                     logged = false;
+                }
+                else if (InputOption == "0")
+                {
+                    Console.WriteLine($"usuario conta corrente: {user.CurrentAccount}");
+                    Console.WriteLine($"usuario auto debit: {user.AutoDebit}");
+                    Console.WriteLine($"usuario id: {user.Id}");
+                    Console.WriteLine($"usuario open loan: {user.OpenLoan}");
+                    Console.WriteLine($"contagem auto debits: {autoDebits.Count}");
+                    Console.WriteLine($"{bills.Count}");
+                    var cc = creditCards.Find(x => x.OwnerID == userID);
+                    Console.WriteLine($"cartão de credito Valor Parcela: {cc.ValueInvoice}");
+                    Console.WriteLine($"cartão de credito ID dono: {cc.OwnerID}");
+                    Console.WriteLine($"cartão de credito ID: {cc.Id}");
+                    Console.ReadKey();
                 }
                 else
                 {
-                    MessageError.ErrorGeneric("Opção indisponivel");
+                    Message.ErrorGeneric("Opção indisponivel");
                 }
             }
         }

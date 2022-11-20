@@ -3,6 +3,7 @@ using EasyBank.Entities;
 using EasyBank.Menu;
 using EasyBank.Services;
 
+List<AutoDebit> autoDebits = new List<AutoDebit>();
 Register register = new Register();
 LogIn login = new LogIn();
 Adress adress = new Adress();
@@ -52,7 +53,7 @@ while (true)
             else
             {
                 InsideApp insideApp = new InsideApp();
-                insideApp.Home(userID, users, creditCards, loans, bills);
+                insideApp.Home(userID, users, creditCards, loans, bills, autoDebits);
             }
             break;
 
@@ -61,7 +62,7 @@ while (true)
             break;
 
         default:
-            MessageError.ErrorGeneric("Opção indisponivel");
+            Message.ErrorGeneric("Opção indisponivel");
             break;
     }
 }
