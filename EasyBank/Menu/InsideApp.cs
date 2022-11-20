@@ -16,6 +16,7 @@ namespace EasyBank.Menu
                 var userIndex = UserValidator.GetActualUserIndex(users, userID);
 
                 var user = users.Find(x => x.Id == userID);
+
                 Console.Clear();
                 Console.WriteLine($"Seja Bem Vindo {user.Name}");
                 Console.WriteLine("O que deseja fazer?");

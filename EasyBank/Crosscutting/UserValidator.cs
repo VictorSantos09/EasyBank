@@ -224,5 +224,18 @@ namespace EasyBank.Crosscutting
 
             return finalIndex;
         }
+        public static bool IsCorrectSafeyKey(List<User> users, int userID)
+        {
+            var user = users.Find(x => x.Id == userID);
+
+            Console.WriteLine("Digite sua senha de segurança");
+            Console.Write("Digite: ");
+            var key = Console.ReadLine().ToUpper();
+
+            if (key == user.SafetyKey)
+                return true;
+
+            return false;
+        }
     }
 }

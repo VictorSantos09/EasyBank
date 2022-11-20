@@ -28,7 +28,7 @@ namespace EasyBank.Services
         {
             Console.Clear();
             Console.WriteLine("POUPANÇA\n");
-            Console.WriteLine("1 - Investir\n2 - Ver Rendimento\n3 - Resgatar\n4 - Voltar");
+            Console.WriteLine("1 - Investir\n2 - Ver Rendimento\n3 - Resgatar\n4 - Cancelar\n5 - Voltar");
             Console.Write("Digite: ");
             var choice = Console.ReadLine();
 
@@ -49,6 +49,9 @@ namespace EasyBank.Services
                     break;
 
                 case "4":
+                    break;
+
+                case "5":
                     break;
 
                 default:
@@ -211,10 +214,10 @@ namespace EasyBank.Services
                 Console.WriteLine($"Juros Totais: {saving.TaxesValue}");
             }
         }
-        public void DiscountMoneyFromUser(List<User> users,int userID, double investMoneyValue)
+        public void DiscountMoneyFromUser(List<User> users, int userID, double investMoneyValue)
         {
             var user = users.Find(x => x.Id == userID);
-            user.CurrentAccount -=  investMoneyValue;
+            user.CurrentAccount -= investMoneyValue;
         }
         public void InsertMoney(List<User> users, List<Savings> savings, int userID)
         {
@@ -338,6 +341,33 @@ namespace EasyBank.Services
                         break;
                 }
             }
+        }
+        public void CancelSaving(List<Savings> savings, List<User> users, int userID)
+        {
+            var saving = savings.Find(x => x.Id == userID);
+
+            Console.WriteLine("Tem certeza que deseja cancelar sua poupança?\n1 - Sim\n2 - Não");
+            Console.Write("Digite: ");
+            var choice = Console.ReadLine();
+
+            switch (choice)
+            {
+                case "1":
+                    if (UserValidator.IsCorrectSafeyKey(users, userID) == true)
+                    {
+                        savings.Remove(saving);
+                        Message.ErrorGeneric("Poupança deletada com sucesso");
+                    }
+                    break;
+
+                case "2":
+                    break;
+
+                default:
+                    Message.ErrorGeneric();
+                    break;
+            }
+
         }
     }
 }
