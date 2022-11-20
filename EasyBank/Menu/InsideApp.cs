@@ -71,20 +71,6 @@ namespace EasyBank.Menu
                 {
                     logged = false;
                 }
-                else if (InputOption == "0")
-                {
-                    Console.WriteLine($"usuario conta corrente: {user.CurrentAccount}");
-                    Console.WriteLine($"usuario auto debit: {user.AutoDebit}");
-                    Console.WriteLine($"usuario id: {user.Id}");
-                    Console.WriteLine($"usuario open loan: {user.OpenLoan}");
-                    Console.WriteLine($"contagem auto debits: {autoDebits.Count}");
-                    Console.WriteLine($"{bills.Count}");
-                    var cc = creditCards.Find(x => x.OwnerID == userID);
-                    Console.WriteLine($"cartão de credito Valor Parcela: {cc.ValueInvoice}");
-                    Console.WriteLine($"cartão de credito ID dono: {cc.OwnerID}");
-                    Console.WriteLine($"cartão de credito ID: {cc.Id}");
-                    Console.ReadKey();
-                }
                 else
                 {
                     Message.ErrorGeneric("Opção indisponivel");
