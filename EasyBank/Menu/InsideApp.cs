@@ -6,7 +6,8 @@ namespace EasyBank.Menu
 {
     public class InsideApp
     {
-        public void Home(int userID, List<User> users, List<CreditCard> creditCards, List<Loan> loans, List<Bill> bills, List<AutoDebit> autoDebits)
+        public void Home(int userID, List<User> users, List<CreditCard> creditCards, List<Loan> loans, 
+            List<Bill> bills, List<AutoDebit> autoDebits,List<Savings> savings)
         {
             bool logged = true;
             while (logged)
@@ -45,7 +46,8 @@ namespace EasyBank.Menu
                 }
                 else if (InputOption == "4")
                 {
-
+                    Savings saving = new Savings();
+                    saving.Menu(savings, userID, users);
                 }
                 else if (InputOption == "5")
                 {

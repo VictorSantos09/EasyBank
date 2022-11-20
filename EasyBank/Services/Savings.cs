@@ -10,7 +10,7 @@ namespace EasyBank.Services
         public double Value { get; set; }
         public double TaxesValue { get; set; }
         public double StartValue { get; set; }
-        public static List<Savings> _Savings { get; set; }
+        //public static List<Savings> _Savings { get; set; }
         public MoneyBaseEntity MoneyBaseEntity { get; set; }
         public Savings(int userID, double _value, int _id, double _taxesValue)
         {
@@ -25,6 +25,7 @@ namespace EasyBank.Services
         }
         public void Menu(List<Savings> savings, int userID, List<User> users)
         {
+            Console.Clear();
             Console.WriteLine("POUPANÇA\n");
             Console.WriteLine("1 - Investir\n2 - Ver Rendimento\n3 - Resgatar\n4 - Voltar\nDigite: ");
             var choice = Console.ReadLine();
@@ -37,10 +38,11 @@ namespace EasyBank.Services
 
                 case "2":
                     PrintBenefits(savings, userID);
+                    Holder.PressAnyKey();
                     break;
 
                 case "3":
-                    MenuRescue(users, savings, userID);
+                    RescueMoney(users, savings, userID);
                     break;
 
                 case "4":
@@ -116,11 +118,11 @@ namespace EasyBank.Services
             Console.WriteLine("Deseja confirmar o investimento na poupança?\n1 - Sim\n2 - Não\nDigite: ");
             var confirmed = Console.ReadLine();
 
-            while (confirmed != "1" || confirmed != "2")
-                Message.ErrorGeneric("Opção inválida");
-
             if (confirmed == "1")
                 return true;
+
+            else if (confirmed != "1" || confirmed != "2")
+                Message.ErrorGeneric();
 
             return false;
         }
@@ -133,14 +135,14 @@ namespace EasyBank.Services
         public void SavingSteps(List<Savings> savings, int userID, List<User> users)
         {
             var user = users.Find(x => x.Id == userID);
-            while (Console.ReadKey().Key != ConsoleKey.Q)
+            while (true)
             {
                 Console.Clear();
-                Console.WriteLine("Clique Q a qualquer momento para sair");
 
                 if (HasExistentSaving(savings, userID) == true)
                 {
                     Message.ErrorThread("Você já contém uma poupança");
+                    break;
                 }
 
                 else
@@ -158,6 +160,7 @@ namespace EasyBank.Services
                         {
                             AddSavingToList(userID, Value, savings, taxesValue);
                             TransferMoneyToSavings(users, savings, userID, Value);
+                            break;
                         }
                     }
                 }
@@ -199,12 +202,18 @@ namespace EasyBank.Services
             var user = users.Find(x => x.Id == userID);
             var saving = savings.Find(x => x.OwnerID == userID);
 
-            var value = ChooseValue(users, userID);
+            if (saving == null)
+                Message.ErrorGeneric("Você não possui investimentos");
 
-            if (UserHasEnoughMoney(value, users, userID) == true)
+            else
             {
-                user.CurrentAccount = -value;
-                saving.Value += value;
+                var value = ChooseValue(users, userID);
+
+                if (UserHasEnoughMoney(value, users, userID) == true)
+                {
+                    user.CurrentAccount = -value;
+                    saving.Value += value;
+                }
             }
         }
         public void RescueMoney(List<User> users, List<Savings> savings, int userID)
@@ -212,34 +221,44 @@ namespace EasyBank.Services
             var user = users.Find(x => x.Id == userID);
             var saving = savings.Find(x => x.OwnerID == userID);
 
-            Console.WriteLine("RESGATE");
+            Console.WriteLine("RESGATE\n");
 
-            PrintBenefits(savings, userID);
-
-            Console.WriteLine("Deseja resgatar todo o rendimento?\n1 - Sim\n 2 - Não");
-            var choice = Console.ReadLine();
-
-            var allMoney = 0.0;
-            var value = 0.0;
-
-            if (choice == "1")
+            if (saving != null)
             {
-                allMoney = TransferAllMoney(savings, userID);
-            }
+                PrintBenefits(savings, userID);
 
-            else if (choice == "2")
-            {
-                value = ChooseValue(users, userID);
+                Console.WriteLine("Deseja resgatar todo o rendimento?\n1 - Sim\n 2 - Não\n3 - Voltar");
+                var choice = Console.ReadLine();
 
-                if (SavingHasEnoughMoney(value, savings, userID) == true)
+                var allMoney = 0.0;
+                var value = 0.0;
+
+                switch (choice)
                 {
-                    user.CurrentAccount += value;
-                    saving.Value -= value;
+                    case "1":
+                        allMoney = TransferAllMoney(savings, userID);
+                        break;
+
+                    case "2":
+                        value = ChooseValue(users, userID);
+
+                        if (SavingHasEnoughMoney(value, savings, userID) == true)
+                        {
+                            user.CurrentAccount += value;
+                            saving.Value -= value;
+                        }
+                        break;
+
+                    case "3":
+                        return;
+
+                    default:
+                        Message.ErrorGeneric();
+                        break;
                 }
             }
-
             else
-                Message.ErrorGeneric();
+                Message.ErrorThread("Nenhuma poupança cadastrada", 1500);
         }
         public bool UserHasEnoughMoney(double value, List<User> users, int userID)
         {
@@ -269,7 +288,7 @@ namespace EasyBank.Services
         {
             return savings.Find(x => x.OwnerID == userID).Value;
         }
-        public void MenuRescue(List<User> users, List<Savings> savings, int userID)
+        public void MenuInsertMoney(List<User> users, List<Savings> savings, int userID)
         {
             Message.ErrorThread("Você já contém uma poupança, deseja aplicar dinheiro nela?\n1 - Sim\n2 - Não, sair\nDigite: ");
 
