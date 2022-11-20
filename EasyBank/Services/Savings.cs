@@ -212,13 +212,13 @@ namespace EasyBank.Services
 
             var value = ChooseValue(users, userID);
 
-            if (HasEnoughMoney(value, users, userID) == true)
+            if (UserHasEnoughMoney(value, users, userID) == true)
             {
                 user.CurrentAccount = -value;
                 saving.Value += value;
             }
         }
-        public void RescueMoney(List<User> users,List<Savings> savings, int userID)
+        public void RescueMoney(List<User> users, List<Savings> savings, int userID)
         {
             var user = users.Find(x => x.Id == userID);
             var saving = savings.Find(x => x.OwnerID == userID);
@@ -227,28 +227,58 @@ namespace EasyBank.Services
 
             PrintBenefits(savings, userID);
 
-            var value = ChooseValue(users, userID);
+            Console.WriteLine("Deseja resgatar todo o rendimento?\n1 - Sim\n 2 - Não");
+            var choice = Console.ReadLine();
 
-            if (HasEnoughMoney(value,users,userID) == true)
+            var allMoney = 0.0;
+            var value = 0.0;
+
+            if (choice == "1")
             {
-                user.CurrentAccount += value;
-                saving.Value -= value;
+                allMoney = TransferAllMoney(savings, userID);
             }
 
-            // Implement
-            // Remover o dinheiro total ou parcial da poupança para a conta corrente
-        }
-        public bool HasEnoughMoney<T>(double value, List<T> lists, int userID) where T : MoneyBaseEntity
-        {
-            var list = lists.Find(x => x.OwnerID == userID);
+            else if (choice == "2")
+            {
+                value = ChooseValue(users, userID);
 
-            if (value > list.ValueDouble)
+                if (SavingHasEnoughMoney(value, savings, userID) == true)
+                {
+                    user.CurrentAccount += value;
+                    saving.Value -= value;
+                }
+            }
+
+            else
+                Message.ErrorGeneric();
+        }
+        public bool UserHasEnoughMoney(double value, List<User> users, int userID)
+        {
+            var user = users.Find(x => x.OwnerID == userID);
+
+            if (value > user.CurrentAccount)
             {
                 Message.ErrorGeneric("Valor indisponível");
                 return false;
             }
 
             return true;
+        }
+        public bool SavingHasEnoughMoney(double value, List<Savings> savings, int userID)
+        {
+            var saving = savings.Find(x => x.OwnerID == userID);
+
+            if (value > saving.Value)
+            {
+                Message.ErrorGeneric("Valor indisponível");
+                return false;
+            }
+
+            return true;
+        }
+        public double TransferAllMoney(List<Savings> savings, int userID)
+        {
+            return savings.Find(x => x.OwnerID == userID).Value;
         }
     }
 }

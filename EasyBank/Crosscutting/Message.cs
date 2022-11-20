@@ -3,7 +3,7 @@
     public class Message
     {
         public static int ThreadLevel { get; set; } = 1300;
-        public static void ErrorGeneric(string? message)
+        public static void ErrorGeneric(string? message = "Opção indisponivel")
         {
             var mainMessage = "Tente novamente.";
             Console.WriteLine($"{mainMessage} {message}");
