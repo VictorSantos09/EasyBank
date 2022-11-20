@@ -1,6 +1,4 @@
-﻿using EasyBank.Crosscutting;
-
-namespace EasyBank.Entities
+﻿namespace EasyBank
 {
     public class Loan : EntidadeBase
     {
@@ -27,7 +25,7 @@ namespace EasyBank.Entities
 
             if (user.OpenLoan == true)
             {
-                Message.ErrorGeneric("Não é possivel abrir mais de um empréstimo");
+                MessageError.ErrorGeneric("Não é possivel abrir mais de um empréstimo");
             }
 
             else
@@ -39,7 +37,7 @@ namespace EasyBank.Entities
 
                 if (loanValue > twoYearsSalary)
                 {
-                    Message.ErrorGeneric("Quantia não disponivel para você");
+                    MessageError.ErrorGeneric("Quantia não disponivel para você");
                 }
 
                 else
@@ -73,7 +71,7 @@ namespace EasyBank.Entities
             var standardCalculate = 3;
             var percentualBase = 2;
 
-            var finalValue = value / percentualBase * standardCalculate;
+            var finalValue = (value / percentualBase) * standardCalculate;
 
             return finalValue;
         }
@@ -84,7 +82,7 @@ namespace EasyBank.Entities
 
             if (qtdParcels > 12 || qtdParcels < 1)
             {
-                Message.ErrorGeneric("Escolha indisponivel");
+                MessageError.ErrorGeneric("Escolha indisponivel");
             }
 
             else

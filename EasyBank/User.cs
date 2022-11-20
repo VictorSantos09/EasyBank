@@ -1,4 +1,4 @@
-﻿namespace EasyBank.Entities
+﻿namespace EasyBank
 {
     public class User : EntidadeBase
     {

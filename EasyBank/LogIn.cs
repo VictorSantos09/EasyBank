@@ -1,7 +1,4 @@
-﻿using EasyBank.Crosscutting;
-using EasyBank.Entities;
-
-namespace EasyBank.Services
+﻿namespace EasyBank
 {
     public class LogIn
     {
@@ -15,7 +12,7 @@ namespace EasyBank.Services
                 if (counter <= 0)
                 {
                     Console.Clear();
-                    Message.ErrorGeneric("Você atingiu o limite de tentativas.");
+                    MessageError.ErrorGeneric("Você atingiu o limite de tentativas.");
                     checking = false;
                     Thread.Sleep(1500);
                 }
@@ -39,7 +36,7 @@ namespace EasyBank.Services
                                 }
                                 else
                                 {
-                                    Message.ErrorGeneric("Senha incorreta.");
+                                    MessageError.ErrorGeneric("Senha incorreta.");
                                     counter--;
                                     break;
                                 }
@@ -58,7 +55,7 @@ namespace EasyBank.Services
                                 }
                                 else
                                 {
-                                    Message.ErrorGeneric("Senha incorreta.");
+                                    MessageError.ErrorGeneric("Senha incorreta.");
                                     counter--;
                                     break;
                                 }

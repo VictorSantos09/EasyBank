@@ -1,4 +1,4 @@
-﻿namespace EasyBank.Services
+﻿namespace EasyBank
 {
     public class ProfileConfig
     {

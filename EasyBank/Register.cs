@@ -1,7 +1,4 @@
-﻿using EasyBank.Crosscutting;
-using EasyBank.Entities;
-
-namespace EasyBank.Services
+﻿namespace EasyBank
 {
     public class Register
     {

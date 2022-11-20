@@ -1,8 +1,6 @@
 ﻿using System.ComponentModel;
-using EasyBank.Crosscutting;
-using EasyBank.Entities;
 
-namespace EasyBank.Services
+namespace EasyBank
 {
     public class Profile
     {
@@ -78,7 +76,7 @@ namespace EasyBank.Services
                 else if (option == "6")
                     menuProfile = false;
                 else
-                    Message.ErrorGeneric("Opção indisponivel");
+                    MessageError.ErrorGeneric("Opção indisponivel");
             }
             return false;
         }
@@ -207,7 +205,7 @@ namespace EasyBank.Services
             var user = users.Find(x => x.Id == userID);
 
             if (AskSafetyKey(users, userID) != true)
-                Message.ErrorGeneric("Senha incorreta");
+                MessageError.ErrorGeneric("Senha incorreta");
 
             else
             {

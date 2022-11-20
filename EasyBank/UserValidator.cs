@@ -1,6 +1,4 @@
-﻿using EasyBank.Entities;
-
-namespace EasyBank.Crosscutting
+﻿namespace EasyBank
 {
     public class UserValidator
     {

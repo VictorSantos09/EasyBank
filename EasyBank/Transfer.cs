@@ -1,6 +1,4 @@
-﻿using EasyBank.Entities;
-
-namespace EasyBank.Services
+﻿namespace EasyBank
 {
     public class Transfer
     {
