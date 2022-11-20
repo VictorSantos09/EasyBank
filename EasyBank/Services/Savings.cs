@@ -26,7 +26,8 @@ namespace EasyBank.Services
         {
             Console.Clear();
             Console.WriteLine("POUPANÇA\n");
-            Console.WriteLine("1 - Investir\n2 - Ver Rendimento\n3 - Resgatar\n4 - Voltar\nDigite: ");
+            Console.WriteLine("1 - Investir\n2 - Ver Rendimento\n3 - Resgatar\n4 - Voltar");
+            Console.Write("Digite: ");
             var choice = Console.ReadLine();
 
             switch (choice)
@@ -37,6 +38,7 @@ namespace EasyBank.Services
 
                 case "2":
                     PrintBenefits(savings, userID);
+                    MenuInsertMoney(users, savings, userID);
                     Holder.PressAnyKey();
                     break;
 
@@ -54,7 +56,7 @@ namespace EasyBank.Services
         }
         public double CalculateTaxes(double userValueInvested)
         {
-            var mainTaxPrice = 1.25;
+            var mainTaxPrice = 0.21;
             var incrementer = 0.27;
 
             return (userValueInvested * mainTaxPrice) * incrementer;
@@ -70,7 +72,7 @@ namespace EasyBank.Services
             var value = 0.0;
             while (true)
             {
-                Console.WriteLine("Digite a quantia: ");
+                Console.Write("Digite a quantia: ");
 
                 value = Convert.ToDouble(Console.ReadLine());
 
@@ -114,7 +116,8 @@ namespace EasyBank.Services
         }
         public bool ConfirmApplySaving()
         {
-            Console.WriteLine("Deseja confirmar o investimento na poupança?\n1 - Sim\n2 - Não\nDigite: ");
+            Console.WriteLine("Deseja confirmar o investimento na poupança?\n1 - Sim\n2 - Não");
+            Console.Write("Digite: ");
             var confirmed = Console.ReadLine();
 
             switch (confirmed)
@@ -122,8 +125,8 @@ namespace EasyBank.Services
                 case "1":
                     return true;
 
-                    case "2":
-                    break;
+                case "2":
+                    return false;
 
                 default:
                     Message.ErrorGeneric();
@@ -167,6 +170,9 @@ namespace EasyBank.Services
                             TransferMoneyToSavings(users, savings, userID, Value);
                             break;
                         }
+
+                        else
+                            break;
                     }
                 }
             }
@@ -233,6 +239,7 @@ namespace EasyBank.Services
                 PrintBenefits(savings, userID);
 
                 Console.WriteLine("Deseja resgatar todo o rendimento?\n1 - Sim\n 2 - Não\n3 - Voltar");
+                Console.Write("Digite: ");
                 var choice = Console.ReadLine();
 
                 var allMoney = 0.0;
@@ -267,11 +274,11 @@ namespace EasyBank.Services
         }
         public bool UserHasEnoughMoney(double value, List<User> users, int userID)
         {
-            var user = users.Find(x => x.OwnerID == userID);
+            var user = users.Find(x => x.Id == userID);
 
             if (value > user.CurrentAccount)
             {
-                Message.ErrorGeneric("Valor indisponível");
+                Message.ErrorGeneric("Saldo indisponível");
                 return false;
             }
 
@@ -295,20 +302,24 @@ namespace EasyBank.Services
         }
         public void MenuInsertMoney(List<User> users, List<Savings> savings, int userID)
         {
-            Message.ErrorThread("Você já contém uma poupança, deseja aplicar dinheiro nela?\n1 - Sim\n2 - Não, sair\nDigite: ");
-
-            switch (Console.ReadLine())
+            if (savings.Find(x => x.Id == userID) != null)
             {
-                case "1":
-                    InsertMoney(users, savings, userID);
-                    break;
+                Console.WriteLine("Você já contém uma poupança, deseja aplicar dinheiro nela?\n1 - Sim\n2 - Não, sair");
+                Console.Write("Digite: ");
 
-                case "2":
-                    return;
+                switch (Console.ReadLine())
+                {
+                    case "1":
+                        InsertMoney(users, savings, userID);
+                        break;
 
-                default:
-                    Message.ErrorGeneric("Opção indisponível");
-                    break;
+                    case "2":
+                        return;
+
+                    default:
+                        Message.ErrorGeneric("Opção indisponível");
+                        break;
+                }
             }
         }
     }
