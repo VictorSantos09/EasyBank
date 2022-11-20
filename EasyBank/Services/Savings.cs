@@ -59,11 +59,23 @@ namespace EasyBank.Services
 
             savings.Add(saving);
         }
-        public double ChooseAmount()
+        public double ChooseAmount(List<User> users, int userID)
         {
-            Console.WriteLine("Quanto você deseja investir mensalmente?\nDigite: ");
+            var value = 0.0;
+            while (true)
+            {
+                Console.WriteLine("Quanto você deseja investir mensalmente?\nDigite: ");
 
-            return Value = Convert.ToDouble(Console.ReadLine());
+                value = Convert.ToDouble(Console.ReadLine());
+
+                var user = users.Find(x => x.Id == userID);
+
+                if (value > user.CurrentAccount)
+                    Message.ErrorGeneric("Valor maior que em conta");
+
+                break;
+            }
+            return value;
         }
         public bool ConfirmApplySaving()
         {
@@ -91,7 +103,7 @@ namespace EasyBank.Services
 
             else
             {
-                var amount = ChooseAmount();
+                var amount = ChooseAmount(users, userID);
 
                 var taxesAmount = CalculateTaxes(amount);
 
