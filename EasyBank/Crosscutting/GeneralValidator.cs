@@ -1,4 +1,4 @@
-﻿namespace EasyBank
+﻿namespace EasyBank.Crosscutting
 {
     public static class GeneralValidator
     {
@@ -86,7 +86,7 @@
                 var hasLetter = HasLetter(input);
                 if (hasLetter == true)
                 {
-                    input = MessageError.ErrorGenericWrite("Não pode conter letras", input);
+                    input = Message.ErrorGenericWrite("Não pode conter letras", input);
 
                 }
                 else
@@ -105,7 +105,7 @@
                 var hasSpecialCaracter = HasSpecialCaracter(input);
                 if (hasSpecialCaracter == true)
                 {
-                    input = MessageError.ErrorGenericWrite("Não pode conter caracteres especiais", input);
+                    input = Message.ErrorGenericWrite("Não pode conter caracteres especiais", input);
                 }
                 else
                 {
@@ -120,17 +120,17 @@
             var removingAll = true;
             while (removingAll)
             {
-                var hasNumber = GeneralValidator.HasNumber(input);
+                var hasNumber = HasNumber(input);
                 if (hasNumber == true)
                 {
-                    input = MessageError.ErrorGenericWrite("Não pode conter numeros", input);
+                    input = Message.ErrorGenericWrite("Não pode conter numeros", input);
                 }
                 else
                 {
-                    var hasSpecialC = GeneralValidator.HasSpecialCaracter(input);
+                    var hasSpecialC = HasSpecialCaracter(input);
                     if (hasSpecialC == true)
                     {
-                        input = MessageError.ErrorGenericWrite("Não pode conter caracteres especiais", input);
+                        input = Message.ErrorGenericWrite("Não pode conter caracteres especiais", input);
                     }
                     else
                     {
@@ -149,14 +149,14 @@
                 var letter = HasLetter(input);
                 if (letter == true)
                 {
-                    input = MessageError.ErrorGenericWrite("Não pode conter caracteres especiais e letras", input);
+                    input = Message.ErrorGenericWrite("Não pode conter caracteres especiais e letras", input);
                 }
                 else
                 {
                     var SpecialC = HasSpecialCaracter(input);
                     if (SpecialC == true)
                     {
-                        input = MessageError.ErrorGenericWrite("Não pode conter caracteres especiais", input);
+                        input = Message.ErrorGenericWrite("Não pode conter caracteres especiais", input);
                     }
                     else
                     {
@@ -175,8 +175,7 @@
                 var checker = HasWhiteSpace(input);
                 if (checker == true)
                 {
-                    MessageError.ErrorGenericWrite("Não pode conter espaços em branco", input);
-                    input = IsNullOrEmpty.OutputNotNull(Console.ReadLine());
+                    input = GeneralValidator.RemoveWhiteSpace(input);
                 }
                 else
                 {

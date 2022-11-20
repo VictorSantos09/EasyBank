@@ -1,4 +1,6 @@
-﻿namespace EasyBank
+﻿using EasyBank.Crosscutting;
+
+namespace EasyBank.Entities
 {
     public class CreditCard : EntidadeBase
     {
@@ -87,37 +89,17 @@
             }
             Thread.Sleep(1300);
         }
-        public void AutoPaymentInvoice(List<Bill> bills, List<CreditCard> creditCards, List<User> users, int userID)
+        public void AutoDebitPaymentAutomatic(List<AutoDebit> autoDebits, List<CreditCard> creditCards, List<User> users, int userID)
         {
             var creditCard = creditCards.Find(x => x.OwnerID == userID);
             var user = users.Find(x => x.Id == userID);
+            var userAutoDebits = autoDebits.FindAll(x => x.OwnerID == userID);
 
-            var valueToPay = 0.0;
-
-            foreach (var item in bills)
+            foreach (var item in userAutoDebits)
             {
-                valueToPay += item.ValueParcel;
+                creditCard.ValueInvoice = -item.Value;
             }
 
-            if (user.CurrentAccount < valueToPay)
-                Console.WriteLine("Não foi possivel efetuar o pagamento automatico, saldo insuficiente");
-
-            else
-            {
-                user.CurrentAccount = -valueToPay;
-
-                Bill bill = new Bill();
-
-                foreach (var item in bills)
-                {
-                    if (item.NumberParcels <= 1)
-                        bill.RemoveAutoDebits(bills, item);
-
-                    else
-                        item.NumberParcels--;
-                }
-                creditCard.ValueInvoice = 0.0;
-            }
         }
         public void ManualMonthPaymentInvoice(List<User> users, List<CreditCard> creditCards, List<Bill> bills, int userID)
         {
@@ -140,7 +122,7 @@
 
                 if (user.CurrentAccount < valueToPay)
                 {
-                    MessageError.ErrorGeneric("Saldo Indisponivel");
+                    Message.ErrorGeneric("Saldo Indisponivel");
                     Thread.Sleep(1300);
                 }
                 else
@@ -171,23 +153,20 @@
         public void MonthlyAction(List<CreditCard> creditCards, List<User> users, List<Bill> bills, List<AutoDebit> autoDebits, int userID)
         {
             var user = users.Find(x => x.Id == userID);
-
-            user.CurrentAccount = user.MonthlyIncome;
+            user.CurrentAccount += user.MonthlyIncome;
 
             CreditCard creditCard = new CreditCard();
-
             creditCard.IncrementMonthInvoice(bills, creditCards, userID);
 
             Bill bill = new Bill();
-
             if (bill.HasAutoDebitActivated(autoDebits, userID) == true)
-                AutoPaymentInvoice(bills, creditCards, users, userID);
+                AutoDebitPaymentAutomatic(autoDebits, creditCards, users, userID);
 
-            else if (HasPendingPayments(bills,userID) == true)
-                Console.WriteLine("Novas Faturas, vá até a opção de Pagar Fatura em seu perfil");
-            
+            else if (HasPendingPayments(bills, userID) == true)
+                Message.ErrorThread("Novas Faturas, vá até a opção de Pagar Fatura em seu perfil");
+
             else
-                Console.WriteLine("Nenhuma nova fatura");
+                Message.ErrorThread("Nenhuma nova fatura");
         }
     }
 }
