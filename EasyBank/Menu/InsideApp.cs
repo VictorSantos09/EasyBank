@@ -6,8 +6,9 @@ namespace EasyBank.Menu
 {
     public class InsideApp
     {
-        public void Home(int userID, List<User> users, List<CreditCard> creditCards, List<Loan> loans, List<Bill> bills, List<AutoDebit> autoDebits)
+        public void Home(int userID, List<User> users, List<CreditCard> creditCards, List<Loan> loans, List<Bill> bills, List<AutoDebit> autoDebits, MonthTimer monthTimer)
         {
+            MonthTimer.Main();
             bool logged = true;
             while (logged)
             {
@@ -15,7 +16,10 @@ namespace EasyBank.Menu
                 var userIndex = UserValidator.GetActualUserIndex(users, userID);
 
                 var user = users.Find(x => x.Id == userID);
+
+                
                 Console.Clear();
+                Console.WriteLine($"Conta Corrente: {user.CurrentAccount}\n\n");
                 Console.WriteLine($"Seja Bem Vindo {user.Name}");
                 Console.WriteLine("O que deseja fazer?");
                 Console.WriteLine("1 - Perfil");
