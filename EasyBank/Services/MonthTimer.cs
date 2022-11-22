@@ -13,9 +13,10 @@ namespace EasyBank.Services
         public static List<User> _users { get; set; }
         public static List<Bill> _bills { get; set; }
         public static List<AutoDebit> _autoDebits { get; set; }
+        public static List<Savings> _Savings { get; set; }
         public static int _userID { get; set; }
         public MonthTimer(List<CreditCard> creditCards, List<User> users, List<Bill> bills, List<AutoDebit> autoDebits,
-            int userID, CreditCard creditCard, Savings saving, Loan loan, List<Loan> loans)
+            int userID, CreditCard creditCard, Savings saving, Loan loan, List<Loan> loans, List<Savings> savings)
         {
             _creditCards = creditCards;
             _users = users;
@@ -26,6 +27,7 @@ namespace EasyBank.Services
             _Saving = saving;
             _Loan = loan;
             _Loans = loans;
+            _Savings = savings;
         }
         public MonthTimer()
         {
@@ -43,12 +45,12 @@ namespace EasyBank.Services
         static void OnTimedEvent(object source, ElapsedEventArgs e)
         {
             MonthTimer monthTimer = new MonthTimer();
-            monthTimer.MainMonthlyAction(_creditCards, _users, _bills, _autoDebits, _userID, _Loans);
+            monthTimer.MainMonthlyAction(_creditCards, _users, _bills, _autoDebits, _userID, _Loans, _Savings);
         }
-        public void MainMonthlyAction(List<CreditCard> creditCards, List<User> users, List<Bill> bills, List<AutoDebit> autoDebits, int userID, List<Loan> loans)
+        public void MainMonthlyAction(List<CreditCard> creditCards, List<User> users, List<Bill> bills, List<AutoDebit> autoDebits, int userID, List<Loan> loans, List<Savings> savings)
         {
             _CreditCard.MonthlyAction(creditCards, users, bills, autoDebits, userID);
-            //_Saving.MonthlyAction(savings, userID);
+            _Saving.MonthlyAction(savings, userID);
             _Loan.MonthlyAction(loans, users, userID);
         }
     }

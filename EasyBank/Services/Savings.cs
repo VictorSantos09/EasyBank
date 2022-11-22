@@ -138,9 +138,11 @@ namespace EasyBank.Services
         }
         public void MonthlyAction(List<Savings> savings, int userID)
         {
-            var saving = savings.Find(x => x.OwnerID == userID);
-
-            saving.Value += CalculateTaxes(saving.Value);
+            if (savings != null && savings.Exists(x => x.OwnerID == userID) == true)
+            {
+                var saving = savings.Find(x => x.OwnerID == userID);
+                saving.Value += CalculateTaxes(saving.Value);
+            }
         }
         public void SavingSteps(List<Savings> savings, int userID, List<User> users)
         {
@@ -176,8 +178,8 @@ namespace EasyBank.Services
 
                         if (ConfirmApplySaving() == true)
                         {
-                            AddSavingToList(userID, Value, savings, taxesValue);
-                            DiscountMoneyFromUser(users, userID, Value);
+                            AddSavingToList(userID, value, savings, taxesValue);
+                            DiscountMoneyFromUser(users, userID, value);
                             break;
                         }
 
