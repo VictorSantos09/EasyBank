@@ -36,7 +36,7 @@
             {
                 if (bill[i].RemainParcels <= 1)
                     bills.Remove(bill[i]);
-                
+
                 else
                     bill[i].RemainParcels--;
             }

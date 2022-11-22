@@ -1,5 +1,4 @@
 ﻿using EasyBank.Crosscutting;
-using EasyBank.Menu;
 
 namespace EasyBank.Entities
 {
@@ -133,7 +132,7 @@ namespace EasyBank.Entities
                     Bill bill = new Bill();
                     user.CurrentAccount -= valueToPay;
 
-                    bill.RemoveBills(bills, userID,loans,users);
+                    bill.RemoveBills(bills, userID, loans, users);
 
                     creditcard.ValueInvoice = 0;
 
