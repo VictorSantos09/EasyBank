@@ -6,8 +6,8 @@ namespace EasyBank.Menu
 {
     public class InsideApp
     {
-        public void Home(int userID, List<User> users, List<CreditCard> creditCards, List<Loan> loans, 
-            List<Bill> bills, List<AutoDebit> autoDebits,List<Savings> savings)
+        public void Home(int userID, List<User> users, List<CreditCard> creditCards, List<Loan> loans,
+            List<Bill> bills, List<AutoDebit> autoDebits, List<Savings> savings)
         {
             MonthTimer.Main();
             bool logged = true;
@@ -58,7 +58,7 @@ namespace EasyBank.Menu
                 else if (InputOption == "5")
                 {
                     if (creditCard.HasPendingPayments(bills, userID) == true)
-                        creditCard.ManualMonthPaymentInvoice(users, creditCards, bills, userID);
+                        creditCard.ManualMonthPaymentInvoice(users, creditCards, bills, userID, loans);
                     else
                     {
                         Console.WriteLine("Nenhuma fatura pendente");
