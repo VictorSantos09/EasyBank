@@ -25,7 +25,7 @@ while (true)
 
     var creditCardID = UserValidator.ID_AUTOINCREMENT(creditCards);
 
-    MonthTimer MonthTimer = new MonthTimer(creditCards, users, bills, autoDebits, 1, new CreditCard(), new Savings());
+    MonthTimer MonthTimer = new MonthTimer(creditCards, users, bills, autoDebits, 1, new CreditCard(), new Savings(), new Loan(), loans);
     CreditCard creditCard = new CreditCard();
 
     var creditCardConstructor = new CreditCard(creditCard.R_Limit(1500), "Victor",

@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using EasyBank.Crosscutting;
+﻿using EasyBank.Crosscutting;
 using EasyBank.Entities;
 
 namespace EasyBank.Services
