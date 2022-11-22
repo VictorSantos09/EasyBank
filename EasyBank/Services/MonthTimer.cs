@@ -28,7 +28,7 @@ namespace EasyBank.Services
         {
             System.Timers.Timer aTimer = new System.Timers.Timer();
             aTimer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
-            aTimer.Interval = 10000;
+            aTimer.Interval = 3000;
             aTimer.Enabled = true;
         }
 
@@ -41,7 +41,6 @@ namespace EasyBank.Services
         public void MainMonthlyAction(List<CreditCard> creditCards, List<User> users, List<Bill> bills, List<AutoDebit> autoDebits, int userID)
         {
             _CreditCard.MonthlyAction(creditCards,users,bills,autoDebits,userID);
-            Console.WriteLine("Hello World");
         }
     }
 }

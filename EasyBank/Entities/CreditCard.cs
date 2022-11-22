@@ -107,7 +107,7 @@ namespace EasyBank.Entities
 
             else
             {
-                user.CurrentAccount = -valueToPay;
+                user.CurrentAccount -= valueToPay;
 
                 Bill bill = new Bill();
 
