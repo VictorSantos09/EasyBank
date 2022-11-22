@@ -27,7 +27,7 @@ namespace EasyBank.Entities
 
             if (user.OpenLoan == true)
             {
-                MessageError.ErrorGeneric("Não é possivel abrir mais de um empréstimo");
+                Message.ErrorGeneric("Não é possivel abrir mais de um empréstimo");
             }
 
             else
@@ -39,7 +39,7 @@ namespace EasyBank.Entities
 
                 if (loanValue > twoYearsSalary)
                 {
-                    MessageError.ErrorGeneric("Quantia não disponivel para você");
+                    Message.ErrorGeneric("Quantia não disponivel para você");
                 }
 
                 else
@@ -84,7 +84,7 @@ namespace EasyBank.Entities
 
             if (qtdParcels > 12 || qtdParcels < 1)
             {
-                MessageError.ErrorGeneric("Escolha indisponivel");
+                Message.ErrorGeneric("Escolha indisponivel");
             }
 
             else

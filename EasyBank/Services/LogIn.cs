@@ -15,7 +15,7 @@ namespace EasyBank.Services
                 if (counter <= 0)
                 {
                     Console.Clear();
-                    MessageError.ErrorGeneric("Você atingiu o limite de tentativas.");
+                    Message.ErrorGeneric("Você atingiu o limite de tentativas.");
                     checking = false;
                     Thread.Sleep(1500);
                 }
@@ -39,7 +39,7 @@ namespace EasyBank.Services
                                 }
                                 else
                                 {
-                                    MessageError.ErrorGeneric("Senha incorreta.");
+                                    Message.ErrorGeneric("Senha incorreta.");
                                     counter--;
                                     break;
                                 }
@@ -58,7 +58,7 @@ namespace EasyBank.Services
                                 }
                                 else
                                 {
-                                    MessageError.ErrorGeneric("Senha incorreta.");
+                                    Message.ErrorGeneric("Senha incorreta.");
                                     counter--;
                                     break;
                                 }

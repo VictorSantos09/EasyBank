@@ -1,10 +1,10 @@
 ﻿namespace EasyBank.Crosscutting
 {
-    public class MessageError
+    public class Message
     {
         public static void ErrorGeneric(string? message)
         {
-            var mainMessage = "Tente novamente";
+            var mainMessage = "Tente novamente.";
             Console.WriteLine($"{mainMessage} {message}");
             Thread.Sleep(1500);
         }
