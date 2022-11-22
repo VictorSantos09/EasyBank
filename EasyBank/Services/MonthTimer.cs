@@ -5,13 +5,15 @@ namespace EasyBank.Services
     public class MonthTimer
     {
         public string ActualMonth { get; set; }
+        public static Savings _Saving { get; set; }
         public static CreditCard _CreditCard { get; set; }
         public static List<CreditCard> _creditCards { get; set; }
         public static List<User> _users { get; set; }
         public static List<Bill> _bills { get; set; }
         public static List<AutoDebit> _autoDebits { get; set; }
         public static int _userID { get; set; }
-        public MonthTimer(List<CreditCard> creditCards, List<User> users, List<Bill> bills, List<AutoDebit> autoDebits, int userID, CreditCard creditCard)
+        public MonthTimer(List<CreditCard> creditCards, List<User> users, List<Bill> bills, List<AutoDebit> autoDebits, 
+            int userID, CreditCard creditCard, Savings saving)
         {
             _creditCards = creditCards;
             _users = users;
@@ -19,6 +21,7 @@ namespace EasyBank.Services
             _autoDebits = autoDebits;
             _userID = userID;
             _CreditCard = creditCard;
+            _Saving = saving;
         }
         public MonthTimer()
         {
@@ -41,6 +44,7 @@ namespace EasyBank.Services
         public void MainMonthlyAction(List<CreditCard> creditCards, List<User> users, List<Bill> bills, List<AutoDebit> autoDebits, int userID)
         {
             _CreditCard.MonthlyAction(creditCards,users,bills,autoDebits,userID);
+            //_Saving.MonthlyAction(savings, userID);
         }
     }
 }

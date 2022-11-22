@@ -1,6 +1,6 @@
 ﻿namespace EasyBank.Entities
 {
-    public class Bill : EntidadeBase
+    public class Bill : BaseEntity
     {
         public double Value { get; set; }
         public double ValueParcel { get; set; }

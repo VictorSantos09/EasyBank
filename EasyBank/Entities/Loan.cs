@@ -2,7 +2,7 @@
 
 namespace EasyBank.Entities
 {
-    public class Loan : EntidadeBase
+    public class Loan : BaseEntity
     {
         public int OwnerID { get; set; }
         public double Value { get; set; }
@@ -121,7 +121,10 @@ namespace EasyBank.Entities
             var loan = new Loan(finalValue, qtdParcels, userID, UserValidator.ID_AUTOINCREMENT(loans), true);
             loans.Add(loan);
 
-            var user = users.Find(x => x.Id == userID).OpenLoan = true;
+            var user = users.Find(x => x.Id == userID);
+
+            user.OpenLoan = true;
+            user.CurrentAccount += finalValue;
 
             bills.Add(new Bill
             {

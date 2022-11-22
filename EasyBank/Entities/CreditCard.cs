@@ -3,7 +3,7 @@ using EasyBank.Menu;
 
 namespace EasyBank.Entities
 {
-    public class CreditCard : EntidadeBase
+    public class CreditCard : BaseEntity
     {
         public int OwnerID { get; set; }
         public string NumberCard { get; set; }
@@ -98,7 +98,7 @@ namespace EasyBank.Entities
 
             foreach (var item in userAutoDebits)
             {
-                creditCard.ValueInvoice = -item.Value;
+                creditCard.ValueInvoice -=item.Value;
             }
 
         }
@@ -129,7 +129,7 @@ namespace EasyBank.Entities
                 else
                 {
                     Bill bill = new Bill();
-                    user.CurrentAccount = -valueToPay;
+                    user.CurrentAccount -=valueToPay;
                     for (int i = 0; i < billsUser.Count; i++)
                     {
                         bill.RemoveBills(bills, userID);
