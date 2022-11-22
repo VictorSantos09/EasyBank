@@ -13,6 +13,7 @@ List<CreditCard> creditCards = new List<CreditCard>();
 List<Bill> bills = new List<Bill>();
 List<Loan> loans = new List<Loan>();
 
+
 while (true)
 {
     string[] standardAdress = { "Blumenau", "SC", "Ponta Aguda", "AV Brasil", "788", "SENAC" };
@@ -23,6 +24,7 @@ while (true)
 
     var creditCardID = UserValidator.ID_AUTOINCREMENT(creditCards);
 
+    MonthTimer MonthTimer = new MonthTimer(creditCards, users, bills, autoDebits, 1, new CreditCard());
     CreditCard creditCard = new CreditCard();
 
     var creditCardConstructor = new CreditCard(creditCard.R_Limit(1500), "Victor",
@@ -53,7 +55,7 @@ while (true)
             else
             {
                 InsideApp insideApp = new InsideApp();
-                insideApp.Home(userID, users, creditCards, loans, bills, autoDebits);
+                insideApp.Home(userID, users, creditCards, loans, bills, autoDebits, MonthTimer);
             }
             break;
 
@@ -62,7 +64,7 @@ while (true)
             break;
 
         default:
-            MessageError.ErrorGeneric("Opção indisponivel");
+            Message.ErrorGeneric("Opção indisponivel");
             break;
     }
 }

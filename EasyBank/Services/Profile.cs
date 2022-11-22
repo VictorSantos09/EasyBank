@@ -84,7 +84,7 @@ namespace EasyBank.Services
                 else if (option == "6")
                     menuProfile = false;
                 else
-                    MessageError.ErrorGeneric("Opção indisponivel");
+                    Message.ErrorGeneric("Opção indisponivel");
             }
             return false;
         }
@@ -220,7 +220,7 @@ namespace EasyBank.Services
             var user = users.Find(x => x.Id == userID);
 
             if (AskSafetyKey(users, userID) != true)
-                MessageError.ErrorGeneric("Senha incorreta");
+                Message.ErrorGeneric("Senha incorreta");
 
             else
             {
