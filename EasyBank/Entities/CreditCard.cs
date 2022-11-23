@@ -57,8 +57,6 @@ namespace EasyBank.Entities
             string number = $"1322 {random.Next(min, max)} {random.Next(min, max)} {random.Next(min, max)}";
             return number;
         }
-
-
         public double IncrementMonthInvoice(List<Bill> bills, List<CreditCard> creditCards, int userID)
         {
             //Este metodo será chamado a cada virada de mês, será necessario ver uma solução para armazenar e visualizar outras contas
@@ -90,17 +88,21 @@ namespace EasyBank.Entities
             }
             Holder.PressAnyKey();
         }
-        public void AutoDebitPaymentAutomatic(List<AutoDebit> autoDebits, List<CreditCard> creditCards, List<User> users, int userID)
+        public void AutoDebitPaymentAutomatic(List<AutoDebit> autoDebits, List<User> users, List<Bill> bills, int userID)
         {
-            var creditCard = creditCards.Find(x => x.OwnerID == userID);
             var user = users.Find(x => x.Id == userID);
             var userAutoDebits = autoDebits.FindAll(x => x.OwnerID == userID);
 
             foreach (var item in userAutoDebits)
             {
-                creditCard.ValueInvoice -= item.Value;
-            }
+                user.CurrentAccount -= item.Value;
 
+                var autoDebitBill = bills.Find(x => x.Name == item.Name);
+
+                bills.Remove(autoDebitBill);
+
+            }
+            Message.ErrorThread("Debito automático pago com sucesso", 0);
         }
         public void ManualMonthPaymentInvoice(List<User> users, List<CreditCard> creditCards, List<Bill> bills, int userID, List<Loan> loans)
         {
@@ -161,7 +163,7 @@ namespace EasyBank.Entities
 
             Bill bill = new Bill();
             if (bill.HasAutoDebitActivated(autoDebits, userID) == true)
-                AutoDebitPaymentAutomatic(autoDebits, creditCards, users, userID);
+                AutoDebitPaymentAutomatic(autoDebits, users, bills, userID);
 
             else if (HasPendingPayments(bills, userID) == true)
                 Message.ErrorThread("Novas Faturas, vá até a opção de Pagar Fatura em seu perfil");
