@@ -1,7 +1,5 @@
 ﻿using EasyBank.Crosscutting;
 using EasyBank.Entities;
-using System;
-using System.Numerics;
 
 namespace EasyBank.Services
 {
