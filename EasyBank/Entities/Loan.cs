@@ -35,7 +35,7 @@ namespace EasyBank.Entities
 
                 var twoYearsSalary = user.MonthlyIncome * 24;
 
-                if (loanValue > twoYearsSalary)
+                if (loanValue > twoYearsSalary || loanValue <= 0)
                     Message.ErrorGeneric("Quantia não disponivel para você");
 
                 else
