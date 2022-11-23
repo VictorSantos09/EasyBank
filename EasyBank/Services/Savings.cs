@@ -1,5 +1,6 @@
 ﻿using EasyBank.Crosscutting;
 using EasyBank.Entities;
+using System.Numerics;
 
 namespace EasyBank.Services
 {
@@ -8,6 +9,7 @@ namespace EasyBank.Services
         public double Value { get; set; }
         public double TaxesValue { get; set; }
         public double StartValue { get; set; }
+        public int MonthsPassed { get; set; } = 1;
         public Savings(int userID, double _value, int _id, double _taxesValue, double _startValue)
         {
             OwnerID = userID;
@@ -56,12 +58,19 @@ namespace EasyBank.Services
                     break;
             }
         }
-        public double CalculateTaxes(double userValueInvested)
+        public double CalculateTaxes(double userValueInvested, int monthsPasseds)
         {
-            var mainTaxPrice = 1.21;
-            var incrementer = 1.17;
+            // J = C * I * T
+            // M = C + J;
 
-            return (userValueInvested * mainTaxPrice) * incrementer;
+            double c = userValueInvested;
+            double i = 0.055;
+            int t = monthsPasseds;
+
+            double j = c * i * t;
+            //double m = c * (1 + (i * t));
+
+            return j;
         }
         public void AddSavingToList(int userID, double userValueInvested, List<Savings> savings, double taxesValue)
         {
@@ -141,7 +150,9 @@ namespace EasyBank.Services
             if (savings != null && savings.Exists(x => x.OwnerID == userID) == true)
             {
                 var saving = savings.Find(x => x.OwnerID == userID);
-                saving.Value += CalculateTaxes(saving.Value);
+                saving.TaxesValue += CalculateTaxes(saving.TaxesValue, MonthsPassed++);
+
+                saving.Value += saving.TaxesValue;
             }
         }
         public void SavingSteps(List<Savings> savings, int userID, List<User> users)
@@ -174,7 +185,7 @@ namespace EasyBank.Services
 
                     else
                     {
-                        var taxesValue = CalculateTaxes(value);
+                        var taxesValue = CalculateTaxes(value, MonthsPassed);
 
                         if (ConfirmApplySaving() == true)
                         {
