@@ -1,5 +1,6 @@
 ﻿using EasyBank.Crosscutting;
 using EasyBank.Entities;
+using System;
 using System.Numerics;
 
 namespace EasyBank.Services
@@ -240,12 +241,20 @@ namespace EasyBank.Services
 
             else
             {
-                var value = ChooseValue(users, userID);
+                var sucess = InsertAfterRescue(savings, users, userID);
 
-                if (UserHasEnoughMoney(value, users, userID) == true)
+                if (sucess == true)
+                    return;
+
+                else
                 {
-                    user.CurrentAccount -= value;
-                    saving.Value += value;
+                    var value = ChooseValue(users, userID);
+
+                    if (UserHasEnoughMoney(value, users, userID) == true)
+                    {
+                        user.CurrentAccount -= value;
+                        saving.Value += value;
+                    }
                 }
             }
         }
@@ -325,7 +334,11 @@ namespace EasyBank.Services
             var user = users.Find(x => x.Id == userID);
 
             user.CurrentAccount += saving.Value;
+
             saving.Value = 0.0;
+            saving.StartValue = 0.0;
+            saving.TaxesValue = 0.0;
+            MonthsPassed = 1;
         }
         public void MenuInsertMoney(List<User> users, List<Savings> savings, int userID)
         {
@@ -376,6 +389,27 @@ namespace EasyBank.Services
                     break;
             }
 
+        }
+        public bool InsertAfterRescue(List<Savings> savings, List<User> users, int userID)
+        {
+            var saving = savings.Find(x => x.OwnerID == userID);
+            var user = users.Find(x => x.Id == userID);
+
+            if (saving.TaxesValue == 0 && MonthsPassed >= 1)
+            {
+                var value = ChooseValue(users, userID);
+
+                var taxesValue = CalculateTaxes(value, MonthsPassed);
+
+                if (UserHasEnoughMoney(value, users, userID) == true)
+                {
+                    user.CurrentAccount -= value;
+                    saving.Value += value;
+                    saving.TaxesValue += taxesValue;
+                }
+                return true;
+            }
+            return false;
         }
     }
 }
