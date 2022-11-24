@@ -121,7 +121,7 @@ namespace EasyBank.Entities
                     break;
 
                 default:
-                    Console.WriteLine("Digite uma opção válida (Opções: 1, 2, 3, ou 4)");
+                    Message.ErrorGeneric("Digite uma opção válida (Opções: 1, 2, 3, ou 4)");
                     break;
             }
         }

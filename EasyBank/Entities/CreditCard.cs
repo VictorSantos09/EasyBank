@@ -102,7 +102,7 @@ namespace EasyBank.Entities
                 bills.Remove(autoDebitBill);
 
             }
-            Message.GeneralThread("Debito automático pago com sucesso", 0);
+            Message.SuccessfulGeneric("Debito automático pago com sucesso");
         }
         public void ManualMonthPaymentInvoice(List<User> users, List<CreditCard> creditCards, List<Bill> bills, int userID, List<Loan> loans)
         {
@@ -138,7 +138,7 @@ namespace EasyBank.Entities
 
                     creditcard.ValueInvoice = 0;
 
-                    Message.GeneralThread($"Pagamento efetuado");
+                    Message.SuccessfulGeneric($"Pagamento efetuado");
                 }
             }
             else
