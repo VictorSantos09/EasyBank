@@ -165,7 +165,7 @@ namespace EasyBank.Services
 
                 if (HasExistentSaving(savings, userID) == true)
                 {
-                    Message.ErrorThread("Você já contém uma poupança", 0);
+                    Message.GeneralThread("Você já contém uma poupança", 0);
 
                     Console.WriteLine("Deseja adicionar mais dinheiro?\n1 - Sim\n2 - Não, sair");
                     Console.Write("Digite: ");
@@ -300,7 +300,7 @@ namespace EasyBank.Services
                 }
             }
             else
-                Message.ErrorThread("Nenhuma poupança cadastrada", 1500);
+                Message.GeneralThread("Nenhuma poupança cadastrada", 1500);
         }
         public bool UserHasEnoughMoney(double value, List<User> users, int userID)
         {

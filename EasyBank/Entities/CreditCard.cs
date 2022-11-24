@@ -78,7 +78,7 @@ namespace EasyBank.Entities
 
             if (bill == null || bill.Count == 0)
             {
-                Message.ErrorThread("Não há contas para pagar");
+                Message.GeneralThread("Não há contas para pagar");
             }
 
             for (int i = 0; i < bill.Count; i++)
@@ -102,7 +102,7 @@ namespace EasyBank.Entities
                 bills.Remove(autoDebitBill);
 
             }
-            Message.ErrorThread("Debito automático pago com sucesso", 0);
+            Message.GeneralThread("Debito automático pago com sucesso", 0);
         }
         public void ManualMonthPaymentInvoice(List<User> users, List<CreditCard> creditCards, List<Bill> bills, int userID, List<Loan> loans)
         {
@@ -138,11 +138,11 @@ namespace EasyBank.Entities
 
                     creditcard.ValueInvoice = 0;
 
-                    Message.ErrorThread($"Pagamento efetuado");
+                    Message.GeneralThread($"Pagamento efetuado");
                 }
             }
             else
-                Message.ErrorThread("Não há faturas á pagar");
+                Message.GeneralThread("Não há faturas á pagar");
         }
         public bool HasPendingPayments(List<Bill> bills, int userID)
         {
@@ -166,7 +166,7 @@ namespace EasyBank.Entities
                 AutoDebitPaymentAutomatic(autoDebits, users, bills, userID);
 
             else if (HasPendingPayments(bills, userID) == true)
-                Message.ErrorThread("Novas Faturas, vá até a opção de Pagar Fatura em seu perfil");
+                Message.GeneralThread("Novas Faturas, vá até a opção de Pagar Fatura em seu perfil");
         }
     }
 }
