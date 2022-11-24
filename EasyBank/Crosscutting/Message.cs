@@ -6,8 +6,10 @@
         public static void ErrorGeneric(string? message = "Opção indisponivel")
         {
             var mainMessage = "Tente novamente.";
+            Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine($"{mainMessage} {message}");
             Thread.Sleep(ThreadLevel);
+            Console.ForegroundColor = ConsoleColor.White;
         }
         public static string ErrorGenericWrite(string? message, string input)
         {
