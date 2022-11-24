@@ -185,7 +185,7 @@ namespace EasyBank.Entities
 
             if (ConfirmAutoDebit() == true)
             {
-                var id = UserValidator.ID_AUTOINCREMENT(AutoDebits);
+                var id = GeneralValidator.ID_AUTOINCREMENT(AutoDebits);
 
                 var datasAutoDebit = new AutoDebit(NameExpense, null, userID, accountValue, id);
                 AutoDebits.Add(datasAutoDebit);

@@ -73,7 +73,7 @@ namespace EasyBank.Services
         }
         public void AddSavingToList(int userID, double userValueInvested, List<Savings> savings, double taxesValue)
         {
-            var saving = new Savings(userID, userValueInvested, UserValidator.ID_AUTOINCREMENT(savings), taxesValue, userValueInvested);
+            var saving = new Savings(userID, userValueInvested, GeneralValidator.ID_AUTOINCREMENT(savings), taxesValue, userValueInvested);
 
             savings.Add(saving);
         }

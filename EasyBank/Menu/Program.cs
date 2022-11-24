@@ -19,11 +19,11 @@ while (true)
 {
     string[] standardAdress = { "Blumenau", "SC", "Ponta Aguda", "AV Brasil", "788", "SENAC" };
     var userStantard = new User("Victor", "26/02/2004", "13991256286", "VICTOR@GMAIL.COM", // Usuario padrão para economizar tempo
-        "1234", "6324587419", "745896245", 1500, standardAdress, UserValidator.ID_AUTOINCREMENT(users), new Adress(), "0000");
+        "1234", "6324587419", "745896245", 1500, standardAdress, GeneralValidator.ID_AUTOINCREMENT(users), new Adress(), "0000");
 
     users.Add(userStantard);
 
-    var creditCardID = UserValidator.ID_AUTOINCREMENT(creditCards);
+    var creditCardID = GeneralValidator.ID_AUTOINCREMENT(creditCards);
 
     MonthTimer MonthTimer = new MonthTimer(creditCards, users, bills, autoDebits, 1, new CreditCard(), new Savings(), new Loan(), loans, savings);
 
