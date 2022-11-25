@@ -1,8 +1,5 @@
 ﻿using EasyBank.Crosscutting;
 using EasyBank.Entities;
-using Microsoft.VisualBasic;
-using System;
-using System.Windows.Input;
 
 namespace EasyBank.Services
 {
@@ -11,6 +8,7 @@ namespace EasyBank.Services
         public double Value { get; set; }
         public double TaxesValue { get; set; }
         public double StartValue { get; set; }
+        public int MonthsPassed { get; set; } = 1;
         public Savings(int userID, double _value, int _id, double _taxesValue, double _startValue)
         {
             OwnerID = userID;
@@ -59,12 +57,19 @@ namespace EasyBank.Services
                     break;
             }
         }
-        public double CalculateTaxes(double userValueInvested)
+        public double CalculateTaxes(double userValueInvested, int monthsPasseds)
         {
-            var mainTaxPrice = 1.21;
-            var incrementer = 1.17;
+            // J = C * I * T
+            // M = C + J;
 
-            return (userValueInvested * mainTaxPrice) * incrementer;
+            double c = userValueInvested;
+            double i = 0.055;
+            int t = monthsPasseds;
+
+            double j = c * i * t;
+            //double m = c * (1 + (i * t));
+
+            return j;
         }
         public void AddSavingToList(int userID, double userValueInvested, List<Savings> savings, double taxesValue)
         {
@@ -141,9 +146,13 @@ namespace EasyBank.Services
         }
         public void MonthlyAction(List<Savings> savings, int userID)
         {
-            var saving = savings.Find(x => x.OwnerID == userID);
+            if (savings != null && savings.Exists(x => x.OwnerID == userID) == true)
+            {
+                var saving = savings.Find(x => x.OwnerID == userID);
+                saving.TaxesValue += CalculateTaxes(saving.TaxesValue, MonthsPassed++);
 
-            saving.Value += CalculateTaxes(saving.Value);
+                saving.Value += saving.TaxesValue;
+            }
         }
         public void SavingSteps(List<Savings> savings, int userID, List<User> users)
         {
@@ -175,12 +184,12 @@ namespace EasyBank.Services
 
                     else
                     {
-                        var taxesValue = CalculateTaxes(value);
+                        var taxesValue = CalculateTaxes(value, MonthsPassed);
 
                         if (ConfirmApplySaving() == true)
                         {
-                            AddSavingToList(userID, Value, savings, taxesValue);
-                            DiscountMoneyFromUser(users, userID, Value);
+                            AddSavingToList(userID, value, savings, taxesValue);
+                            DiscountMoneyFromUser(users, userID, value);
                             break;
                         }
 
@@ -230,12 +239,20 @@ namespace EasyBank.Services
 
             else
             {
-                var value = ChooseValue(users, userID);
+                var sucess = InsertAfterRescue(savings, users, userID);
 
-                if (UserHasEnoughMoney(value, users, userID) == true)
+                if (sucess == true)
+                    return;
+
+                else
                 {
-                    user.CurrentAccount = -value;
-                    saving.Value += value;
+                    var value = ChooseValue(users, userID);
+
+                    if (UserHasEnoughMoney(value, users, userID) == true)
+                    {
+                        user.CurrentAccount -= value;
+                        saving.Value += value;
+                    }
                 }
             }
         }
@@ -315,7 +332,11 @@ namespace EasyBank.Services
             var user = users.Find(x => x.Id == userID);
 
             user.CurrentAccount += saving.Value;
+
             saving.Value = 0.0;
+            saving.StartValue = 0.0;
+            saving.TaxesValue = 0.0;
+            MonthsPassed = 1;
         }
         public void MenuInsertMoney(List<User> users, List<Savings> savings, int userID)
         {
@@ -366,6 +387,27 @@ namespace EasyBank.Services
                     break;
             }
 
+        }
+        public bool InsertAfterRescue(List<Savings> savings, List<User> users, int userID)
+        {
+            var saving = savings.Find(x => x.OwnerID == userID);
+            var user = users.Find(x => x.Id == userID);
+
+            if (saving.TaxesValue == 0 && MonthsPassed >= 1)
+            {
+                var value = ChooseValue(users, userID);
+
+                var taxesValue = CalculateTaxes(value, MonthsPassed);
+
+                if (UserHasEnoughMoney(value, users, userID) == true)
+                {
+                    user.CurrentAccount -= value;
+                    saving.Value += value;
+                    saving.TaxesValue += taxesValue;
+                }
+                return true;
+            }
+            return false;
         }
     }
 }

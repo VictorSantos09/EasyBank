@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using EasyBank.Crosscutting;
+﻿using EasyBank.Crosscutting;
 using EasyBank.Entities;
 
 namespace EasyBank.Services
@@ -25,6 +24,12 @@ namespace EasyBank.Services
                 if (option == "1")
                 {
                     CardInfo(creditCards, userID);
+                }
+
+                else if (option == "0")
+                {
+                    Autodebit(users, userID);
+
                 }
 
                 else if (option == "2")
@@ -89,6 +94,13 @@ namespace EasyBank.Services
             Console.Clear();
             Console.Write($"\nNúmero: {creditCard.NumberCard}\nCVV: {creditCard.CVV}\nData de Vencimento: {creditCard.ExpireDate}\nNome: {creditCard.NameOwner}");
             Console.Write("\n\nPressione ENTER para voltar");
+            Console.ReadLine();
+        }
+        public void Autodebit(List<User> users, int userID)
+        {
+            Console.Clear();
+            var user = users.Find(x => x.Id == userID);
+            Console.WriteLine($"Auto Debito: {user.CurrentAccount}");
             Console.ReadLine();
         }
         public void AccountCancellationValidator(List<User> users, List<CreditCard> creditCards, int userID, bool logged, bool menuProfile)

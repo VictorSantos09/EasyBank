@@ -4,10 +4,10 @@ namespace EasyBank.Entities
 {
     public class Loan : BaseEntity
     {
-        public int OwnerID { get; set; }
         public double Value { get; set; }
         public int Parcels { get; set; }
         public bool Open { get; set; }
+        public int RemainParcels { get; set; }
 
         public Loan(double _value, int _parcels, int ownerID, int _id, bool _open)
         {
@@ -26,9 +26,7 @@ namespace EasyBank.Entities
             var user = users.Find(x => x.Id == userID);
 
             if (user.OpenLoan == true)
-            {
                 Message.ErrorGeneric("Não é possivel abrir mais de um empréstimo");
-            }
 
             else
             {
@@ -37,15 +35,11 @@ namespace EasyBank.Entities
 
                 var twoYearsSalary = user.MonthlyIncome * 24;
 
-                if (loanValue > twoYearsSalary)
-                {
+                if (loanValue > twoYearsSalary || loanValue <= 0)
                     Message.ErrorGeneric("Quantia não disponivel para você");
-                }
 
                 else
-                {
                     PaymentOption(loanValue, bills, loans, userID, users);
-                }
             }
         }
         public void PaymentOption(int loanValue, List<Bill> bills, List<Loan> loans, int userID, List<User> users)
@@ -53,7 +47,8 @@ namespace EasyBank.Entities
             var paymentOptions = "Crédito";
 
             Console.WriteLine("Forma de pagamento permitida");
-            Console.WriteLine("Credíto até 12x - MasterCard\nDigite 1 para continuar\nDigite: ");
+            Console.WriteLine("Credíto até 12x - MasterCard\nDigite 1 para continuar");
+            Console.Write("Digite: ");
             var userInputChoice = Console.ReadLine();
 
             if (userInputChoice == "1")
@@ -93,10 +88,9 @@ namespace EasyBank.Entities
 
                 var finalValue = loanValue + finalInterestValue;
 
-                Console.WriteLine($"Valor do emprestimo: {loanValue}\nForma de Pagamento: {paymentOptions}\n" +
-                    $"Parcelas: {qtdParcels}\nValor Parcela:{finalValue / qtdParcels}\n" +
-                    $"Juros: {finalInterestValue}\nTotal: {loanValue + finalInterestValue}");
-
+                Console.WriteLine($"Valor do emprestimo: {loanValue} | Forma de Pagamento: {paymentOptions} | " +
+                    $"Parcelas: {qtdParcels} | Valor Parcela:{finalValue / qtdParcels} | " +
+                    $"Juros: {finalInterestValue} | Total: {loanValue + finalInterestValue}");
 
                 if (ConfirmLoan() == true)
                     ApplyLoan(bills, loans, qtdParcels, finalValue, userID, users);
@@ -121,7 +115,10 @@ namespace EasyBank.Entities
             var loan = new Loan(finalValue, qtdParcels, userID, UserValidator.ID_AUTOINCREMENT(loans), true);
             loans.Add(loan);
 
-            var user = users.Find(x => x.Id == userID).OpenLoan = true;
+            var user = users.Find(x => x.Id == userID);
+
+            user.OpenLoan = true;
+            user.CurrentAccount += finalValue;
 
             bills.Add(new Bill
             {
@@ -131,7 +128,26 @@ namespace EasyBank.Entities
                 Value = finalValue,
                 Id = UserValidator.ID_AUTOINCREMENT(bills),
                 ValueParcel = finalValue / qtdParcels,
+                RemainParcels = qtdParcels,
             });
+        }
+        public static void CheckAndRemoveLoan(List<Loan> loans, List<User> users, int userID)
+        {
+            var loan = loans.Find(x => x.OwnerID == userID);
+            var user = users.Find(x => x.Id == userID);
+
+            if (loan != null)
+            {
+                if (loan.RemainParcels <= 1)
+                {
+                    user.OpenLoan = false;
+                    loans.Remove(loan);
+                }
+            }
+        }
+        public void MonthlyAction(List<Loan> loans, List<User> users, int userID)
+        {
+            CheckAndRemoveLoan(loans, users, userID);
         }
     }
 }

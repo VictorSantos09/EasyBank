@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using EasyBank.Services;
 using EasyBank.Crosscutting;
 
 namespace EasyBank.Entities
@@ -119,7 +117,7 @@ namespace EasyBank.Entities
                     Console.WriteLine("Informe-nos a conta que deseja cadastrar:");
                     var otherOption = Console.ReadLine();
 
-                    AddAutoDebit(otherOption, AutoDebits, userID, users,bills);
+                    AddAutoDebit(otherOption, AutoDebits, userID, users, bills);
                     break;
 
                 default:

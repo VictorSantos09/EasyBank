@@ -6,9 +6,10 @@ namespace EasyBank.Menu
 {
     public class InsideApp
     {
-        public void Home(int userID, List<User> users, List<CreditCard> creditCards, List<Loan> loans, 
-            List<Bill> bills, List<AutoDebit> autoDebits,List<Savings> savings)
+        public void Home(int userID, List<User> users, List<CreditCard> creditCards, List<Loan> loans,
+            List<Bill> bills, List<AutoDebit> autoDebits, List<Savings> savings)
         {
+            MonthTimer.Main();
             bool logged = true;
             while (logged)
             {
@@ -18,6 +19,7 @@ namespace EasyBank.Menu
                 var user = users.Find(x => x.Id == userID);
 
                 Console.Clear();
+                Console.WriteLine($"Conta Corrente: {user.CurrentAccount}\n\n");
                 Console.WriteLine($"Seja Bem Vindo {user.Name}");
                 Console.WriteLine("O que deseja fazer?");
                 Console.WriteLine("1 - Perfil");
@@ -42,8 +44,11 @@ namespace EasyBank.Menu
                 }
                 else if (InputOption == "3")
                 {
+                    var datePixChoosed = DateTime.Now;
+
                     Transfer transfer = new Transfer();
                     transfer.Valuetransfer(users, userID);
+
                 }
                 else if (InputOption == "4")
                 {
@@ -53,7 +58,7 @@ namespace EasyBank.Menu
                 else if (InputOption == "5")
                 {
                     if (creditCard.HasPendingPayments(bills, userID) == true)
-                        creditCard.ManualMonthPaymentInvoice(users, creditCards, bills, userID);
+                        creditCard.ManualMonthPaymentInvoice(users, creditCards, bills, userID, loans);
                     else
                     {
                         Console.WriteLine("Nenhuma fatura pendente");

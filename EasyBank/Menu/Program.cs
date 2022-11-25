@@ -14,6 +14,7 @@ List<Bill> bills = new List<Bill>();
 List<Loan> loans = new List<Loan>();
 List<Savings> savings = new List<Savings>();
 
+
 while (true)
 {
     string[] standardAdress = { "Blumenau", "SC", "Ponta Aguda", "AV Brasil", "788", "SENAC" };
@@ -23,6 +24,8 @@ while (true)
     users.Add(userStantard);
 
     var creditCardID = UserValidator.ID_AUTOINCREMENT(creditCards);
+
+    MonthTimer MonthTimer = new MonthTimer(creditCards, users, bills, autoDebits, 1, new CreditCard(), new Savings(), new Loan(), loans, savings);
 
     CreditCard creditCard = new CreditCard();
 
