@@ -11,7 +11,7 @@ namespace EasyBank.Services
             var userName = R_Name();
             var userMonthlyIncome = MonthlyIncome();
 
-            var userID = UserValidator.ID_AUTOINCREMENT(users);
+            var userID = GeneralValidator.ID_AUTOINCREMENT(users);
             SafetyPassword safetyPassword = new SafetyPassword();
 
             var user = new User(userName, R_Age_DateBorn(), PhoneNumber(), Email(),
@@ -19,7 +19,7 @@ namespace EasyBank.Services
 
             users.Add(user);
 
-            var creditCardID = UserValidator.ID_AUTOINCREMENT(creditCards);
+            var creditCardID = GeneralValidator.ID_AUTOINCREMENT(creditCards);
             CreditCard creditCard = new CreditCard();
 
             var creditCardConstructor = new CreditCard(creditCard.R_Limit(userMonthlyIncome), userName,

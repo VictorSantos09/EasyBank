@@ -73,7 +73,7 @@ namespace EasyBank.Services
         }
         public void AddSavingToList(int userID, double userValueInvested, List<Savings> savings, double taxesValue)
         {
-            var saving = new Savings(userID, userValueInvested, UserValidator.ID_AUTOINCREMENT(savings), taxesValue, userValueInvested);
+            var saving = new Savings(userID, userValueInvested, GeneralValidator.ID_AUTOINCREMENT(savings), taxesValue, userValueInvested);
 
             savings.Add(saving);
         }
@@ -165,7 +165,7 @@ namespace EasyBank.Services
 
                 if (HasExistentSaving(savings, userID) == true)
                 {
-                    Message.ErrorThread("Você já contém uma poupança", 0);
+                    Message.GeneralThread("Você já contém uma poupança", 0);
 
                     Console.WriteLine("Deseja adicionar mais dinheiro?\n1 - Sim\n2 - Não, sair");
                     Console.Write("Digite: ");
@@ -300,7 +300,7 @@ namespace EasyBank.Services
                 }
             }
             else
-                Message.ErrorThread("Nenhuma poupança cadastrada", 1500);
+                Message.GeneralThread("Nenhuma poupança cadastrada", 1500);
         }
         public bool UserHasEnoughMoney(double value, List<User> users, int userID)
         {

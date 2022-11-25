@@ -200,11 +200,6 @@ namespace EasyBank.Crosscutting
 
             return finalInput;
         }
-        public static int ID_AUTOINCREMENT<T>(List<T> list) where T : BaseEntity
-        {
-            var lastItem = list.LastOrDefault();
-            return lastItem is null ? 1 : lastItem.Id + 1;
-        }
         public static int GetActualUserID<T>(int userIndex, List<User> users)
         {
             var userID = users[userIndex].Id;

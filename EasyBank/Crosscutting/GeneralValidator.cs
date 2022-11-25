@@ -1,4 +1,6 @@
-﻿namespace EasyBank.Crosscutting
+﻿using EasyBank.Entities;
+
+namespace EasyBank.Crosscutting
 {
     public static class GeneralValidator
     {
@@ -188,6 +190,11 @@
         public static string RemoveWhiteSpace(string input)
         {
             return input.Replace(" ", "");
+        }
+        public static int ID_AUTOINCREMENT<T>(List<T> list) where T : BaseEntity
+        {
+            var lastItem = list.LastOrDefault();
+            return lastItem is null ? 1 : lastItem.Id + 1;
         }
     }
 }

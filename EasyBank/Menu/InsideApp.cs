@@ -31,57 +31,64 @@ namespace EasyBank.Menu
                 Console.WriteLine("7 - Débito Automático");
                 Console.WriteLine("8 - Sair");
                 var InputOption = Console.ReadLine();
-                if (InputOption == "1")
+
+                switch (InputOption)
                 {
-                    Profile profile = new Profile();
-                    if (profile.ViewProfile(users, creditCards, userID, logged) == true)
+
+                    case "1":
+
+                        Profile profile = new Profile();
+                        if (profile.ViewProfile(users, creditCards, userID, logged) == true)
+                            logged = false;
+                        break;
+
+                    case "2":
+
+                        Loan loan = new Loan();
+                        loan.LoanRequest(users, loans, bills, userID);
+                        break;
+                    case "3":
+
+                        var datePixChoosed = DateTime.Now; // antiga linha 47 
+
+                        Transfer transfer = new Transfer();
+                        transfer.Valuetransfer(users, userID);
+                        break;
+
+                    case "4":
+
+                        Savings saving = new Savings();
+                        saving.Menu(savings, userID, users);
+                        break;
+
+                    case "5":
+
+                        if (creditCard.HasPendingPayments(bills, userID) == true)
+                            creditCard.ManualMonthPaymentInvoice(users, creditCards, bills, userID, loans);
+                        else
+                        {
+                            Console.WriteLine("Nenhuma fatura pendente");
+                            Thread.Sleep(1300);
+                        }
+                        break;
+                    case "6":
+
+                        creditCard.ViewInvoice(bills, userID);
+                        Thread.Sleep(1000);
+                        break;
+                    case "7":
+
+                        AutoDebit autoDebit = new AutoDebit();
+                        autoDebit.Menu(autoDebits, userID, users, bills);
+                        break;
+                    case "8":
+
                         logged = false;
-                }
-                else if (InputOption == "2")
-                {
-                    Loan loan = new Loan();
-                    loan.LoanRequest(users, loans, bills, userID);
-                }
-                else if (InputOption == "3")
-                {
-                    var datePixChoosed = DateTime.Now;
+                        break;
+                    default:
 
-                    Transfer transfer = new Transfer();
-                    transfer.Valuetransfer(users, userID);
-
-                }
-                else if (InputOption == "4")
-                {
-                    Savings saving = new Savings();
-                    saving.Menu(savings, userID, users);
-                }
-                else if (InputOption == "5")
-                {
-                    if (creditCard.HasPendingPayments(bills, userID) == true)
-                        creditCard.ManualMonthPaymentInvoice(users, creditCards, bills, userID, loans);
-                    else
-                    {
-                        Console.WriteLine("Nenhuma fatura pendente");
-                        Thread.Sleep(1300);
-                    }
-                }
-                else if (InputOption == "6")
-                {
-                    creditCard.ViewInvoice(bills, userID);
-                    Thread.Sleep(1000);
-                }
-                else if (InputOption == "7")
-                {
-                    AutoDebit autoDebit = new AutoDebit();
-                    autoDebit.Menu(autoDebits, userID, users, bills);
-                }
-                else if (InputOption == "8")
-                {
-                    logged = false;
-                }
-                else
-                {
-                    Message.ErrorGeneric("Opção indisponivel");
+                        Message.ErrorGeneric("Opção indisponivel");
+                        break;
                 }
             }
         }

@@ -97,7 +97,7 @@ namespace EasyBank.Entities
 
                 else
                 {
-                    Console.WriteLine("Empréstimo cancelado");
+                    Message.SuccessfulGeneric("Empréstimo cancelado");
                 }
             }
         }
@@ -112,7 +112,7 @@ namespace EasyBank.Entities
         }
         public void ApplyLoan(List<Bill> bills, List<Loan> loans, int qtdParcels, double finalValue, int userID, List<User> users)
         {
-            var loan = new Loan(finalValue, qtdParcels, userID, UserValidator.ID_AUTOINCREMENT(loans), true);
+            var loan = new Loan(finalValue, qtdParcels, userID, GeneralValidator.ID_AUTOINCREMENT(loans), true);
             loans.Add(loan);
 
             var user = users.Find(x => x.Id == userID);
@@ -126,7 +126,7 @@ namespace EasyBank.Entities
                 NumberParcels = qtdParcels,
                 OwnerID = userID,
                 Value = finalValue,
-                Id = UserValidator.ID_AUTOINCREMENT(bills),
+                Id = GeneralValidator.ID_AUTOINCREMENT(bills),
                 ValueParcel = finalValue / qtdParcels,
                 RemainParcels = qtdParcels,
             });
