@@ -9,6 +9,8 @@ namespace EasyBank.Menu
         public void Home(int userID, List<User> users, List<CreditCard> creditCards, List<Loan> loans,
             List<Bill> bills, List<AutoDebit> autoDebits, List<Savings> savings)
         {
+            MonthTimer MonthTimer = new MonthTimer(creditCards, users, bills, autoDebits, userID, new CreditCard(), new Savings(), new Loan(), loans, savings);
+
             MonthTimer.Main();
             bool logged = true;
             while (logged)

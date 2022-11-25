@@ -25,7 +25,6 @@ while (true)
 
     var creditCardID = GeneralValidator.ID_AUTOINCREMENT(creditCards);
 
-    MonthTimer MonthTimer = new MonthTimer(creditCards, users, bills, autoDebits, 1, new CreditCard(), new Savings(), new Loan(), loans, savings);
 
     CreditCard creditCard = new CreditCard();
 

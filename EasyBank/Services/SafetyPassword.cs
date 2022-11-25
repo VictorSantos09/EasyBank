@@ -16,9 +16,8 @@ namespace EasyBank.Services
 
             if (confirmation == "sim".ToUpper())
             {
-                Console.WriteLine("Confirmando..."); Thread.Sleep(2000);
+                Message.GeneralThread("Confirmando...");
                 Message.SuccessfulGeneric("Confirmado.");
-                Console.WriteLine();
             }
 
             confirmation = DifferentFromYesOrNo(confirmation);
