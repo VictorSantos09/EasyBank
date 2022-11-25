@@ -11,12 +11,12 @@ namespace EasyBankWeb.Repository
             Savings = new List<Savings>();
         }
 
-        public List<Savings> GetUsers()
+        public List<Savings> GetSavings()
         {
             return Savings;
         }
 
-        public void AddUser(Savings savings)
+        public void AddSavings(Savings savings)
         {
             Savings.Add(savings);
         }
