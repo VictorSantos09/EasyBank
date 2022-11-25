@@ -13,9 +13,7 @@ namespace EasyBank.Crosscutting
             {
                 if (input.Length < minimalSize)
                 {
-                    Console.WriteLine($"Digite seu nome completo. Tente novamente");
-                    Console.Write("Digite: ");
-                    input = Console.ReadLine();
+                  input = Message.ErrorGenericWrite($"Digite seu nome completo", input);
                 }
                 else
                 {
@@ -40,9 +38,7 @@ namespace EasyBank.Crosscutting
 
                 if (age < 18)
                 {
-                    Console.WriteLine("Você precisa ter no minimo 18 anos para se registrar");
-                    Console.Write("Digite: ");
-                    input = Console.ReadLine();
+                    input = Message.ErrorGenericWrite("Você precisa ter no minimo 18 anos para se registrar", input);
                 }
                 else
                 {
@@ -65,9 +61,7 @@ namespace EasyBank.Crosscutting
                 }
                 else
                 {
-                    Console.WriteLine("Email inválido, tente novamente");
-                    Console.Write("Digite: ");
-                    input = Console.ReadLine().ToUpper();
+                    input = Message.ErrorGenericWrite("Email inválido", input).ToUpper();
                 }
             }
 
@@ -91,9 +85,7 @@ namespace EasyBank.Crosscutting
             {
                 if (input.Length < size || input.Length > size)
                 {
-                    Console.WriteLine($"Sua senha precisa ter {size} digitos");
-                    Console.Write("Digite: ");
-                    input = Console.ReadLine();
+                    input = Message.ErrorGenericWrite($"Sua senha precisa ter {size} digitos", input);
                 }
                 else
                 {
@@ -110,9 +102,7 @@ namespace EasyBank.Crosscutting
             {
                 if (input.Length < 11 || input.Length > 11)
                 {
-                    Console.WriteLine("Tamanho de CPF inválido, tente novamente");
-                    Console.Write("Digite: ");
-                    input = Console.ReadLine();
+                    input = Message.ErrorGenericWrite("Tamanho de CPF inválido", input);
                 }
                 else
                 {
@@ -129,9 +119,7 @@ namespace EasyBank.Crosscutting
             {
                 if (input.Length < 11 || input.Length > 12)
                 {
-                    Console.WriteLine("Telefone inválido, tente novamente");
-                    Console.Write("Digite: ");
-                    input = Console.ReadLine();
+                    input = Message.ErrorGenericWrite("Telefone inválido, tente novamente", input);
                 }
                 else
                 {
@@ -192,9 +180,7 @@ namespace EasyBank.Crosscutting
                 }
                 else
                 {
-                    Console.WriteLine("Tamanho incorreto do RG, tente novamente");
-                    Console.Write("Digite: ");
-                    input = Console.ReadLine();
+                    input = Message.ErrorGenericWrite("Tamanho incorreto do RG", input);
                 }
             }
 

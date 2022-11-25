@@ -21,6 +21,7 @@
         public static string ErrorGenericWrite(string? message, string input)
         {
             ErrorGeneric(message);
+            Console.Write("Digite: ");
             input = Console.ReadLine();
 
             return input;
