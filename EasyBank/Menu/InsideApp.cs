@@ -67,8 +67,7 @@ namespace EasyBank.Menu
                             creditCard.ManualMonthPaymentInvoice(users, creditCards, bills, userID, loans);
                         else
                         {
-                            Console.WriteLine("Nenhuma fatura pendente");
-                            Thread.Sleep(1300);
+                            Message.GeneralThread("Nenhuma fatura pendente");
                         }
                         break;
                     case "6":
