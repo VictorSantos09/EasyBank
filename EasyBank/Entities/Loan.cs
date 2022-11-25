@@ -97,7 +97,7 @@ namespace EasyBank.Entities
 
                 else
                 {
-                    Console.WriteLine("Empréstimo cancelado");
+                    Message.SuccessfulGeneric("Empréstimo cancelado");
                 }
             }
         }

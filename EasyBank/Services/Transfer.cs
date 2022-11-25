@@ -35,8 +35,7 @@ namespace EasyBank.Services
                 }
             }
 
-            Console.WriteLine($"Você possui {user.CurrentAccount} em conta");
-            Thread.Sleep(2000);
+            Message.GeneralThread($"Você possui {user.CurrentAccount} em conta");
             return informedValue;
         }
         public double CheckAmountInAccount(double choiceQuantity, List<User> users, int userID)
@@ -93,12 +92,12 @@ namespace EasyBank.Services
         }
         public void ShowkeyPix(string confirmationPix)
         {
-            Console.WriteLine($"Voce está transferindo para o pix: {confirmationPix}");
+            Message.GeneralThread($"Voce está transferindo para o pix: {confirmationPix}");
         }
 
         public void ShowValuePix(double confirmationValuePix)
         {
-            Console.WriteLine($"Voce está transferindo o valor de {confirmationValuePix}");
+            Message.GeneralThread($"Voce está transferindo o valor de {confirmationValuePix}");
         }
     }
 }

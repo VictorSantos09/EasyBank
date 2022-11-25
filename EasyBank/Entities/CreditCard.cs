@@ -166,7 +166,7 @@ namespace EasyBank.Entities
                 AutoDebitPaymentAutomatic(autoDebits, users, bills, userID);
 
             else if (HasPendingPayments(bills, userID) == true)
-                Message.GeneralThread("Novas Faturas, vá até a opção de Pagar Fatura em seu perfil");
+                Message.GeneralThread("Novas Faturas, vá até a opção de Pagar Fatura em seu perfil",1000);
         }
     }
 }
