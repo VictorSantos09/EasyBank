@@ -362,7 +362,7 @@ namespace EasyBank.Services
         }
         public void CancelSaving(List<Savings> savings, List<User> users, int userID)
         {
-            var saving = savings.Find(x => x.Id == userID);
+            var saving = savings.Find(x => x.OwnerID == userID);
 
             Console.Clear();
             Console.WriteLine("Tem certeza que deseja cancelar sua poupança?\n1 - Sim\n2 - Não");
