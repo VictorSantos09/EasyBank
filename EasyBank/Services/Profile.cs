@@ -125,7 +125,7 @@ namespace EasyBank.Services
                 else
                 {
                     Console.Clear();
-                    Console.Write("Algo deu errado! Favor insira as informações novamente.");
+                    Message.ErrorGeneric("Algo deu errado! Favor insira as informações novamente.");
                     Console.WriteLine("\n\nPressione ENTER para voltar");
                     Console.ReadLine();
                 }
@@ -161,7 +161,7 @@ namespace EasyBank.Services
 
                 if (checkoutPassword != user.Password)
                 {
-                    Console.Write("Algo deu errado favor insira a senha novamente!\n\nPressione ENTER");
+                    Message.ErrorGeneric("Algo deu errado favor insira a senha novamente!\n\nPressione ENTER");
                     Console.ReadLine();
                     counter++;
                 }
@@ -177,7 +177,7 @@ namespace EasyBank.Services
 
                         if (checkoutSafetyKey != user.SafetyKey)
                         {
-                            Console.Write("Algo deu errado favor insira a senha novamente!\n\nPressione ENTER");
+                            Message.ErrorGeneric("Algo deu errado favor insira a senha novamente!\n\nPressione ENTER");
                             Console.ReadLine();
                             counter++;
                         }

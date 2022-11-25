@@ -211,7 +211,7 @@ namespace EasyBank.Services
             var saving = savings.Find(x => x.OwnerID == userID);
 
             if (saving == null)
-                Message.ErrorGeneric("Nenhum rendimento encontrado");
+                Message.GeneralThread("Nenhum rendimento encontrado");
 
             else
             {
@@ -235,7 +235,7 @@ namespace EasyBank.Services
             var saving = savings.Find(x => x.OwnerID == userID);
 
             if (saving == null)
-                Message.ErrorGeneric("Você não possui investimentos");
+                Message.GeneralThread("Você não possui investimentos");
 
             else
             {
@@ -375,7 +375,7 @@ namespace EasyBank.Services
                     if (UserValidator.IsCorrectSafeyKey(users, userID) == true)
                     {
                         savings.Remove(saving);
-                        Message.ErrorGeneric("Poupança deletada com sucesso");
+                        Message.SuccessfulGeneric("Poupança deletada com sucesso");
                     }
                     break;
 

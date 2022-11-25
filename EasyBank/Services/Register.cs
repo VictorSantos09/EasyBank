@@ -44,7 +44,7 @@ namespace EasyBank.Services
                 }
                 else
                 {
-                    Console.WriteLine("Numeros e caracteres especiais não são válidos");
+                    Message.ErrorGeneric("Numeros e caracteres especiais não são válidos");
                 }
             }
 
@@ -75,7 +75,7 @@ namespace EasyBank.Services
                 }
                 else
                 {
-                    Console.WriteLine("Letras e caracteres especiais não são válidos");
+                    Message.ErrorGeneric("Letras e caracteres especiais não são válidos");
                 }
             }
 
@@ -100,7 +100,7 @@ namespace EasyBank.Services
                 }
                 else
                 {
-                    Console.WriteLine("Letras e caracteres especiais não são válidos");
+                    Message.ErrorGeneric("Letras e caracteres especiais não são válidos");
                 }
             }
 
@@ -123,7 +123,7 @@ namespace EasyBank.Services
                 }
                 else
                 {
-                    Console.WriteLine("Letras e caracteres especiais não são válidos");
+                    Message.ErrorGeneric("Letras e caracteres especiais não são válidos");
                 }
             }
 

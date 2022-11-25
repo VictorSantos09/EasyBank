@@ -52,7 +52,7 @@ while (true)
             var userID = login.CheckLogin(users);
             if (userID == 0)
             {
-                Console.WriteLine("Dados não cadastrados ou senha incorreta");
+                Message.ErrorGeneric("Dados não cadastrados ou senha incorreta");
             }
             else
             {
