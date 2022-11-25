@@ -1,4 +1,5 @@
 ﻿using EasyBank.Entities;
+using EasyBank.Crosscutting;
 
 namespace EasyBank.Services
 {
@@ -21,7 +22,7 @@ namespace EasyBank.Services
 
             if (choice == "1")
             {
-                Console.WriteLine("Transferencia realizada.");
+                Message.SuccessfulGeneric("Transferencia realizada.");
                 user.CurrentAccount = user.CurrentAccount - informedValue;
                 Thread.Sleep(2000);
             }
@@ -43,12 +44,12 @@ namespace EasyBank.Services
             var user = users.Find(x => x.Id == userID);
             while (choiceQuantity > user.CurrentAccount)
             {
-                Console.WriteLine("Valor maior que o disponível em conta, favor informe um valor válido");
+                Message.ErrorGeneric("Valor maior que o disponível em conta, favor informe um valor válido");
                 choiceQuantity = Convert.ToDouble(Console.ReadLine());
             }
             while (choiceQuantity <= 0)
             {
-                Console.WriteLine("Favor informe um valor válido");
+                Message.ErrorGeneric("Favor informe um valor válido");
                 choiceQuantity = Convert.ToDouble(Console.ReadLine());
             }
             return choiceQuantity;
@@ -63,27 +64,27 @@ namespace EasyBank.Services
             {
                 if (pix.Contains("@"))
                 {
-                    Console.WriteLine("E-mail Válido");
+                    Message.SuccessfulGeneric("E-mail Válido");
                     pixCorrect = true;
                 }
                 else if (pix.Length == 11)
                 {
-                    Console.WriteLine("CPF Válido");
+                    Message.SuccessfulGeneric("CPF Válido");
                     pixCorrect = true;
                 }
                 else if (pix.Length == 14)
                 {
-                    Console.WriteLine("CNPJ Válido");
+                    Message.SuccessfulGeneric("CNPJ Válido");
                     pixCorrect = true;
                 }
                 else if (pix.Length == 12)
                 {
-                    Console.WriteLine("Número de telefone válido");
+                    Message.SuccessfulGeneric("Número de telefone válido");
                     pixCorrect = true;
                 }
                 else
                 {
-                    Console.WriteLine("pix inválido");
+                    Message.ErrorGeneric("Pix inválido");
                     pix = Console.ReadLine();
                 }
             }
@@ -98,7 +99,6 @@ namespace EasyBank.Services
         public void ShowValuePix(double confirmationValuePix)
         {
             Console.WriteLine($"Voce está transferindo o valor de {confirmationValuePix}");
-            Console.WriteLine();
         }
     }
 }
