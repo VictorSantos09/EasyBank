@@ -1,18 +1,26 @@
 ﻿using EasyBankWeb.Crosscutting;
 using EasyBankWeb.Entities;
+using EasyBankWeb.Repository;
 
 namespace EasyBankWeb.Services
 {
     public class Transfer
     {
-        public double Valuetransfer(List<User> users, int userID)
+        private readonly UserRepository _userRepository;
+
+        public Transfer(UserRepository userRepository)
         {
-            var user = users.Find(x => x.Id == userID);
+            _userRepository = userRepository;
+        }
+
+        public double Valuetransfer(int userID)
+        {
+            var user = _userRepository.GetUserById(userID);
             var informedValue = user.CurrentAccount;
             Console.WriteLine("Informe o valor que você gostaria de transferir");
             Console.WriteLine($"valor em conta: {user.CurrentAccount}");
             informedValue = Convert.ToDouble(Console.ReadLine());
-            informedValue = CheckAmountInAccount(informedValue, users, userID);
+            informedValue = CheckAmountInAccount(informedValue, userID);
             var check_KeyPix = CheckPix();
             ShowkeyPix(check_KeyPix);
             ShowValuePix(informedValue);
@@ -22,9 +30,8 @@ namespace EasyBankWeb.Services
 
             if (choice == "1")
             {
-                Message.SuccessfulGeneric("Transferencia realizada.");
                 user.CurrentAccount = user.CurrentAccount - informedValue;
-                Thread.Sleep(2000);
+                Message.SuccessfulGeneric("Transferencia realizada.");
             }
             else
             {
@@ -38,9 +45,10 @@ namespace EasyBankWeb.Services
             Message.GeneralThread($"Você possui {user.CurrentAccount} em conta");
             return informedValue;
         }
-        public double CheckAmountInAccount(double choiceQuantity, List<User> users, int userID)
+        public double CheckAmountInAccount(double choiceQuantity, int userID)
         {
-            var user = users.Find(x => x.Id == userID);
+            var user = _userRepository.GetUserById(userID);
+
             while (choiceQuantity > user.CurrentAccount)
             {
                 Message.ErrorGeneric("Valor maior que o disponível em conta, favor informe um valor válido");

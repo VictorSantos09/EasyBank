@@ -1,51 +1,61 @@
 ﻿using EasyBankWeb.Crosscutting;
 using EasyBankWeb.Entities;
+using EasyBankWeb.Repository;
 
 namespace EasyBankWeb.Services
 {
     public class Register
     {
-        public void UserRegister(List<User> users, List<CreditCard> creditCards, AdressEntity adress)
+        private readonly CreditCardRepository _creditCardRepository;
+        private readonly UserRepository _userRepository;
+        private readonly AdressEntity adress;
+        private readonly User user;
+        private readonly CreditCard creditCard;
+
+        public Register(CreditCardRepository creditCardRepository, UserRepository userRepository, AdressEntity adress, CreditCard creditCard, User user)
+        {
+            _creditCardRepository = creditCardRepository;
+            _userRepository = userRepository;
+            this.adress = adress;
+            this.creditCard = creditCard;
+            this.user = user;
+        }
+
+        public void UserRegister()
         {
 
             var userName = R_Name();
             var userMonthlyIncome = MonthlyIncome();
 
-            var userID = GeneralValidator.ID_AUTOINCREMENT(users);
+            var userID = GeneralValidator.ID_AUTOINCREMENT(_userRepository.GetUsers());
             SafetyPassword safetyPassword = new SafetyPassword();
 
             var user = new User(userName, R_Age_DateBorn(), PhoneNumber(), Email(),
                  Password(), CPF(), RG(), userMonthlyIncome, Adress(), userID, adress, safetyPassword.LetterCreation());
 
-            users.Add(user);
+            _userRepository.AddUser(user);
 
-            var creditCardID = GeneralValidator.ID_AUTOINCREMENT(creditCards);
-            CreditCard creditCard = new CreditCard();
+            var creditCardID = GeneralValidator.ID_AUTOINCREMENT(_creditCardRepository.GetCreditCard());
 
-            var creditCardConstructor = new CreditCard(creditCard.R_Limit(userMonthlyIncome), userName,
+            var creditCardConstructor = new CreditCardEntity(creditCard.R_Limit(userMonthlyIncome), userName,
                 creditCard.R_CVV(), creditCard.R_ExpireDate(), creditCardID, creditCard.R_CardNumber(), userID);
 
-            creditCards.Add(creditCardConstructor);
+            _creditCardRepository.AddCreditCard(creditCardConstructor);
         }
         public string R_Name()
         {
-            var inputName = "";
-            var checking = true;
-
-            while (checking)
+            string? inputName;
+            while (true)
             {
                 Console.Write("Cadastre seu nome completo: ");
                 inputName = UserValidator.IsValidName(Console.ReadLine());
                 var checker = GeneralValidator.HasNumberOrSpecialCaracter(inputName);
 
                 if (!checker)
-                {
-                    checking = false;
-                }
+                    break;
+
                 else
-                {
                     Message.ErrorGeneric("Numeros e caracteres especiais não são válidos");
-                }
             }
 
             return inputName;
@@ -54,25 +64,21 @@ namespace EasyBankWeb.Services
         public string R_Age_DateBorn()
         {
             Console.Write("Cadastre sua data de nascimento no formato 00/00/0000\nDigite: ");
-            string userInputDateBorn = UserValidator.IsValidAge(Console.ReadLine());
+            return UserValidator.IsValidAge(Console.ReadLine());
 
-            return userInputDateBorn;
         }
         public string CPF()
         {
-            var inputCPF = "";
-            var checking = true;
-
-            while (checking)
+            string? inputCPF;
+            while (true)
             {
                 Console.Write("Cadastre seu CPF: ");
                 inputCPF = UserValidator.IsValidCPF(Console.ReadLine());
                 var checker = GeneralValidator.HasLetterOrSpecialCaracter(inputCPF);
 
                 if (!checker)
-                {
-                    checking = false;
-                }
+                    break;
+
                 else
                 {
                     Message.ErrorGeneric("Letras e caracteres especiais não são válidos");
@@ -85,49 +91,38 @@ namespace EasyBankWeb.Services
         }
         public string RG()
         {
-            var inputRG = "";
-            var checking = true;
-
-            while (checking)
+            string? inputRG;
+            while (true)
             {
                 Console.Write("Cadastre seu RG: ");
                 inputRG = UserValidator.DynamicSizeRG(Console.ReadLine());
                 var checker = GeneralValidator.HasLetterOrSpecialCaracter(inputRG);
 
                 if (!checker)
-                {
-                    checking = false;
-                }
+                    break;
+
                 else
-                {
                     Message.ErrorGeneric("Letras e caracteres especiais não são válidos");
-                }
             }
 
             return inputRG;
         }
         public string PhoneNumber()
         {
-            var inputPhoneNumber = "";
-            var checking = true;
-
-            while (checking)
+            string? inputPhoneNumber;
+            while (true)
             {
                 Console.Write("Cadastre seu telefone com DDD.\nExemplo: 13991256286\nDigite: ");
                 inputPhoneNumber = UserValidator.IsValidPhoneNumber(Console.ReadLine());
                 var checker = GeneralValidator.HasLetterOrSpecialCaracter(inputPhoneNumber);
 
                 if (!checker)
-                {
-                    checking = false;
-                }
+                    break;
+
                 else
-                {
                     Message.ErrorGeneric("Letras e caracteres especiais não são válidos");
-                }
             }
 
-            User user = new User();
             var finalNumber = user.PhoneCodeArea + inputPhoneNumber;
 
             return finalNumber;
@@ -135,16 +130,15 @@ namespace EasyBankWeb.Services
         public string Email()
         {
             Console.Write("Cadastre seu email: ");
-            var inputEmail = UserValidator.IsValidEmail(Console.ReadLine().ToUpper());
+            return UserValidator.IsValidEmail(Console.ReadLine().ToUpper());
 
-            return inputEmail;
         }
         public string Password()
         {
             Console.Write("Cadastre sua senha de 4 digitos: ");
-            var inputPassword = UserValidator.IsValidPassword(Console.ReadLine());
 
-            return inputPassword;
+            return UserValidator.IsValidPassword(Console.ReadLine());
+
         }
         public int MonthlyIncome()
         {
@@ -154,7 +148,6 @@ namespace EasyBankWeb.Services
 
             return Convert.ToInt32(inputMonthlyIncome);
         }
-
         public string[] Adress()
         {
             string[] dataAdress = new string[6];
@@ -172,44 +165,35 @@ namespace EasyBankWeb.Services
         public string City()
         {
             Console.Write("Cidade: ");
-            var inputCity = GeneralValidator.OutputNoNumberAndSpecialCaracteres(Console.ReadLine()).ToUpper();
-
-            return inputCity;
+            return GeneralValidator.OutputNoNumberAndSpecialCaracteres(Console.ReadLine()).ToUpper();
         }
         public string State()
         {
             Console.Write("Estado: ");
-            var inputState = GeneralValidator.OutputNoNumberAndSpecialCaracteres(Console.ReadLine()).ToUpper();
+            return GeneralValidator.OutputNoNumberAndSpecialCaracteres(Console.ReadLine()).ToUpper();
 
-            return inputState;
         }
         public string Neighborhood()
         {
             Console.Write("Bairro: ");
-            var inputNeighborhood = GeneralValidator.OutputNoNumberAndSpecialCaracteres(Console.ReadLine()).ToUpper();
-
-            return inputNeighborhood;
+            return GeneralValidator.OutputNoNumberAndSpecialCaracteres(Console.ReadLine()).ToUpper();
         }
         public string StreetOrAvenue()
         {
             Console.Write("Rua/Avenida: ");
-            var inputStreetOrAvenue = GeneralValidator.OutputNoSpecialCaracter(Console.ReadLine().ToUpper());
+            return GeneralValidator.OutputNoSpecialCaracter(Console.ReadLine().ToUpper());
 
-            return inputStreetOrAvenue;
         }
         public string HouseNumber()
         {
             Console.Write("Numero: ");
-            var inputHouseNumber = GeneralValidator.OutputNoLetterAndSpecialCaracter(Console.ReadLine());
+            return GeneralValidator.OutputNoLetterAndSpecialCaracter(Console.ReadLine());
 
-            return inputHouseNumber;
         }
         public string Complement()
         {
             Console.Write("Complemento: ");
-            var inputComplement = GeneralValidator.OutputNoSpecialCaracter(Console.ReadLine()).ToUpper();
-
-            return inputComplement;
+            return GeneralValidator.OutputNoSpecialCaracter(Console.ReadLine()).ToUpper();
         }
     }
 }
