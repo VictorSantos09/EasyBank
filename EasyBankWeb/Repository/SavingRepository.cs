@@ -11,11 +11,6 @@ namespace EasyBankWeb.Repository
             Savings = new List<SavingEntity>();
         }
 
-        public SavingEntity? GetSavingById(int id)
-        {
-            return Savings.Find(x => x.Id == id);
-        }
-
         public List<SavingEntity> GetSavings()
         {
             return Savings;
@@ -25,9 +20,15 @@ namespace EasyBankWeb.Repository
         {
             Savings.Add(savings);
         }
+
         public void RemoveSavings(SavingEntity savingEntity)
         {
             Savings.Remove(savingEntity);
+        }
+
+        public SavingEntity? GetSavingById(int id)
+        {
+            return Savings.Find(x => x.Id == id);
         }
     }
 }

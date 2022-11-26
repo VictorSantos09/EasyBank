@@ -1,24 +1,34 @@
-﻿using EasyBankWeb.Entities;
+﻿
+using EasyBankWeb.Entities;
 
 namespace EasyBankWeb.Repository
 {
     public class BillRepository
     {
-        private List<Bill> Bills { get; set; }
+        private List<BillEntity> Bills { get; set; }
 
         public BillRepository()
         {
-            Bills = new List<Bill>();
+            Bills = new List<BillEntity>();
         }
 
-        public List<Bill> GetBill()
+        public List<BillEntity> GetBill()
         {
             return Bills;
         }
 
-        public void AddBill(Bill bill)
+        public void AddBill(BillEntity bill)
         {
             Bills.Add(bill);
+        }
+        public BillEntity? GetBillById(int id)
+        {
+            return Bills.Find(x => x.Id == id);
+        }
+
+        public void RemoveBill(BillEntity billEntity)
+        {
+            Bills.Remove(billEntity);
         }
     }
 }

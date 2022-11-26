@@ -71,7 +71,7 @@ namespace EasyBankWeb.Services
         }
         public void AddSavingToList(int userID, double userValueInvested, double taxesValue)
         {
-            var saving = new SavingEntity(userID, userValueInvested, GeneralValidator.ID_AUTOINCREMENT(savings), taxesValue, userValueInvested);
+            var saving = new SavingEntity(userID, userValueInvested, IncrementID(), taxesValue, userValueInvested);
 
             _savingRepository.AddSavings(saving);
         }
