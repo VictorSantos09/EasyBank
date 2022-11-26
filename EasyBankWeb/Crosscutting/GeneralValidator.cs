@@ -25,6 +25,7 @@ namespace EasyBankWeb.Crosscutting
             for (int i = 0; i < input.Length; i++)
             {
                 char checker = rules[i];
+
                 if (input.Contains(checker))
                     return true;
             }
@@ -40,6 +41,7 @@ namespace EasyBankWeb.Crosscutting
                 for (int j = 0; j < input.Length; j++)
                 {
                     char checker = rules[i];
+
                     if (input.Contains(checker))
                         return true;
                 }
@@ -49,14 +51,11 @@ namespace EasyBankWeb.Crosscutting
         }
         public static bool HasNumberOrSpecialCaracter(string input)
         {
-            var number = HasNumber(input);
-
-            if (number == true)
+            if (HasNumber(input))
                 return true;
             else
             {
-                var specialCaracter = HasSpecialCaracter(input);
-                if (specialCaracter == true)
+                if (HasSpecialCaracter(input))
                     return true;
             }
 
@@ -64,80 +63,57 @@ namespace EasyBankWeb.Crosscutting
         }
         public static bool HasLetterOrSpecialCaracter(string input)
         {
-            var letter = HasLetter(input);
-
-            if (letter == true)
+            if (HasLetter(input))
                 return true;
 
             else
             {
-                var specialC = HasSpecialCaracter(input);
-                if (specialC == true)
-                {
+                if (HasSpecialCaracter(input))
                     return true;
-                }
             }
 
             return false;
         }
         public static string OutputNoLetters(string input)
         {
-            var removingLetter = true;
-            while (removingLetter)
+            while (true)
             {
-                var hasLetter = HasLetter(input);
-                if (hasLetter == true)
-                {
+                if (HasLetter(input))
                     input = Message.ErrorGenericWrite("Não pode conter letras", input);
 
-                }
                 else
-                {
-                    removingLetter = false;
-                }
+                    break;
             }
 
             return input;
         }
         public static string OutputNoSpecialCaracter(string input)
         {
-            var removingSpecialC = true;
-            while (removingSpecialC)
+            while (true)
             {
-                var hasSpecialCaracter = HasSpecialCaracter(input);
-                if (hasSpecialCaracter == true)
-                {
+                if (HasSpecialCaracter(input))
                     input = Message.ErrorGenericWrite("Não pode conter caracteres especiais", input);
-                }
+                
                 else
-                {
-                    removingSpecialC = false;
-                }
+                    break;
             }
 
             return input;
         }
         public static string OutputNoNumberAndSpecialCaracteres(string input)
         {
-            var removingAll = true;
-            while (removingAll)
+            while (true)
             {
-                var hasNumber = HasNumber(input);
-                if (hasNumber == true)
-                {
+                if (HasNumber(input))
                     input = Message.ErrorGenericWrite("Não pode conter numeros", input);
-                }
+                
                 else
                 {
-                    var hasSpecialC = HasSpecialCaracter(input);
-                    if (hasSpecialC == true)
-                    {
+                    if (HasSpecialCaracter(input))
                         input = Message.ErrorGenericWrite("Não pode conter caracteres especiais", input);
-                    }
+
                     else
-                    {
-                        removingAll = false;
-                    }
+                        break;
                 }
             }
 
@@ -145,25 +121,18 @@ namespace EasyBankWeb.Crosscutting
         }
         public static string OutputNoLetterAndSpecialCaracter(string input)
         {
-            var removingAll = true;
-            while (removingAll)
+            while (true)
             {
-                var letter = HasLetter(input);
-                if (letter == true)
-                {
+                if (HasLetter(input))
                     input = Message.ErrorGenericWrite("Não pode conter caracteres especiais e letras", input);
-                }
+                
                 else
                 {
-                    var SpecialC = HasSpecialCaracter(input);
-                    if (SpecialC == true)
-                    {
+                    if (HasSpecialCaracter(input))
                         input = Message.ErrorGenericWrite("Não pode conter caracteres especiais", input);
-                    }
+
                     else
-                    {
-                        removingAll = false;
-                    }
+                        break;
                 }
             }
 
@@ -171,18 +140,13 @@ namespace EasyBankWeb.Crosscutting
         }
         public static string OutputNoWhiteSpace(string input)
         {
-            var checking = true;
-            while (checking)
+            while (true)
             {
-                var checker = HasWhiteSpace(input);
-                if (checker == true)
-                {
+                if (HasWhiteSpace(input))
                     input = RemoveWhiteSpace(input);
-                }
+
                 else
-                {
-                    checking = false;
-                }
+                    break;
             }
 
             return input;
