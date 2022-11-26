@@ -126,7 +126,7 @@ namespace EasyBankWeb.Entities
         }
         public void ApplyLoan(int qtdParcels, double finalValue, int userID)
         {
-            var loan = new Loan(finalValue, qtdParcels, userID, GeneralValidator.ID_AUTOINCREMENT(_loanRepository), true);
+            var loan = new Loan(finalValue, qtdParcels, userID, IncrementID(), true);
             _loanRepository.AddLoan(loan);
 
             var user = _userRepository.GetUsers().Find(x => x.Id == userID);
@@ -134,28 +134,28 @@ namespace EasyBankWeb.Entities
             user.OpenLoan = true;
             user.CurrentAccount += finalValue;
 
-            _billRepository.Add(new Bill
+            _billRepository.Add(new Bill()
             {
                 Name = "EMPRÉSTIMO",
                 NumberParcels = qtdParcels,
                 OwnerID = userID,
                 Value = finalValue,
-                Id = IncrementID(_billRepository),
+                Id = Bill.IncrementID(),
                 ValueParcel = finalValue / qtdParcels,
                 RemainParcels = qtdParcels,
             });
         }
-        public static void CheckAndRemoveLoan(int userID)
+        public void CheckAndRemoveLoan(int userID)
         {
-            var loan = loans.Find(x => x.OwnerID == userID);
-            var user = users.Find(x => x.Id == userID);
+            var loan = _loanRepository.GetLoan().Find(x => x.OwnerID == userID);
+            var user = _userRepository.GetUsers().Find(x => x.Id == userID);
 
             if (loan != null)
             {
                 if (loan.RemainParcels <= 1)
                 {
                     user.OpenLoan = false;
-                    loans.Remove(loan);
+                    _loanRepository.GetLoan().Remove(loan);
                 }
             }
         }
