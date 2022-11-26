@@ -5,25 +5,15 @@ using EasyBankWeb.Repository;
 
 namespace EasyBankWeb.Services
 {
-    public class Savings : BaseEntity
+    public class Savings
     {
         private readonly SavingRepository _savingRepository;
         private readonly UserRepository _userRepository;
         private readonly SavingsDto _savingsDto;
-
         public Savings(SavingRepository savingRepository, UserRepository userRepository)
         {
             _savingRepository = savingRepository;
             _userRepository = userRepository;
-        }
-
-        public Savings(int userID, double _value, int _id, double _taxesValue, double _startValue)
-        {
-            OwnerID = userID;
-            _savingsDto.Value += _value;
-            _savingsDto.Id = _id;
-            _savingsDto.TaxesValue += _taxesValue;
-            _savingsDto.StartValue = _startValue;
         }
         public Savings()
         {
@@ -44,17 +34,17 @@ namespace EasyBankWeb.Services
                     break;
 
                 case "2":
-                    PrintBenefits(savings, userID);
-                    MenuInsertMoney(users, savings, userID);
+                    PrintBenefits(userID);
+                    MenuInsertMoney(userID);
                     Holder.PressAnyKey();
                     break;
 
                 case "3":
-                    RescueMoney(users, savings, userID);
+                    RescueMoney(userID);
                     break;
 
                 case "4":
-                    CancelSaving(savings, users, userID);
+                    CancelSaving(userID);
                     break;
 
                 case "5":
@@ -85,7 +75,7 @@ namespace EasyBankWeb.Services
 
             savings.Add(saving);
         }
-        public double ChooseExtraValue(int userID)
+        public double ChooseExtraValue()
         {
             var value = 0.0;
             while (true)
@@ -93,8 +83,6 @@ namespace EasyBankWeb.Services
                 Console.Write("Digite a quantia: ");
 
                 value = Convert.ToDouble(Console.ReadLine());
-
-                var user = users.Find(x => x.Id == userID);
 
                 return value;
             }
@@ -154,10 +142,11 @@ namespace EasyBankWeb.Services
         }
         public void MonthlyAction(int userID)
         {
-            if (savings != null && savings.Exists(x => x.OwnerID == userID) == true)
+            if (_savingRepository != null && _savingRepository.GetSavings().Exists(x => x.OwnerID == userID) == true)
             {
-                var saving = savings.Find(x => x.OwnerID == userID);
-                saving.TaxesValue += CalculateTaxes(saving.TaxesValue, MonthsPassed++);
+                var saving = _savingRepository.GetSavings().Find(x => x.OwnerID == userID);
+
+                saving.TaxesValue += CalculateTaxes(saving.TaxesValue, _savingsDto.MonthsPassed);
 
                 saving.Value += saving.TaxesValue;
             }
@@ -165,13 +154,9 @@ namespace EasyBankWeb.Services
         public void SavingSteps(int userID)
         {
             var user = _userRepository.GetUsers().Find(x => x.Id == userID);
-            var savings = _savingRepository.GetSavings();
+
             while (true)
             {
-                Console.Clear();
-
-                Console.WriteLine("INVESTIR");
-
                 if (HasExistentSaving(userID) == true)
                 {
                     Message.GeneralThread("Você já contém uma poupança", 0);
@@ -186,19 +171,19 @@ namespace EasyBankWeb.Services
 
                 else
                 {
-                    var value = 0;//ChooseValue(users, userID);
+                    var value = ChooseValue(userID);
 
                     if (value > user.CurrentAccount)
                         Message.ErrorGeneric("Valor maior que em conta");
 
                     else
                     {
-                        var taxesValue = CalculateTaxes(value);
+                        var taxesValue = CalculateTaxes(value, _savingsDto.MonthsPassed);
 
                         if (ConfirmApplySaving() == true)
                         {
                             AddSavingToList(userID, value, taxesValue);
-                            //DiscountMoneyFromUser(users, userID, value);
+                            DiscountMoneyFromUser(userID, value);
                             break;
                         }
 
@@ -210,7 +195,7 @@ namespace EasyBankWeb.Services
         }
         public bool HasExistentSaving(int userID)
         {
-            if (savings.Find(x => x.OwnerID == userID) == null)
+            if (_savingRepository.GetSavings().Find(x => x.OwnerID == userID) == null)
                 return false;
 
             return true;
@@ -237,9 +222,8 @@ namespace EasyBankWeb.Services
         public void InsertMoney(int userID)
         {
             var user = _userRepository.GetUsers().Find(x => x.Id == userID);
-            var saving = _savingRepository.GetSavings().Find(x => x.Id == userID);
 
-            if (saving == null)
+            if (_savingsDto == null)
                 Message.GeneralThread("Você não possui investimentos");
 
             else
@@ -253,10 +237,10 @@ namespace EasyBankWeb.Services
                 {
                     var value = ChooseValue(userID);
 
-                    if (UserHasEnoughMoney(value,userID) == true)
+                    if (UserHasEnoughMoney(value, userID) == true)
                     {
                         user.CurrentAccount -= value;
-                        saving.Value += value;
+                        _savingsDto.Value += value;
                     }
                 }
             }
@@ -319,7 +303,7 @@ namespace EasyBankWeb.Services
 
             return true;
         }
-        public bool SavingHasEnoughMoney(double value,int userID)
+        public bool SavingHasEnoughMoney(double value, int userID)
         {
             var saving = savings.Find(x => x.OwnerID == userID);
 
@@ -422,6 +406,10 @@ namespace EasyBankWeb.Services
         public List<Savings> GetSavings()
         {
             return _savingRepository.GetSavings();
+        }
+        public int IncrementID()
+        {
+            return GeneralValidator.ID_AUTOINCREMENT(_savingRepository.GetSavings());
         }
     }
 }
