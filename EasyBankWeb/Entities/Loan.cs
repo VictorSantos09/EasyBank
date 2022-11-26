@@ -23,6 +23,7 @@ namespace EasyBankWeb.Entities
         public bool Open { get; set; }
         public int RemainParcels { get; set; }
 
+
         public Loan(double _value, int _parcels, int ownerID, int _id, bool _open)
         {
             Value = _value;
@@ -134,13 +135,13 @@ namespace EasyBankWeb.Entities
             user.OpenLoan = true;
             user.CurrentAccount += finalValue;
 
-            _billRepository.Add(new Bill()
+            _billRepository.AddBill(new Bill()
             {
                 Name = "EMPRÉSTIMO",
                 NumberParcels = qtdParcels,
                 OwnerID = userID,
                 Value = finalValue,
-                Id = Bill.IncrementID(),
+                Id = IncrementID(), //arrumar
                 ValueParcel = finalValue / qtdParcels,
                 RemainParcels = qtdParcels,
             });

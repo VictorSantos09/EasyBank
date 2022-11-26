@@ -1,4 +1,6 @@
 ﻿using EasyBankWeb.Crosscutting;
+using EasyBankWeb.Dto;
+using EasyBankWeb.Repository;
 
 namespace EasyBankWeb.Entities
 {
@@ -31,19 +33,20 @@ namespace EasyBankWeb.Entities
         {
 
         }
-        public void RemoveBills(List<Bill> bills, int userID, List<Loan> loans, List<User> users)
+        public void RemoveBills(int userID)
         {
-            var bill = bills.FindAll(x => x.OwnerID == userID);
+            var bill = _billRepository.GetBill().FindAll(x => x.OwnerID == userID);
 
-            var loanBill = bills.Find(x => x.Name == "EMPRÉSTIMO" && x.OwnerID == userID);
+            var loanBill = _billRepository.GetBill().Find(x => x.Name == "EMPRÉSTIMO" && x.OwnerID == userID);
 
             if (loanBill != null)
-                Loan.CheckAndRemoveLoan(loans, users, userID);
+                
+                Loan.CheckAndRemoveLoan(userID);
 
             for (int i = 0; i < bill.Count; i++)
             {
                 if (bill[i].RemainParcels <= 1)
-                    bills.Remove(bill[i]);
+                    _billRepository.GetBill().Remove(bill[i]);
 
                 else
                     bill[i].RemainParcels--;
@@ -62,9 +65,18 @@ namespace EasyBankWeb.Entities
 
             return true;
         }
+        public void AddBill(BillDto billDto)
+        {
+            var bill = new Bill();
+            _billRepository.AddBill(bill);
+        }
+            public List<Bill> GetBill()
+        {
+            return _billRepository.GetBill();
+        } 
         public int IncrementID()
         {
-            return GeneralValidator.ID_AUTOINCREMENT(
+            return GeneralValidator.ID_AUTOINCREMENT(_billRepository.GetBill());
         }
     }
 }
