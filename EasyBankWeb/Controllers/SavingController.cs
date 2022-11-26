@@ -1,4 +1,6 @@
 ﻿using EasyBankWeb.Dto;
+using EasyBankWeb.Entities;
+using EasyBankWeb.Repository;
 using EasyBankWeb.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,32 +10,32 @@ namespace EasyBankWeb.Controllers
     [Route("[controller]")]
     public class SavingController : ControllerBase
     {
-        private readonly Savings _savings;
+        private readonly Saving saving;
+        private readonly MonthTimer monthTimer;
+        private readonly SavingRepository _savingRepository;
 
-        public SavingController(Savings savings)
+        public SavingController(Saving _saving, SavingRepository savingRepository)
         {
-            _savings = savings;
+            saving = _saving;
+            _savingRepository = savingRepository;
         }
 
         [HttpGet(Name = "GetSaving")]
         public IActionResult Get()
         {
-            return Ok(_savings.GetSavings());
+            return Ok(_savingRepository.GetSavings());
         }
 
         [HttpPost(Name = "PostSaving")]
-        public IActionResult Post([FromBody] SavingsDto savings)
+        public IActionResult Post([FromBody] SavingsDto savingsDto)
         {
-            _savings.AddSavings(savings);
-
-            return Ok();
-        }
-        [HttpGet(Name = "Invest")]
-        public IActionResult InvestMoney(int userID)
-        {
-            _savings.SavingSteps(userID);
-
-            return Ok();
+            if (!saving.HasExistentSaving(savingsDto.OwnerID))
+            {
+                var newSaving = new SavingEntity(savingsDto.OwnerID, savingsDto.Value, 1, saving.CalculateTaxes(savingsDto.Value, 1));
+                _savingRepository.AddSavings(newSaving);
+                return Ok();
+            }
+            return BadRequest("Emprestimo em aberto existente");
         }
     }
 }

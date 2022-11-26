@@ -25,7 +25,7 @@ namespace EasyBankWeb.Services
             var loanBill = _billRepository.GetBill().Find(x => x.Name == "EMPRÉSTIMO" && x.OwnerID == userID);
 
             if (loanBill != null)
-                loan.CheckAndRemoveLoan(userID);
+                //loan.CheckAndRemoveLoan(userID);
 
             for (int i = 0; i < bill.Count; i++)
             {

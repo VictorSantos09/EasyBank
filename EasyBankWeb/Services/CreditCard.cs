@@ -12,7 +12,6 @@ namespace EasyBankWeb.Services
         private readonly Message message;
         private readonly Holder holder;
         private readonly Bill bill;
-        private readonly CreditCard creditCard;
 
         public CreditCard(CreditCardRepository creditCardRepository, UserRepository userRepository, BillRepository billRepository,
             AutoDebitRepository autoDebitRepository, Message message, Holder holder, Bill bill, CreditCard creditCard)
@@ -24,7 +23,10 @@ namespace EasyBankWeb.Services
             this.message = message;
             this.holder = holder;
             this.bill = bill;
-            this.creditCard = creditCard;
+        }
+        public CreditCard()
+        {
+
         }
 
         public int R_Limit(int userMonthlyIncome)
@@ -156,7 +158,7 @@ namespace EasyBankWeb.Services
             var user = _userRepository.GetUserById(userID);
             user.CurrentAccount += user.MonthlyIncome;
 
-            creditCard.IncrementMonthInvoice(userID);
+            IncrementMonthInvoice(userID);
 
             if (bill.HasAutoDebitActivated(userID) == true)
                 AutoDebitPaymentAutomatic(userID);
