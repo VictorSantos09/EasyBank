@@ -6,14 +6,16 @@ namespace EasyBankWeb.Services
     {
         private readonly CreditCard creditCard;
         private readonly Loan loan;
-        private readonly Savings saving;
+        private readonly Saving saving;
         private readonly int userID;
 
-        public MonthTimer(int userID)
+        public MonthTimer(CreditCard creditCard, Loan loan, Saving saving, int userID)
         {
+            this.creditCard = creditCard;
+            this.loan = loan;
+            this.saving = saving;
             this.userID = userID;
         }
-
         public MonthTimer()
         {
 
@@ -33,9 +35,12 @@ namespace EasyBankWeb.Services
         }
         public void MainMonthlyAction()
         {
-            creditCard.MonthlyAction(userID);
-            saving.MonthlyAction(userID);
-            loan.MonthlyAction(userID);
+            //if (creditCard != null)
+                creditCard.MonthlyAction(userID);
+
+            //if (saving != null)
+                saving.MonthlyAction(userID);
+            //loan.MonthlyAction(userID);
         }
     }
 }

@@ -1,4 +1,7 @@
+using EasyBankWeb.Crosscutting;
+using EasyBankWeb.Entities;
 using EasyBankWeb.Repository;
+using EasyBankWeb.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,7 +18,13 @@ builder.Services.AddSingleton<LoanRepository>();
 builder.Services.AddSingleton<SavingRepository>();
 builder.Services.AddSingleton<UserRepository>();
 
+builder.Services.AddSingleton<Saving>();
+builder.Services.AddSingleton<CreditCard>();
+builder.Services.AddSingleton<MonthTimer>();
+
+
 var app = builder.Build();
+MonthTimer.Main();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -31,3 +40,4 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+

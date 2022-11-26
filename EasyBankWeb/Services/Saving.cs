@@ -5,19 +5,19 @@ using EasyBankWeb.Repository;
 
 namespace EasyBankWeb.Services
 {
-    public class Savings
+    public class Saving
     {
         private readonly SavingRepository _savingRepository;
         private readonly UserRepository _userRepository;
         private readonly SavingsDto _savingsDto;
         private readonly UserValidator userValidator;
-        public Savings(SavingRepository savingRepository, UserRepository userRepository, UserValidator userValidator)
+        public Saving(SavingRepository savingRepository, UserRepository userRepository, UserValidator userValidator)
         {
             _savingRepository = savingRepository;
             _userRepository = userRepository;
             this.userValidator = userValidator;
         }
-        public Savings()
+        public Saving()
         {
 
         }
@@ -73,9 +73,9 @@ namespace EasyBankWeb.Services
         }
         public void AddSavingToList(int userID, double userValueInvested, double taxesValue)
         {
-            var saving = new SavingEntity(userID, userValueInvested, IncrementID(), taxesValue, userValueInvested);
+            //var saving = new SavingEntity(userID, userValueInvested, IncrementID(), taxesValue, userValueInvested);
 
-            _savingRepository.AddSavings(saving);
+            //_savingRepository.AddSavings(saving);
         }
         public double ChooseExtraValue()
         {
@@ -148,12 +148,12 @@ namespace EasyBankWeb.Services
             {
                 var saving = _savingRepository.GetSavings().Find(x => x.OwnerID == userID);
 
-                saving.TaxesValue += CalculateTaxes(saving.TaxesValue, _savingsDto.MonthsPassed);
+                saving.TaxesValue += CalculateTaxes(saving.TaxesValue, saving.MonthsPassed);
 
                 saving.Value += saving.TaxesValue;
             }
         }
-        public void SavingSteps(int userID)
+        public bool SavingSteps(int userID)
         {
             var user = _userRepository.GetUsers().Find(x => x.Id == userID);
 
@@ -180,13 +180,16 @@ namespace EasyBankWeb.Services
 
                     else
                     {
-                        var taxesValue = CalculateTaxes(value, _savingsDto.MonthsPassed);
+                        var saving = _savingRepository.GetSavingById(userID);
+
+                        var taxesValue = CalculateTaxes(value, saving.MonthsPassed);
 
                         if (ConfirmApplySaving() == true)
                         {
                             AddSavingToList(userID, value, taxesValue);
                             DiscountMoneyFromUser(userID, value);
                             break;
+                            return true;
                         }
 
                         else
@@ -194,6 +197,7 @@ namespace EasyBankWeb.Services
                     }
                 }
             }
+                return false;
         }
         public bool HasExistentSaving(int userID)
         {
@@ -402,8 +406,8 @@ namespace EasyBankWeb.Services
         }
         public void AddSavings(SavingsDto savingsDto)
         {
-            var savings = new SavingEntity(savingsDto.OwnerID, savingsDto.Value, savingsDto.Id, savingsDto.TaxesValue, savingsDto.StartValue);
-            _savingRepository.AddSavings(savings);
+            //var savings = new SavingEntity(savingsDto.OwnerID, savingsDto.Value, savingsDto.Id, savingsDto.TaxesValue, savingsDto.StartValue);
+            //_savingRepository.AddSavings(savings); // Verificar se é necessario ou como resolver erro, ao executar diz ser nulo
         }
         public List<SavingEntity> GetSavings()
         {
