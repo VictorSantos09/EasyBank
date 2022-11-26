@@ -20,5 +20,6 @@ namespace EasyBankWeb.Repository
         {
             Users.Add(user);
         }
+
     }
 }
