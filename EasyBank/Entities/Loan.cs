@@ -2,12 +2,12 @@
 
 namespace EasyBank.Entities
 {
-    public class Loan : EntidadeBase
+    public class Loan : BaseEntity
     {
-        public int OwnerID { get; set; }
         public double Value { get; set; }
         public int Parcels { get; set; }
         public bool Open { get; set; }
+        public int RemainParcels { get; set; }
 
         public Loan(double _value, int _parcels, int ownerID, int _id, bool _open)
         {
@@ -16,6 +16,7 @@ namespace EasyBank.Entities
             OwnerID = ownerID;
             Id = _id;
             Open = _open;
+            RemainParcels = _parcels;
         }
         public Loan()
         {
@@ -26,9 +27,7 @@ namespace EasyBank.Entities
             var user = users.Find(x => x.Id == userID);
 
             if (user.OpenLoan == true)
-            {
                 Message.ErrorGeneric("Não é possivel abrir mais de um empréstimo");
-            }
 
             else
             {
@@ -37,15 +36,11 @@ namespace EasyBank.Entities
 
                 var twoYearsSalary = user.MonthlyIncome * 24;
 
-                if (loanValue > twoYearsSalary)
-                {
+                if (loanValue > twoYearsSalary || loanValue <= 0)
                     Message.ErrorGeneric("Quantia não disponivel para você");
-                }
 
                 else
-                {
                     PaymentOption(loanValue, bills, loans, userID, users);
-                }
             }
         }
         public void PaymentOption(int loanValue, List<Bill> bills, List<Loan> loans, int userID, List<User> users)
@@ -53,7 +48,8 @@ namespace EasyBank.Entities
             var paymentOptions = "Crédito";
 
             Console.WriteLine("Forma de pagamento permitida");
-            Console.WriteLine("Credíto até 12x - MasterCard\nDigite 1 para continuar\nDigite: ");
+            Console.WriteLine("Credíto até 12x - MasterCard\nDigite 1 para continuar");
+            Console.Write("Digite: ");
             var userInputChoice = Console.ReadLine();
 
             if (userInputChoice == "1")
@@ -93,17 +89,16 @@ namespace EasyBank.Entities
 
                 var finalValue = loanValue + finalInterestValue;
 
-                Console.WriteLine($"Valor do emprestimo: {loanValue}\nForma de Pagamento: {paymentOptions}\n" +
-                    $"Parcelas: {qtdParcels}\nValor Parcela:{finalValue / qtdParcels}\n" +
-                    $"Juros: {finalInterestValue}\nTotal: {loanValue + finalInterestValue}");
-
+                Console.WriteLine($"Valor do emprestimo: {loanValue} | Forma de Pagamento: {paymentOptions} | " +
+                    $"Parcelas: {qtdParcels} | Valor Parcela:{finalValue / qtdParcels} | " +
+                    $"Juros: {finalInterestValue} | Total: {loanValue + finalInterestValue}");
 
                 if (ConfirmLoan() == true)
                     ApplyLoan(bills, loans, qtdParcels, finalValue, userID, users);
 
                 else
                 {
-                    Console.WriteLine("Empréstimo cancelado");
+                    Message.SuccessfulGeneric("Empréstimo cancelado");
                 }
             }
         }
@@ -118,10 +113,13 @@ namespace EasyBank.Entities
         }
         public void ApplyLoan(List<Bill> bills, List<Loan> loans, int qtdParcels, double finalValue, int userID, List<User> users)
         {
-            var loan = new Loan(finalValue, qtdParcels, userID, UserValidator.ID_AUTOINCREMENT(loans), true);
+            var loan = new Loan(finalValue, qtdParcels, userID, GeneralValidator.ID_AUTOINCREMENT(loans), true);
             loans.Add(loan);
 
-            var user = users.Find(x => x.Id == userID).OpenLoan = true;
+            var user = users.Find(x => x.Id == userID);
+
+            user.OpenLoan = true;
+            user.CurrentAccount += finalValue;
 
             bills.Add(new Bill
             {
@@ -129,8 +127,9 @@ namespace EasyBank.Entities
                 NumberParcels = qtdParcels,
                 OwnerID = userID,
                 Value = finalValue,
-                Id = UserValidator.ID_AUTOINCREMENT(bills),
+                Id = GeneralValidator.ID_AUTOINCREMENT(bills),
                 ValueParcel = finalValue / qtdParcels,
+                RemainParcels = qtdParcels,
             });
         }
     }

@@ -33,7 +33,7 @@ namespace EasyBank.Services
                             {
                                 if (userPassword == users[i].Password)
                                 {
-                                    Console.WriteLine("Login realizado com sucesso!");
+                                    Message.SuccessfulGeneric("Login realizado com sucesso!");
                                     return users[i].Id;
                                     checking = false;
                                 }
@@ -52,7 +52,7 @@ namespace EasyBank.Services
                             {
                                 if (userPassword == users[i].Password)
                                 {
-                                    Console.WriteLine("Login realizado com sucesso!");
+                                    Message.SuccessfulGeneric("Login realizado com sucesso!");
                                     return users[i].Id;
                                     checking = false;
                                 }

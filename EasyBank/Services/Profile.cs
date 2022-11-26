@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using EasyBank.Crosscutting;
+﻿using EasyBank.Crosscutting;
 using EasyBank.Entities;
 
 namespace EasyBank.Services
@@ -25,6 +24,12 @@ namespace EasyBank.Services
                 if (option == "1")
                 {
                     CardInfo(creditCards, userID);
+                }
+
+                else if (option == "0")
+                {
+                    Autodebit(users, userID);
+
                 }
 
                 else if (option == "2")
@@ -91,6 +96,13 @@ namespace EasyBank.Services
             Console.Write("\n\nPressione ENTER para voltar");
             Console.ReadLine();
         }
+        public void Autodebit(List<User> users, int userID)
+        {
+            Console.Clear();
+            var user = users.Find(x => x.Id == userID);
+            Console.WriteLine($"Auto Debito: {user.CurrentAccount}");
+            Console.ReadLine();
+        }
         public void AccountCancellationValidator(List<User> users, List<CreditCard> creditCards, int userID, bool logged, bool menuProfile)
         {
             var user = users.Find(x => x.Id == userID);
@@ -113,7 +125,7 @@ namespace EasyBank.Services
                 else
                 {
                     Console.Clear();
-                    Console.Write("Algo deu errado! Favor insira as informações novamente.");
+                    Message.ErrorGeneric("Algo deu errado! Favor insira as informações novamente.");
                     Console.WriteLine("\n\nPressione ENTER para voltar");
                     Console.ReadLine();
                 }
@@ -149,7 +161,7 @@ namespace EasyBank.Services
 
                 if (checkoutPassword != user.Password)
                 {
-                    Console.Write("Algo deu errado favor insira a senha novamente!\n\nPressione ENTER");
+                    Message.ErrorGeneric("Algo deu errado favor insira a senha novamente!\n\nPressione ENTER");
                     Console.ReadLine();
                     counter++;
                 }
@@ -165,7 +177,7 @@ namespace EasyBank.Services
 
                         if (checkoutSafetyKey != user.SafetyKey)
                         {
-                            Console.Write("Algo deu errado favor insira a senha novamente!\n\nPressione ENTER");
+                            Message.ErrorGeneric("Algo deu errado favor insira a senha novamente!\n\nPressione ENTER");
                             Console.ReadLine();
                             counter++;
                         }

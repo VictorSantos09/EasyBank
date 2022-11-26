@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using EasyBank.Services;
 using EasyBank.Crosscutting;
 
 namespace EasyBank.Entities
@@ -55,7 +53,7 @@ namespace EasyBank.Entities
                         break;
 
                     default:
-                        Message.ErrorThread("Digite uma opção válida: '1', '2', '3', '4' ou '5'");
+                        Message.ErrorGeneric("Digite uma opção válida: '1', '2', '3', '4' ou '5'");
                         break;
                 }
             }
@@ -78,7 +76,7 @@ namespace EasyBank.Entities
             var userAutoDebits = autoDebits.FindAll(x => x.OwnerID == userID);
 
             if (userAutoDebits.Count == 0)
-                Message.ErrorThread("Nenhuma conta cadastrada");
+                Message.GeneralThread("Nenhuma conta cadastrada");
 
             else
             {
@@ -119,11 +117,11 @@ namespace EasyBank.Entities
                     Console.WriteLine("Informe-nos a conta que deseja cadastrar:");
                     var otherOption = Console.ReadLine();
 
-                    AddAutoDebit(otherOption, AutoDebits, userID, users,bills);
+                    AddAutoDebit(otherOption, AutoDebits, userID, users, bills);
                     break;
 
                 default:
-                    Console.WriteLine("Digite uma opção válida (Opções: 1, 2, 3, ou 4)");
+                    Message.ErrorGeneric("Digite uma opção válida (Opções: 1, 2, 3, ou 4)");
                     break;
             }
         }
@@ -168,7 +166,7 @@ namespace EasyBank.Entities
             var userAutoDebits = autoDebits.FindAll(x => x.OwnerID == userID);
 
             if (userAutoDebits.Count == 0)
-                Message.ErrorThread("Nenhuma conta cadastrada");
+                Message.GeneralThread("Nenhuma conta cadastrada");
 
             else
             {
@@ -187,7 +185,7 @@ namespace EasyBank.Entities
 
             if (ConfirmAutoDebit() == true)
             {
-                var id = UserValidator.ID_AUTOINCREMENT(AutoDebits);
+                var id = GeneralValidator.ID_AUTOINCREMENT(AutoDebits);
 
                 var datasAutoDebit = new AutoDebit(NameExpense, null, userID, accountValue, id);
                 AutoDebits.Add(datasAutoDebit);

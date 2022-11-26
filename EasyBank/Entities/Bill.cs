@@ -1,13 +1,13 @@
 ﻿namespace EasyBank.Entities
 {
-    public class Bill : EntidadeBase
+    public class Bill : BaseEntity
     {
         public double Value { get; set; }
         public double ValueParcel { get; set; }
         public string Name { get; set; }
         public int NumberParcels { get; set; }
         public string? Info { get; set; }
-        public int OwnerID { get; set; }
+        public int RemainParcels { get; set; }
         public Bill(double _valueInvoce, string _nameBill, int QtdParcels, string? _infoBill, int userID, double _ValueParcel, bool _autoDebit)
         {
             Value = _valueInvoce;
@@ -23,17 +23,29 @@
         {
 
         }
-        public void RemoveBills(List<Bill> bills, int userID)
+        public void RemoveBills(List<Bill> bills, int userID, List<Loan> loans, List<User> users)
         {
-            var bill = bills.Find(x => x.OwnerID == userID);
+            var bill = bills.FindAll(x => x.OwnerID == userID);
+            var loanBill = bills.Find(x => x.Name == "EMPRÉSTIMO" && x.OwnerID == userID);
+            var user = users.Find(x => x.Id == userID);
 
-            if (bill.NumberParcels <= 1)
+            if (loanBill != null)
             {
-                bills.Remove(bill);
+                if (loanBill.RemainParcels <= 1)
+                {
+                    var loan = loans.Find(x => x.OwnerID == userID);
+                    user.OpenLoan = false;
+                    loans.Remove(loan);
+                }
             }
-            else
+
+            for (int i = 0; i < bill.Count; i++)
             {
-                bill.NumberParcels--;
+                if (bill[i].RemainParcels <= 1)
+                    bills.Remove(bill[i]);
+
+                else
+                    bill[i].RemainParcels--;
             }
         }
         public void RemoveAutoDebits(List<Bill> bills, Bill bill)
@@ -48,8 +60,6 @@
                 return false;
 
             return true;
-
         }
-
     }
 }
