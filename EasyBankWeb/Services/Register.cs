@@ -5,7 +5,7 @@ namespace EasyBankWeb.Services
 {
     public class Register
     {
-        public void UserRegister(List<User> users, List<CreditCard> creditCards, Adress adress)
+        public void UserRegister(List<User> users, List<CreditCard> creditCards, AdressEntity adress)
         {
 
             var userName = R_Name();

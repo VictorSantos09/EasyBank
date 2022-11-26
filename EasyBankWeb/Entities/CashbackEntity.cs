@@ -1,6 +1,6 @@
 ﻿namespace EasyBankWeb.Entities
 {
-    public class Cashback
+    public class CashbackEntity
     {
         public int Id { get; set; }
         public int Value { get; set; }

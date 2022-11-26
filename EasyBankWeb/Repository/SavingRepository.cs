@@ -1,5 +1,4 @@
 ﻿using EasyBankWeb.Entities;
-using EasyBankWeb.Services;
 
 namespace EasyBankWeb.Repository
 {
@@ -25,6 +24,10 @@ namespace EasyBankWeb.Repository
         public void AddSavings(SavingEntity savings)
         {
             Savings.Add(savings);
+        }
+        public void RemoveSavings(SavingEntity savingEntity)
+        {
+            Savings.Remove(savingEntity);
         }
     }
 }

@@ -19,9 +19,9 @@
         public bool AutoDebit { get; set; }
         public int Age { get; set; }
         public bool OpenLoan { get; set; }
-        public Adress Adress { get; set; }
+        public AdressEntity Adress { get; set; }
         public User(string _name, string _dateBorn, string _phoneNumber, string _email,
-            string _password, string _CPF, string _RG, int _monthlyIncome, string[] _adress, int _id, Adress adress, string _safetyKey)
+            string _password, string _CPF, string _RG, int _monthlyIncome, string[] _adress, int _id, AdressEntity adress, string _safetyKey)
         {
             Adress = adress;
             Name = _name;
