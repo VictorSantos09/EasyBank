@@ -1,5 +1,7 @@
-﻿using EasyBankWeb.Entities;
+﻿using EasyBankWeb.Dto;
+using EasyBankWeb.Entities;
 using EasyBankWeb.Repository;
+using EasyBankWeb.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EasyBankWeb.Controllers
@@ -8,23 +10,30 @@ namespace EasyBankWeb.Controllers
     [Route("[controller]")]
     public class SavingController : ControllerBase
     {
-        private readonly SavingRepository _userRepository;
+        private readonly Savings _savings;
 
-        public SavingController(UserRepository userRepository)
+        public SavingController(Savings savings)
         {
-            _userRepository = userRepository;
+            _savings = savings;
         }
 
-        [HttpGet(Name = "GetUser")]
+        [HttpGet(Name = "GetSaving")]
         public IActionResult Get()
         {
-            return Ok(_userRepository.GetUsers());
+            return Ok(_savings.GetSavings());
         }
 
-        [HttpPost(Name = "PostUser")]
-        public IActionResult Post([FromBody] User user)
+        [HttpPost(Name = "PostSaving")]
+        public IActionResult Post([FromBody] SavingsDto savings)
         {
-            _userRepository.AddUser(user);
+            _savings.AddSavings(savings);
+
+            return Ok();
+        }
+        [HttpGet(Name = "Invest")]
+        public IActionResult InvestMoney(int userID)
+        {
+            _savings.SavingSteps(userID);
 
             return Ok();
         }
