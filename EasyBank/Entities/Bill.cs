@@ -26,11 +26,18 @@
         public void RemoveBills(List<Bill> bills, int userID, List<Loan> loans, List<User> users)
         {
             var bill = bills.FindAll(x => x.OwnerID == userID);
-
             var loanBill = bills.Find(x => x.Name == "EMPRÉSTIMO" && x.OwnerID == userID);
+            var user = users.Find(x => x.Id == userID);
 
             if (loanBill != null)
-                Loan.CheckAndRemoveLoan(loans, users, userID);
+            {
+                if (loanBill.RemainParcels <= 1)
+                {
+                    var loan = loans.Find(x => x.OwnerID == userID);
+                    user.OpenLoan = false;
+                    loans.Remove(loan);
+                }
+            }
 
             for (int i = 0; i < bill.Count; i++)
             {

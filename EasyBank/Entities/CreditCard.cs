@@ -155,18 +155,21 @@ namespace EasyBank.Entities
         }
         public void MonthlyAction(List<CreditCard> creditCards, List<User> users, List<Bill> bills, List<AutoDebit> autoDebits, int userID)
         {
-            var user = users.Find(x => x.Id == userID);
-            user.CurrentAccount += user.MonthlyIncome;
+            if (users.Exists(x => x.Id == userID))
+            {
+                var user = users.Find(x => x.Id == userID);
+                user.CurrentAccount += user.MonthlyIncome;
 
-            CreditCard creditCard = new CreditCard();
-            creditCard.IncrementMonthInvoice(bills, creditCards, userID);
+                CreditCard creditCard = new CreditCard();
+                creditCard.IncrementMonthInvoice(bills, creditCards, userID);
 
-            Bill bill = new Bill();
-            if (bill.HasAutoDebitActivated(autoDebits, userID) == true)
-                AutoDebitPaymentAutomatic(autoDebits, users, bills, userID);
+                Bill bill = new Bill();
+                if (bill.HasAutoDebitActivated(autoDebits, userID) == true)
+                    AutoDebitPaymentAutomatic(autoDebits, users, bills, userID);
 
-            else if (HasPendingPayments(bills, userID) == true)
-                Message.GeneralThread("Novas Faturas, vá até a opção de Pagar Fatura em seu perfil",1000);
+                else if (HasPendingPayments(bills, userID) == true)
+                    Message.GeneralThread("Novas Faturas, vá até a opção de Pagar Fatura em seu perfil", 1000);
+            }
         }
     }
 }
