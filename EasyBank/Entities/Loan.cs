@@ -16,6 +16,7 @@ namespace EasyBank.Entities
             OwnerID = ownerID;
             Id = _id;
             Open = _open;
+            RemainParcels = _parcels;
         }
         public Loan()
         {
@@ -130,24 +131,6 @@ namespace EasyBank.Entities
                 ValueParcel = finalValue / qtdParcels,
                 RemainParcels = qtdParcels,
             });
-        }
-        public static void CheckAndRemoveLoan(List<Loan> loans, List<User> users, int userID)
-        {
-            var loan = loans.Find(x => x.OwnerID == userID);
-            var user = users.Find(x => x.Id == userID);
-
-            if (loan != null)
-            {
-                if (loan.RemainParcels <= 1)
-                {
-                    user.OpenLoan = false;
-                    loans.Remove(loan);
-                }
-            }
-        }
-        public void MonthlyAction(List<Loan> loans, List<User> users, int userID)
-        {
-            CheckAndRemoveLoan(loans, users, userID);
         }
     }
 }

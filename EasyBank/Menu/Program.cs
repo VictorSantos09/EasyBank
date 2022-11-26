@@ -19,7 +19,7 @@ while (true)
 {
     string[] standardAdress = { "Blumenau", "SC", "Ponta Aguda", "AV Brasil", "788", "SENAC" };
     var userStantard = new User("Victor", "26/02/2004", "13991256286", "VICTOR@GMAIL.COM", // Usuario padrão para economizar tempo
-        "1234", "6324587419", "745896245", 1500, standardAdress, GeneralValidator.ID_AUTOINCREMENT(users), new Adress(), "0000");
+        "1234", "632.458.740-19", "745896245", 1500, standardAdress, GeneralValidator.ID_AUTOINCREMENT(users), new Adress(), "0000");
 
     users.Add(userStantard);
 

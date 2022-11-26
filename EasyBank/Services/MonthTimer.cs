@@ -51,7 +51,6 @@ namespace EasyBank.Services
         {
             _CreditCard.MonthlyAction(creditCards, users, bills, autoDebits, userID);
             _Saving.MonthlyAction(savings, userID);
-            _Loan.MonthlyAction(loans, users, userID);
         }
     }
 }
