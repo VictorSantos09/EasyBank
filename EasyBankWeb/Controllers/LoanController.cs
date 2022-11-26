@@ -28,5 +28,6 @@ namespace EasyBankWeb.Controllers
 
             return Ok();
         }
+
     }
 }

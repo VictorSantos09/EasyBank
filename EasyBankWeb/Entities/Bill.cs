@@ -1,7 +1,15 @@
-﻿namespace EasyBankWeb.Entities
+﻿using EasyBankWeb.Crosscutting;
+
+namespace EasyBankWeb.Entities
 {
     public class Bill : BaseEntity
     {
+        private readonly BillRepository _billRepository;
+
+        public Bill(Bill bill)
+        {
+            _bill = bill;
+        }
         public double Value { get; set; }
         public double ValueParcel { get; set; }
         public string Name { get; set; }
@@ -53,6 +61,10 @@
                 return false;
 
             return true;
+        }
+        public int IncrementID()
+        {
+            return GeneralValidator.ID_AUTOINCREMENT(
         }
     }
 }

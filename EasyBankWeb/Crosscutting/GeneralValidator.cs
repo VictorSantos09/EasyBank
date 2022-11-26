@@ -80,6 +80,12 @@ namespace EasyBankWeb.Crosscutting
 
             return false;
         }
+
+        internal static int ID_AUTOINCREMENT(object p)
+        {
+            throw new NotImplementedException();
+        }
+
         public static string OutputNoLetters(string input)
         {
             var removingLetter = true;
