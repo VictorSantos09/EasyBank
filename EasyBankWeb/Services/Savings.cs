@@ -10,10 +10,12 @@ namespace EasyBankWeb.Services
         private readonly SavingRepository _savingRepository;
         private readonly UserRepository _userRepository;
         private readonly SavingsDto _savingsDto;
-        public Savings(SavingRepository savingRepository, UserRepository userRepository)
+        private readonly UserValidator userValidator;
+        public Savings(SavingRepository savingRepository, UserRepository userRepository, UserValidator userValidator)
         {
             _savingRepository = savingRepository;
             _userRepository = userRepository;
+            this.userValidator = userValidator;
         }
         public Savings()
         {
@@ -361,7 +363,7 @@ namespace EasyBankWeb.Services
             switch (choice)
             {
                 case "1":
-                    if (UserValidator.IsCorrectSafeyKey(userID) == true)
+                    if (userValidator.IsCorrectSafeyKey(userID) == true)
                     {
                         _savingRepository.RemoveSavings(saving);
                         Message.SuccessfulGeneric("Poupança deletada com sucesso");

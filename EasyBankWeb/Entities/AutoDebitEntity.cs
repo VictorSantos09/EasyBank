@@ -1,5 +1,3 @@
-using EasyBankWeb.Crosscutting;
-
 namespace EasyBankWeb.Entities
 {
     public class AutoDebitEntity : BillEntity

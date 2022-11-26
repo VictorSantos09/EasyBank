@@ -43,7 +43,7 @@ namespace EasyBankWeb.Services
                         break;
 
                     case "3":
-                        RegistrationMenu();
+                        RegistrationMenu(userID);
                         break;
 
                     case "4":
