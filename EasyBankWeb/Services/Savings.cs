@@ -236,11 +236,8 @@ namespace EasyBankWeb.Services
         }
         public void InsertMoney(int userID)
         {
-            Console.Clear();
-
-            Console.WriteLine("ADICIONAR DINHEIRO");
-
             var user = _userRepository.GetUsers().Find(x => x.Id == userID);
+            var saving = _savingRepository.GetSavings().Find(x => x.Id == userID);
 
             if (saving == null)
                 Message.GeneralThread("Você não possui investimentos");
