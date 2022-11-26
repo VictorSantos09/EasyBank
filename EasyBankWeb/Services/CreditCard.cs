@@ -91,7 +91,7 @@ namespace EasyBankWeb.Services
         public void AutoDebitPaymentAutomatic(int userID)
         {
             var user = _userRepository.GetUserById(userID);
-            var userAutoDebits = _autoDebitRepository.GetAutoDebits().FindAll( x=> x.OwnerID == userID);
+            var userAutoDebits = _autoDebitRepository.GetAutoDebits().FindAll(x => x.OwnerID == userID);
 
             foreach (var item in userAutoDebits)
             {

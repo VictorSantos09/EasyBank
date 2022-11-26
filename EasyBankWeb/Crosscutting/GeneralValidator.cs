@@ -93,7 +93,7 @@ namespace EasyBankWeb.Crosscutting
             {
                 if (HasSpecialCaracter(input))
                     input = Message.ErrorGenericWrite("Não pode conter caracteres especiais", input);
-                
+
                 else
                     break;
             }
@@ -106,7 +106,7 @@ namespace EasyBankWeb.Crosscutting
             {
                 if (HasNumber(input))
                     input = Message.ErrorGenericWrite("Não pode conter numeros", input);
-                
+
                 else
                 {
                     if (HasSpecialCaracter(input))
@@ -125,7 +125,7 @@ namespace EasyBankWeb.Crosscutting
             {
                 if (HasLetter(input))
                     input = Message.ErrorGenericWrite("Não pode conter caracteres especiais e letras", input);
-                
+
                 else
                 {
                     if (HasSpecialCaracter(input))

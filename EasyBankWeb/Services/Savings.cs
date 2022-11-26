@@ -400,7 +400,7 @@ namespace EasyBankWeb.Services
         }
         public void AddSavings(SavingsDto savingsDto)
         {
-            var savings = new SavingEntity(savingsDto.OwnerID,savingsDto.Value, savingsDto.Id, savingsDto.TaxesValue, savingsDto.StartValue);
+            var savings = new SavingEntity(savingsDto.OwnerID, savingsDto.Value, savingsDto.Id, savingsDto.TaxesValue, savingsDto.StartValue);
             _savingRepository.AddSavings(savings);
         }
         public List<SavingEntity> GetSavings()

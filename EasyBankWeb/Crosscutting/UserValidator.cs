@@ -1,5 +1,4 @@
-﻿using EasyBankWeb.Entities;
-using EasyBankWeb.Repository;
+﻿using EasyBankWeb.Repository;
 
 namespace EasyBankWeb.Crosscutting
 {
@@ -85,7 +84,7 @@ namespace EasyBankWeb.Crosscutting
             {
                 if (input.Length < size || input.Length > size)
                     input = Message.ErrorGenericWrite($"Sua senha precisa ter {size}", input);
-                
+
                 else
                     break;
             }
@@ -98,7 +97,7 @@ namespace EasyBankWeb.Crosscutting
             {
                 if (input.Length < 11 || input.Length > 11)
                     input = Message.ErrorGenericWrite("Tamanho de CPF inválido", input);
-                
+
                 else
                     break;
             }
@@ -111,7 +110,7 @@ namespace EasyBankWeb.Crosscutting
             {
                 if (input.Length < 11 || input.Length > 12)
                     input = Message.ErrorGenericWrite("Telefone inválido", input);
-                
+
                 else
                     break;
             }
