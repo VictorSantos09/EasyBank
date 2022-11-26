@@ -10,10 +10,12 @@ namespace EasyBankWeb.Services
         private readonly SavingRepository _savingRepository;
         private readonly UserRepository _userRepository;
         private readonly SavingsDto _savingsDto;
-        public Savings(SavingRepository savingRepository, UserRepository userRepository)
+        private readonly UserValidator userValidator;
+        public Savings(SavingRepository savingRepository, UserRepository userRepository, UserValidator userValidator)
         {
             _savingRepository = savingRepository;
             _userRepository = userRepository;
+            this.userValidator = userValidator;
         }
         public Savings()
         {
@@ -71,7 +73,7 @@ namespace EasyBankWeb.Services
         }
         public void AddSavingToList(int userID, double userValueInvested, double taxesValue)
         {
-            var saving = new SavingEntity(userID, userValueInvested, GeneralValidator.ID_AUTOINCREMENT(savings), taxesValue, userValueInvested);
+            var saving = new SavingEntity(userID, userValueInvested, IncrementID(), taxesValue, userValueInvested);
 
             _savingRepository.AddSavings(saving);
         }
@@ -361,7 +363,7 @@ namespace EasyBankWeb.Services
             switch (choice)
             {
                 case "1":
-                    if (UserValidator.IsCorrectSafeyKey(userID) == true)
+                    if (userValidator.IsCorrectSafeyKey(userID) == true)
                     {
                         _savingRepository.RemoveSavings(saving);
                         Message.SuccessfulGeneric("Poupança deletada com sucesso");
@@ -400,7 +402,7 @@ namespace EasyBankWeb.Services
         }
         public void AddSavings(SavingsDto savingsDto)
         {
-            var savings = new SavingEntity(savingsDto.OwnerID,savingsDto.Value, savingsDto.Id, savingsDto.TaxesValue, savingsDto.StartValue);
+            var savings = new SavingEntity(savingsDto.OwnerID, savingsDto.Value, savingsDto.Id, savingsDto.TaxesValue, savingsDto.StartValue);
             _savingRepository.AddSavings(savings);
         }
         public List<SavingEntity> GetSavings()

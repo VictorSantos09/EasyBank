@@ -1,25 +1,29 @@
 ﻿using EasyBankWeb.Entities;
-using EasyBankWeb.Services;
 
 namespace EasyBankWeb.Repository
 {
     public class CreditCardRepository
     {
-        private List<CreditCard> CreditCards { get; set; }
+        private List<CreditCardEntity> CreditCards { get; set; }
 
         public CreditCardRepository()
         {
-            CreditCards = new List<CreditCard>();
+            CreditCards = new List<CreditCardEntity>();
         }
 
-        public List<CreditCard> GetCreditCard()
+        public List<CreditCardEntity> GetCreditCard()
         {
             return CreditCards;
         }
 
-        public void AddCreditCard(CreditCard creditCard)
+        public void AddCreditCard(CreditCardEntity creditCard)
         {
             CreditCards.Add(creditCard);
+        }
+
+        public CreditCardEntity? GetCreditCardById(int id)
+        {
+            return CreditCards.Find(x => x.OwnerID == id);
         }
     }
 }

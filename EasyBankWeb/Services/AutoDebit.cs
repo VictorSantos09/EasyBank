@@ -1,25 +1,26 @@
-using EasyBankWeb.Crosscutting;
+﻿using EasyBankWeb.Crosscutting;
+using EasyBankWeb.Entities;
+using EasyBankWeb.Repository;
 
-namespace EasyBankWeb.Entities
+namespace EasyBankWeb.Services
 {
-    public class AutoDebit : Bill
+    public class AutoDebit
     {
-        public bool Activated { get; set; }
-        public int OwnerID { get; set; }
-        public AutoDebit(string _name, string _info, int _userID, double _value, int _id)
-        {
-            Name = _name;
-            Info = _info;
-            OwnerID = _userID;
-            Value = _value;
-            Activated = true;
-            Id = _id;
-        }
-        public AutoDebit()
-        {
+        private readonly UserRepository _userRepository;
+        private readonly CreditCardRepository _creditCardRepository;
+        private readonly BillRepository _billRepository;
+        private readonly AutoDebitRepository _autoDebitRepository;
 
+        public AutoDebit(UserRepository userRepository, CreditCardRepository creditCardRepository,
+            BillRepository billRepository, AutoDebitRepository autoDebitRepository)
+        {
+            _userRepository = userRepository;
+            _creditCardRepository = creditCardRepository;
+            _billRepository = billRepository;
+            this._autoDebitRepository = autoDebitRepository;
         }
-        public void Menu(List<AutoDebit> autoDebits, int userID, List<User> users, List<Bill> bills)
+
+        public void Menu(int userID)
         {
             Console.Clear();
 
@@ -38,15 +39,15 @@ namespace EasyBankWeb.Entities
                         break;
 
                     case "2":
-                        DisplaysDebits(autoDebits, userID);
+                        DisplaysDebits(userID);
                         break;
 
                     case "3":
-                        RegistrationMenu(autoDebits, userID, users, bills);
+                        RegistrationMenu(userID);
                         break;
 
                     case "4":
-                        RemoveAutoDebit(autoDebits, userID);
+                        RemoveAutoDebit(userID);
                         break;
 
                     case "5":
@@ -72,9 +73,9 @@ namespace EasyBankWeb.Entities
             Console.WriteLine("Quer remover uma conta do débito automático? Acesse a opção '4'. \n \n");
             Thread.Sleep(1300);
         }
-        public void DisplaysDebits(List<AutoDebit> autoDebits, int userID)
+        public void DisplaysDebits(int userID)
         {
-            var userAutoDebits = autoDebits.FindAll(x => x.OwnerID == userID);
+            var userAutoDebits = _autoDebitRepository.GetAutoDebits().FindAll(x => x.OwnerID == userID);
 
             if (userAutoDebits.Count == 0)
                 Message.GeneralThread("Nenhuma conta cadastrada");
@@ -84,12 +85,12 @@ namespace EasyBankWeb.Entities
                 int index = 1;
                 for (int i = 0; i < userAutoDebits.Count; i++)
                 {
-                    Console.WriteLine($"{index} - {autoDebits[i].Name} " + $"(Valor: R${autoDebits[i].Value})");
+                    Console.WriteLine($"{index} - {userAutoDebits[i].Name} " + $"(Valor: R${userAutoDebits[i].Value})");
                     index++;
                 }
             }
         }
-        public void RegistrationMenu(List<AutoDebit> AutoDebits, int userID, List<User> users, List<Bill> bills)
+        public void RegistrationMenu(int userID)
         {
             Console.WriteLine("Cadastrar novo Débito Automático");
 
@@ -100,25 +101,25 @@ namespace EasyBankWeb.Entities
             switch (userOption)
             {
                 case "1":
-                    AddAutoDebit("Fatura", AutoDebits, userID, users, bills);
+                    AddAutoDebit("Fatura", userID);
                     //Aplicar método que faça a ligação entre DébitoAuto e Crédito;
                     //Se usuário escolher este método, a fatura do cartão todo mês
                     // será paga por aqui;
                     break;
 
                 case "2":
-                    AddAutoDebit("Água", AutoDebits, userID, users, bills);
+                    AddAutoDebit("Água", userID);
                     break;
 
                 case "3":
-                    AddAutoDebit("Seguro de Vida", AutoDebits, userID, users, bills);
+                    AddAutoDebit("Seguro de Vida", userID);
                     break;
 
                 case "4":
                     Console.WriteLine("Informe-nos a conta que deseja cadastrar:");
                     var otherOption = Console.ReadLine();
 
-                    AddAutoDebit(otherOption, AutoDebits, userID, users, bills);
+                    AddAutoDebit(otherOption, userID);
                     break;
 
                 default:
@@ -126,11 +127,11 @@ namespace EasyBankWeb.Entities
                     break;
             }
         }
-        public double FillInInformation(string option, List<User> users, int userID)
+        public double FillInInformation(string option, int userID)
         {
-            var user = users.Find(x => x.Id == userID);
-            var amountDebit = 0.0;
+            var user = _userRepository.GetUserById(userID);
 
+            double amountDebit;
             while (true)
             {
                 Console.Clear();
@@ -162,39 +163,39 @@ namespace EasyBankWeb.Entities
 
             return false;
         }
-        public void RemoveAutoDebit(List<AutoDebit> autoDebits, int userID)
+        public void RemoveAutoDebit(int userID)
         {
-            var userAutoDebits = autoDebits.FindAll(x => x.OwnerID == userID);
+            var userAutoDebits = _autoDebitRepository.GetAutoDebits().FindAll(x => x.OwnerID == userID);
 
             if (userAutoDebits.Count == 0)
                 Message.GeneralThread("Nenhuma conta cadastrada");
 
             else
             {
-                DisplaysDebits(autoDebits, userID);
+                DisplaysDebits(userID);
                 Console.WriteLine("Informe qual conta deseja desativar:");
                 var option = Convert.ToInt32(Console.ReadLine());
 
-                var autoDebit = autoDebits[--option];
+                var autoDebit = userAutoDebits[--option];
 
-                autoDebits.Remove(autoDebit);
+                _autoDebitRepository.RemoveAutoDebit(autoDebit);
             }
         }
-        public void AddAutoDebit(string NameExpense, List<AutoDebit> AutoDebits, int userID, List<User> users, List<Bill> bills)
+        public void AddAutoDebit(string NameExpense, int userID)
         {
-            var accountValue = FillInInformation(NameExpense, users, userID);
+            var accountValue = FillInInformation(NameExpense, userID);
 
             if (ConfirmAutoDebit() == true)
             {
-                var id = GeneralValidator.ID_AUTOINCREMENT(AutoDebits);
+                var id = GeneralValidator.ID_AUTOINCREMENT(_autoDebitRepository.GetAutoDebits());
 
-                var datasAutoDebit = new AutoDebit(NameExpense, null, userID, accountValue, id);
-                AutoDebits.Add(datasAutoDebit);
+                var datasAutoDebit = new AutoDebitEntity(NameExpense, null, userID, accountValue, id);
+                _autoDebitRepository.AddAutoDebit(datasAutoDebit);
 
-                var biil = new Bill(accountValue, NameExpense, 1, null, userID, accountValue, true);
-                bills.Add(biil);
+                var biil = new BillEntity(accountValue, NameExpense, 1, null, userID, accountValue, true);
+
+                _billRepository.AddBill(biil);
             }
-
         }
     }
 }

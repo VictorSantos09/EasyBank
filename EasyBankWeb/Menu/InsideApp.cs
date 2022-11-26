@@ -1,22 +1,45 @@
 ﻿using EasyBankWeb.Crosscutting;
 using EasyBankWeb.Entities;
+using EasyBankWeb.Repository;
 using EasyBankWeb.Services;
 
 namespace EasyBankWeb.Menu
 {
     public class InsideApp
     {
-        public void Home(int userID, List<User> users, List<CreditCard> creditCards, List<Loan> loans,
-            List<Bill> bills, List<AutoDebit> autoDebits, List<Savings> savings)
+        private readonly UserRepository _userRepository;
+        private readonly Loan loan;
+        private readonly AutoDebit autoDebit;
+        private readonly Profile profile;
+        private readonly ProfileConfig profileConfig;
+        private readonly Bill bill;
+        private readonly Transfer transfer;
+        private readonly Savings saving;
+        private readonly CreditCard creditCard;
+
+        public InsideApp(UserRepository userRepository, Loan loan,
+            AutoDebit autoDebit, Profile profile, ProfileConfig profileConfig, Bill bill,
+            Transfer transfer, Savings saving, CreditCard creditCard)
+        {
+            _userRepository = userRepository;
+            this.loan = loan;
+            this.autoDebit = autoDebit;
+            this.profile = profile;
+            this.profileConfig = profileConfig;
+            this.bill = bill;
+            this.transfer = transfer;
+            this.saving = saving;
+            this.creditCard = creditCard;
+        }
+
+        public void Home(int userID)
         {
             MonthTimer.Main();
+
             bool logged = true;
             while (logged)
             {
-                CreditCard creditCard = new CreditCard();
-                var userIndex = UserValidator.GetActualUserIndex(users, userID);
-
-                var user = users.Find(x => x.Id == userID);
+                var user = _userRepository.GetUserById(userID);
 
                 Console.Clear();
                 Console.WriteLine($"Conta Corrente: {user.CurrentAccount}\n\n");
@@ -36,54 +59,47 @@ namespace EasyBankWeb.Menu
                 {
 
                     case "1":
-
-                        Profile profile = new Profile();
-                        if (profile.ViewProfile(users, creditCards, userID, logged) == true)
+                        if (profile.ViewProfile(userID, logged) == true)
                             logged = false;
                         break;
 
                     case "2":
-
-                        Loan loan = new Loan();
-                        loan.LoanRequest(users, loans, bills, userID);
+                        loan.LoanRequest(userID);
                         break;
+
                     case "3":
-
-                        var datePixChoosed = DateTime.Now; // antiga linha 47 
-
-                        Transfer transfer = new Transfer();
-                        transfer.Valuetransfer(users, userID);
+                        transfer.Valuetransfer(userID);
                         break;
 
                     case "4":
 
-                        Savings saving = new Savings();
-                        saving.Menu(savings, userID, users);
+                        saving.Menu(userID);
                         break;
 
                     case "5":
+                        if (creditCard.HasPendingPayments(userID) == true)
+                            creditCard.ManualMonthPaymentInvoice(userID);
 
-                        if (creditCard.HasPendingPayments(bills, userID) == true)
-                            creditCard.ManualMonthPaymentInvoice(users, creditCards, bills, userID, loans);
                         else
-                        {
                             Message.GeneralThread("Nenhuma fatura pendente");
-                        }
                         break;
+
                     case "6":
 
-                        creditCard.ViewInvoice(bills, userID);
+                        creditCard.ViewInvoice(userID);
                         Thread.Sleep(1000);
                         break;
+
                     case "7":
 
-                        AutoDebit autoDebit = new AutoDebit();
-                        autoDebit.Menu(autoDebits, userID, users, bills);
+                        autoDebit.Menu(userID);
                         break;
-                    case "8":
 
+                    case "8":
                         logged = false;
+
                         break;
+
                     default:
 
                         Message.ErrorGeneric("Opção indisponivel");

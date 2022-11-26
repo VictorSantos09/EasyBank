@@ -21,5 +21,9 @@ namespace EasyBankWeb.Repository
             Users.Add(user);
         }
 
+        public User? GetUserById(int id)
+        {
+            return Users.Find(x => x.Id == id);
+        }
     }
 }

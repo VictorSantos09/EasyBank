@@ -10,6 +10,7 @@
             Console.WriteLine($"{mainMessage} {message}");
             Thread.Sleep(ThreadLevel);
             Console.ForegroundColor = ConsoleColor.White;
+            return;
         }
         public static void SuccessfulGeneric(string message = "Ação bem sucedida!", int threadLevel = 1300)
         {
@@ -17,6 +18,7 @@
             Console.WriteLine($"{message}");
             Thread.Sleep(threadLevel);
             Console.ForegroundColor = ConsoleColor.White;
+            return;
         }
         public static string ErrorGenericWrite(string? message, string input)
         {
@@ -29,6 +31,7 @@
         {
             Console.WriteLine(message);
             Thread.Sleep(threadLevel);
+            return;
         }
     }
 }
