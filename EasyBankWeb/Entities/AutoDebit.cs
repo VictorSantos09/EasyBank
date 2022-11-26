@@ -5,6 +5,7 @@ namespace EasyBankWeb.Entities
     public class AutoDebit : Bill
     {
         public bool Activated { get; set; }
+        public int OwnerID { get; set; }
         public AutoDebit(string _name, string _info, int _userID, double _value, int _id)
         {
             Name = _name;

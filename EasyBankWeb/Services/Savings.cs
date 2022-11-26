@@ -325,7 +325,7 @@ namespace EasyBankWeb.Services
             saving.Value = 0.0;
             saving.StartValue = 0.0;
             saving.TaxesValue = 0.0;
-            MonthsPassed = 1;
+            saving.MonthsPassed = 1;
         }
         public void MenuInsertMoney(int userID)
         {
@@ -398,15 +398,15 @@ namespace EasyBankWeb.Services
             }
             return false;
         }
-        //public void AddSavings(SavingsDto savingsDto)
-        //{
-        //    var savings = new Savings(); // Comentado devido ja existir na _savingRepository
-        //    _savingRepository.AddSavings(savings);
-        //}
-        //public List<Savings> GetSavings()
-        //{
-        //    return _savingRepository.GetSavings();
-        //}
+        public void AddSavings(SavingsDto savingsDto)
+        {
+            var savings = new SavingEntity(savingsDto.OwnerID,savingsDto.Value, savingsDto.Id, savingsDto.TaxesValue, savingsDto.StartValue);
+            _savingRepository.AddSavings(savings);
+        }
+        public List<SavingEntity> GetSavings()
+        {
+            return _savingRepository.GetSavings();
+        }
         public int IncrementID()
         {
             return GeneralValidator.ID_AUTOINCREMENT(_savingRepository.GetSavings());

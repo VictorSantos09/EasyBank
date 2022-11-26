@@ -50,7 +50,7 @@ namespace EasyBankWeb.Services
         public void MainMonthlyAction(List<CreditCard> creditCards, List<User> users, List<Bill> bills, List<AutoDebit> autoDebits, int userID, List<Loan> loans, List<Savings> savings)
         {
             _CreditCard.MonthlyAction(creditCards, users, bills, autoDebits, userID);
-            _Saving.MonthlyAction(savings, userID);
+            _Saving.MonthlyAction(userID);
             _Loan.MonthlyAction(loans, users, userID);
         }
     }
