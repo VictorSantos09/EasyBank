@@ -9,28 +9,16 @@ namespace EasyBankWeb.Entities
     {
         private readonly LoanRepository _loanRepository;
         private readonly LoanDto _loanDto;
+        private readonly SavingsDto savingsDto;
         private readonly UserRepository _userRepository;
         private readonly BillRepository _billRepository;
+        private readonly SavingRepository _savingRepository;
 
-        public Loan(LoanRepository laonRepository)
+        public Loan(LoanRepository laonRepository, SavingRepository savingRepository, BillRepository billRepository)
         {
             _loanRepository = laonRepository;
-        }
-
-
-        public double Value { get; set; }
-        public int Parcels { get; set; }
-        public bool Open { get; set; }
-        public int RemainParcels { get; set; }
-
-
-        public Loan(double _value, int _parcels, int ownerID, int _id, bool _open)
-        {
-            Value = _value;
-            Parcels = _parcels;
-            OwnerID = ownerID;
-            Id = _id;
-            Open = _open;
+            _savingRepository = savingRepository; 
+            _billRepository = billRepository;
         }
         public Loan()
         {
@@ -127,27 +115,28 @@ namespace EasyBankWeb.Entities
         }
         public void ApplyLoan(int qtdParcels, double finalValue, int userID)
         {
-            var loan = new Loan(finalValue, qtdParcels, userID, IncrementID(), true);
+            var loan = new LoanEntity(finalValue, qtdParcels, userID, true, IncrementID());
             _loanRepository.AddLoan(loan);
 
             var user = _userRepository.GetUsers().Find(x => x.Id == userID);
+            var bill = new Bill();
 
             user.OpenLoan = true;
             user.CurrentAccount += finalValue;
 
-            _billRepository.AddBill(new Bill()
+            _billRepository.AddBill(new BillEntity()
             {
                 Name = "EMPRÉSTIMO",
                 NumberParcels = qtdParcels,
                 OwnerID = userID,
                 Value = finalValue,
-                Id = IncrementID(), //arrumar
+                Id = bill.IncrementID(),
                 ValueParcel = finalValue / qtdParcels,
                 RemainParcels = qtdParcels,
             });
         }
         public void CheckAndRemoveLoan(int userID)
-        {
+        { 
             var loan = _loanRepository.GetLoan().Find(x => x.OwnerID == userID);
             var user = _userRepository.GetUsers().Find(x => x.Id == userID);
 
@@ -166,10 +155,10 @@ namespace EasyBankWeb.Entities
         }
         public void AddLoan(LoanDto loanDto)
         {
-            var loan = new Loan();
+            var loan = new LoanEntity();
             _loanRepository.AddLoan(loan);
         }
-        public List<Loan> GetLoan()
+        public List<LoanEntity> GetLoan()
         {
             return _loanRepository.GetLoan();
         }

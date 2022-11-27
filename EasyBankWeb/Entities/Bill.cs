@@ -7,35 +7,22 @@ namespace EasyBankWeb.Entities
     public class Bill : BaseEntity
     {
         private readonly BillRepository _billRepository;
+        private readonly LoanRepository _loanRepository;
 
-        public Bill(Bill bill)
+        public Bill(BillRepository billRepository, LoanRepository loanRepository)
         {
-            _bill = bill;
+            _billRepository = billRepository;
+            _loanRepository = loanRepository;
         }
-        public double Value { get; set; }
-        public double ValueParcel { get; set; }
-        public string Name { get; set; }
-        public int NumberParcels { get; set; }
-        public string? Info { get; set; }
-        public int RemainParcels { get; set; }
-        public Bill(double _valueInvoce, string _nameBill, int QtdParcels, string? _infoBill, int userID, double _ValueParcel, bool _autoDebit)
-        {
-            Value = _valueInvoce;
-            Name = _nameBill;
-            NumberParcels = QtdParcels;
-            Info = _infoBill;
-            OwnerID = userID;
-            ValueParcel = _ValueParcel;
-            AutoDebit autoDebit = new AutoDebit();
-            autoDebit.Activated = _autoDebit;
-        }
+       
+        
         public Bill()
         {
 
         }
         public void RemoveBills(int userID)
         {
-            var bill = _billRepository.GetBill().FindAll(x => x.OwnerID == userID);
+            var bill = _loanEntity.GetLoan().FindAll(x => x.OwnerID == userID);
 
             var loanBill = _billRepository.GetBill().Find(x => x.Name == "EMPRÉSTIMO" && x.OwnerID == userID);
 
@@ -52,11 +39,11 @@ namespace EasyBankWeb.Entities
                     bill[i].RemainParcels--;
             }
         }
-        public void RemoveAutoDebits(List<Bill> bills, Bill bill)
+        public void RemoveAutoDebits( bill)
         {
-            bills.Remove(bill);
+            _billRepository.GetBill().Remove(bill);
         }
-        public bool HasAutoDebitActivated(List<AutoDebit> autoDebits, int userID)
+        public bool HasAutoDebitActivated(int userID)
         {
             var autoDebitActivated = autoDebits.FindAll(x => x.OwnerID == userID);
 
@@ -70,7 +57,7 @@ namespace EasyBankWeb.Entities
             var bill = new Bill();
             _billRepository.AddBill(bill);
         }
-            public List<Bill> GetBill()
+            public List<BillEntity> GetBill()
         {
             return _billRepository.GetBill();
         } 
