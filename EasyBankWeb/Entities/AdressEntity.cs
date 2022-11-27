@@ -1,6 +1,6 @@
 ﻿namespace EasyBankWeb.Entities
 {
-    public class Adress
+    public class AdressEntity
     {
         public string Country { get; set; } = "BRASIL";
         public string City { get; set; }

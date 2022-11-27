@@ -9,6 +9,10 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddSingleton<BillRepository>();
+builder.Services.AddSingleton<CreditCardRepository>();
+builder.Services.AddSingleton<LoanRepository>();
+builder.Services.AddSingleton<SavingRepository>();
 builder.Services.AddSingleton<UserRepository>();
 
 var app = builder.Build();

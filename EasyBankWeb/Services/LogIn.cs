@@ -1,70 +1,66 @@
 ﻿using EasyBankWeb.Crosscutting;
-using EasyBankWeb.Entities;
+using EasyBankWeb.Repository;
 
 namespace EasyBankWeb.Services
 {
     public class LogIn
     {
-        public int CheckLogin(List<User> users)
+        private readonly UserRepository _userRepository;
+
+        public LogIn(UserRepository userRepository)
+        {
+            _userRepository = userRepository;
+        }
+
+        public int CheckLogin()
         {
             var counter = 3;
-            var checking = true;
-            while (checking)
+            while (true)
             {
-
                 if (counter <= 0)
                 {
-                    Console.Clear();
                     Message.ErrorGeneric("Você atingiu o limite de tentativas.");
-                    checking = false;
-                    Thread.Sleep(1500);
+                    break;
                 }
+
                 else
                 {
                     Console.WriteLine("Digite o seu e-mail ou CPF");
-                    var userCPForEmail = Console.ReadLine().ToUpper();
+                    var userCpfOrEmail = Console.ReadLine().ToUpper();
+
                     Console.WriteLine("Digite a sua senha");
                     var userPassword = Console.ReadLine();
-                    for (int i = 0; i < users.Count; i++)
+
+                    if (_userRepository.GetUsers().Exists(x => x.Email == userCpfOrEmail && x.Password == userPassword))
                     {
-                        if (userCPForEmail.Contains("@"))
+                        return _userRepository.GetUsers().Find(x => x.Email == userCpfOrEmail).Id;
+
+                        Message.SuccessfulGeneric("Login realizado com sucesso!");
+                    }
+                    else
+                    {
+                        string userCPF = "";
+                        try
                         {
-                            if (userCPForEmail == users[i].Email)
-                            {
-                                if (userPassword == users[i].Password)
-                                {
-                                    Message.SuccessfulGeneric("Login realizado com sucesso!");
-                                    return users[i].Id;
-                                    checking = false;
-                                }
-                                else
-                                {
-                                    Message.ErrorGeneric("Senha incorreta.");
-                                    counter--;
-                                    break;
-                                }
-                            }
+                            userCPF = Convert.ToInt64(userCpfOrEmail).ToString(@"000\.000\.000\-00");
+                        }
+                        catch (Exception)
+                        {
+                            userCPF = "0";
+                            throw;
+                        }
+
+                        if (_userRepository.GetUsers().Exists(x => x.CPF == userCPF && x.Password == userPassword))
+                        {
+                            return _userRepository.GetUsers().Find(x => x.CPF == userCpfOrEmail).Id;
+
+                            Message.SuccessfulGeneric("Login realizado com sucesso!");
                         }
                         else
                         {
-                            string userCPF = Convert.ToInt64(userCPForEmail).ToString(@"000\.000\.000\-00");
-                            if (userCPF == users[i].CPF)
-                            {
-                                if (userPassword == users[i].Password)
-                                {
-                                    Message.SuccessfulGeneric("Login realizado com sucesso!");
-                                    return users[i].Id;
-                                    checking = false;
-                                }
-                                else
-                                {
-                                    Message.ErrorGeneric("Senha incorreta.");
-                                    counter--;
-                                    break;
-                                }
-                            }
+                            counter--;
+                            break;
                         }
-
                     }
                 }
             }

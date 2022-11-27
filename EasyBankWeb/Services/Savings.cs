@@ -5,25 +5,17 @@ using EasyBankWeb.Repository;
 
 namespace EasyBankWeb.Services
 {
-    public class Savings : BaseEntity
+    public class Savings
     {
         private readonly SavingRepository _savingRepository;
         private readonly UserRepository _userRepository;
         private readonly SavingsDto _savingsDto;
-
-        public Savings(SavingRepository savingRepository, UserRepository userRepository)
+        private readonly UserValidator userValidator;
+        public Savings(SavingRepository savingRepository, UserRepository userRepository, UserValidator userValidator)
         {
             _savingRepository = savingRepository;
             _userRepository = userRepository;
-        }
-
-        public Savings(int userID, double _value, int _id, double _taxesValue, double _startValue)
-        {
-            OwnerID = userID;
-            _savingsDto.Value += _value;
-            _savingsDto.Id = _id;
-            _savingsDto.TaxesValue += _taxesValue;
-            _savingsDto.StartValue = _startValue;
+            this.userValidator = userValidator;
         }
         public Savings()
         {
@@ -40,21 +32,21 @@ namespace EasyBankWeb.Services
             switch (choice)
             {
                 case "1":
-                    //SavingSteps(savings, userID, users);
+                    SavingSteps(userID);
                     break;
 
                 case "2":
-                    PrintBenefits(savings, userID);
-                    MenuInsertMoney(users, savings, userID);
+                    PrintBenefits(userID);
+                    MenuInsertMoney(userID);
                     Holder.PressAnyKey();
                     break;
 
                 case "3":
-                    RescueMoney(users, savings, userID);
+                    RescueMoney(userID);
                     break;
 
                 case "4":
-                    CancelSaving(savings, users, userID);
+                    CancelSaving(userID);
                     break;
 
                 case "5":
@@ -81,11 +73,11 @@ namespace EasyBankWeb.Services
         }
         public void AddSavingToList(int userID, double userValueInvested, double taxesValue)
         {
-            var saving = new Savings(userID, userValueInvested, GeneralValidator.ID_AUTOINCREMENT(savings), taxesValue, userValueInvested);
+            var saving = new SavingEntity(userID, userValueInvested, IncrementID(), taxesValue, userValueInvested);
 
-            savings.Add(saving);
+            _savingRepository.AddSavings(saving);
         }
-        public double ChooseExtraValue(int userID)
+        public double ChooseExtraValue()
         {
             var value = 0.0;
             while (true)
@@ -93,8 +85,6 @@ namespace EasyBankWeb.Services
                 Console.Write("Digite a quantia: ");
 
                 value = Convert.ToDouble(Console.ReadLine());
-
-                var user = users.Find(x => x.Id == userID);
 
                 return value;
             }
@@ -124,7 +114,7 @@ namespace EasyBankWeb.Services
                         return 250.00;
 
                     case "5":
-                        return ChooseExtraValue(users, userID);
+                        return ChooseExtraValue();
 
                     default:
                         Message.ErrorGeneric("Opção Indisponível");
@@ -154,10 +144,11 @@ namespace EasyBankWeb.Services
         }
         public void MonthlyAction(int userID)
         {
-            if (savings != null && savings.Exists(x => x.OwnerID == userID) == true)
+            if (_savingRepository != null && _savingRepository.GetSavings().Exists(x => x.OwnerID == userID) == true)
             {
-                var saving = savings.Find(x => x.OwnerID == userID);
-                saving.TaxesValue += CalculateTaxes(saving.TaxesValue, MonthsPassed++);
+                var saving = _savingRepository.GetSavings().Find(x => x.OwnerID == userID);
+
+                saving.TaxesValue += CalculateTaxes(saving.TaxesValue, _savingsDto.MonthsPassed);
 
                 saving.Value += saving.TaxesValue;
             }
@@ -165,13 +156,9 @@ namespace EasyBankWeb.Services
         public void SavingSteps(int userID)
         {
             var user = _userRepository.GetUsers().Find(x => x.Id == userID);
-            var savings = _savingRepository.GetSavings();
+
             while (true)
             {
-                Console.Clear();
-
-                Console.WriteLine("INVESTIR");
-
                 if (HasExistentSaving(userID) == true)
                 {
                     Message.GeneralThread("Você já contém uma poupança", 0);
@@ -186,19 +173,19 @@ namespace EasyBankWeb.Services
 
                 else
                 {
-                    var value = 0;//ChooseValue(users, userID);
+                    var value = ChooseValue(userID);
 
                     if (value > user.CurrentAccount)
                         Message.ErrorGeneric("Valor maior que em conta");
 
                     else
                     {
-                        var taxesValue = CalculateTaxes(value);
+                        var taxesValue = CalculateTaxes(value, _savingsDto.MonthsPassed);
 
                         if (ConfirmApplySaving() == true)
                         {
                             AddSavingToList(userID, value, taxesValue);
-                            //DiscountMoneyFromUser(users, userID, value);
+                            DiscountMoneyFromUser(userID, value);
                             break;
                         }
 
@@ -210,14 +197,14 @@ namespace EasyBankWeb.Services
         }
         public bool HasExistentSaving(int userID)
         {
-            if (savings.Find(x => x.OwnerID == userID) == null)
+            if (_savingRepository.GetSavings().Find(x => x.OwnerID == userID) == null)
                 return false;
 
             return true;
         }
         public void PrintBenefits(int userID)
         {
-            var saving = savings.Find(x => x.OwnerID == userID);
+            var saving = _savingRepository.GetSavingById(userID);
 
             if (saving == null)
                 Message.GeneralThread("Nenhum rendimento encontrado");
@@ -231,15 +218,14 @@ namespace EasyBankWeb.Services
         }
         public void DiscountMoneyFromUser(int userID, double investMoneyValue)
         {
-            var user = users.Find(x => x.Id == userID);
+            var user = _userRepository.GetUsers().Find(x => x.Id == userID);
             user.CurrentAccount -= investMoneyValue;
         }
         public void InsertMoney(int userID)
         {
             var user = _userRepository.GetUsers().Find(x => x.Id == userID);
-            var saving = _savingRepository.GetSavings().Find(x => x.Id == userID);
 
-            if (saving == null)
+            if (_savingsDto == null)
                 Message.GeneralThread("Você não possui investimentos");
 
             else
@@ -253,25 +239,25 @@ namespace EasyBankWeb.Services
                 {
                     var value = ChooseValue(userID);
 
-                    if (UserHasEnoughMoney(value,userID) == true)
+                    if (UserHasEnoughMoney(value, userID) == true)
                     {
                         user.CurrentAccount -= value;
-                        saving.Value += value;
+                        _savingsDto.Value += value;
                     }
                 }
             }
         }
         public void RescueMoney(int userID)
         {
-            var user = users.Find(x => x.Id == userID);
-            var saving = savings.Find(x => x.OwnerID == userID);
+            var user = _userRepository.GetUsers().Find(x => x.Id == userID);
+            var saving = _savingRepository.GetSavingById(userID);
 
             Console.Clear();
             Console.WriteLine("RESGATE\n");
 
             if (saving != null)
             {
-                PrintBenefits(savings, userID);
+                PrintBenefits(userID);
 
                 Console.WriteLine("Deseja resgatar todo o rendimento?\n1 - Sim\n2 - Não\n3 - Voltar");
                 Console.Write("Digite: ");
@@ -283,13 +269,13 @@ namespace EasyBankWeb.Services
                 switch (choice)
                 {
                     case "1":
-                        TransferAllMoney(savings, userID, users);
+                        TransferAllMoney(userID);
                         break;
 
                     case "2":
-                        value = ChooseValue(users, userID);
+                        value = ChooseValue(userID);
 
-                        if (SavingHasEnoughMoney(value, savings, userID) == true)
+                        if (SavingHasEnoughMoney(value, userID) == true)
                         {
                             user.CurrentAccount += value;
                             saving.Value -= value;
@@ -309,7 +295,7 @@ namespace EasyBankWeb.Services
         }
         public bool UserHasEnoughMoney(double value, int userID)
         {
-            var user = users.Find(x => x.Id == userID);
+            var user = _userRepository.GetUsers().Find(x => x.Id == userID);
 
             if (value > user.CurrentAccount)
             {
@@ -319,9 +305,9 @@ namespace EasyBankWeb.Services
 
             return true;
         }
-        public bool SavingHasEnoughMoney(double value,int userID)
+        public bool SavingHasEnoughMoney(double value, int userID)
         {
-            var saving = savings.Find(x => x.OwnerID == userID);
+            var saving = _savingRepository.GetSavingById(userID);
 
             if (value > saving.Value)
             {
@@ -333,19 +319,19 @@ namespace EasyBankWeb.Services
         }
         public void TransferAllMoney(int userID)
         {
-            var saving = savings.Find(x => x.OwnerID == userID);
-            var user = users.Find(x => x.Id == userID);
+            var saving = _savingRepository.GetSavingById(userID);
+            var user = _userRepository.GetUsers().Find(x => x.Id == userID);
 
             user.CurrentAccount += saving.Value;
 
             saving.Value = 0.0;
             saving.StartValue = 0.0;
             saving.TaxesValue = 0.0;
-            MonthsPassed = 1;
+            saving.MonthsPassed = 1;
         }
         public void MenuInsertMoney(int userID)
         {
-            if (savings.Find(x => x.Id == userID) != null)
+            if (_savingRepository.GetSavings().Find(x => x.Id == userID) != null)
             {
                 Console.WriteLine("Você já contém uma poupança, deseja aplicar dinheiro nela?\n1 - Sim\n2 - Não, sair");
                 Console.Write("Digite: ");
@@ -353,7 +339,7 @@ namespace EasyBankWeb.Services
                 switch (Console.ReadLine())
                 {
                     case "1":
-                        InsertMoney(users, savings, userID);
+                        InsertMoney(userID);
                         break;
 
                     case "2":
@@ -367,7 +353,7 @@ namespace EasyBankWeb.Services
         }
         public void CancelSaving(int userID)
         {
-            var saving = savings.Find(x => x.Id == userID);
+            var saving = _savingRepository.GetSavingById(userID);
 
             Console.Clear();
             Console.WriteLine("Tem certeza que deseja cancelar sua poupança?\n1 - Sim\n2 - Não");
@@ -377,9 +363,9 @@ namespace EasyBankWeb.Services
             switch (choice)
             {
                 case "1":
-                    if (UserValidator.IsCorrectSafeyKey(users, userID) == true)
+                    if (userValidator.IsCorrectSafeyKey(userID) == true)
                     {
-                        savings.Remove(saving);
+                        _savingRepository.RemoveSavings(saving);
                         Message.SuccessfulGeneric("Poupança deletada com sucesso");
                     }
                     break;
@@ -395,16 +381,16 @@ namespace EasyBankWeb.Services
         }
         public bool InsertAfterRescue(int userID)
         {
-            var saving = savings.Find(x => x.OwnerID == userID);
-            var user = users.Find(x => x.Id == userID);
+            var saving = _savingRepository.GetSavingById(userID);
+            var user = _userRepository.GetUsers().Find(x => x.Id == userID);
 
-            if (saving.TaxesValue == 0 && MonthsPassed >= 1)
+            if (saving.TaxesValue == 0 && saving.MonthsPassed >= 1)
             {
-                var value = ChooseValue(users, userID);
+                var value = ChooseValue(userID);
 
-                var taxesValue = CalculateTaxes(value, MonthsPassed);
+                var taxesValue = CalculateTaxes(value, saving.MonthsPassed);
 
-                if (UserHasEnoughMoney(value, users, userID) == true)
+                if (UserHasEnoughMoney(value, userID) == true)
                 {
                     user.CurrentAccount -= value;
                     saving.Value += value;
@@ -416,12 +402,16 @@ namespace EasyBankWeb.Services
         }
         public void AddSavings(SavingsDto savingsDto)
         {
-            var savings = new Savings();
+            var savings = new SavingEntity(savingsDto.OwnerID, savingsDto.Value, savingsDto.Id, savingsDto.TaxesValue, savingsDto.StartValue);
             _savingRepository.AddSavings(savings);
         }
-        public List<Savings> GetSavings()
+        public List<SavingEntity> GetSavings()
         {
             return _savingRepository.GetSavings();
+        }
+        public int IncrementID()
+        {
+            return GeneralValidator.ID_AUTOINCREMENT(_savingRepository.GetSavings());
         }
     }
 }
