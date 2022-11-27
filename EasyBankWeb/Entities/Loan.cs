@@ -1,23 +1,18 @@
 ﻿using EasyBankWeb.Crosscutting;
 using EasyBankWeb.Repository;
 using EasyBankWeb.Dto;
-using EasyBankWeb.Entities;
 
 namespace EasyBankWeb.Entities
 {
     public class Loan : BaseEntity
     {
         private readonly LoanRepository _loanRepository;
-        private readonly LoanDto _loanDto;
-        private readonly SavingsDto savingsDto;
         private readonly UserRepository _userRepository;
         private readonly BillRepository _billRepository;
-        private readonly SavingRepository _savingRepository;
 
         public Loan(LoanRepository laonRepository, SavingRepository savingRepository, BillRepository billRepository)
         {
             _loanRepository = laonRepository;
-            _savingRepository = savingRepository; 
             _billRepository = billRepository;
         }
         public Loan()
