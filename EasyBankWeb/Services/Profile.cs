@@ -1,17 +1,27 @@
 ﻿using EasyBankWeb.Crosscutting;
 using EasyBankWeb.Entities;
+using EasyBankWeb.Repository;
 
 namespace EasyBankWeb.Services
 {
     public class Profile
     {
-        public bool SucessDeleted { get; set; }
-        public bool ViewProfile(List<User> users, List<CreditCard> creditCards, int userID, bool logged)
+        private readonly ProfileRepository _profileRepository;
+        private readonly UserRepository _userRepository;
+        private readonly CreditCardRepository _creditCardRepository;
+
+        public Profile(ProfileRepository profileRepository, UserRepository userRepository, CreditCardRepository creditCardRepository)
+        {
+            _profileRepository = profileRepository;
+            _userRepository = userRepository;
+            _creditCardRepository = creditCardRepository;
+        }
+        public bool ViewProfile(int userID, bool logged)
         {
             ProfileConfig profileConfig = new ProfileConfig();
 
-            var user = users.Find(x => x.Id == userID);
-            var creditCard = creditCards.Find(x => x.OwnerID == userID);
+            var user = _userRepository.GetUsers().Find(x => x.Id == userID);
+            var creditCard = _creditCardRepository.GetCreditCard().Find(x => x.OwnerID == userID);
 
             bool menuProfile = true;
             while (menuProfile)
@@ -23,12 +33,12 @@ namespace EasyBankWeb.Services
 
                 if (option == "1")
                 {
-                    CardInfo(creditCards, userID);
+                    CardInfo(userID);
                 }
 
                 else if (option == "0")
                 {
-                    Autodebit(users, userID);
+                    Autodebit(userID);
 
                 }
 
@@ -42,7 +52,7 @@ namespace EasyBankWeb.Services
 
                 else if (option == "3")
                 {
-                    Register register = new Register();
+                    var register = new Register();
                     Console.Clear();
                     Console.Write($"\n1- Senha: {user.Password}\n2- E-mail: {user.Email}\n3- Telefone: {user.PhoneNumber}\n");
                     Console.Write("O que será alterado?\n-> ");
@@ -69,8 +79,9 @@ namespace EasyBankWeb.Services
 
                 else if (option == "4")
                 {
-                    AccountCancellationValidator(users, creditCards, userID, logged, menuProfile);
-                    if (SucessDeleted == true)
+                    var profile = _profileRepository.GetProfile().Find(x => x.OwnerID == userID);
+                    AccountCancellationValidator(userID, logged, menuProfile);
+                    if (profile.SucessDeleted == true)
                     {
                         return true;
                         menuProfile = false;
@@ -78,7 +89,7 @@ namespace EasyBankWeb.Services
                 }
                 else if (option == "5")
                 {
-                    PrintUserData(users, userID);
+                    PrintUserData(userID);
                 }
                 else if (option == "6")
                     menuProfile = false;
@@ -87,25 +98,25 @@ namespace EasyBankWeb.Services
             }
             return false;
         }
-        public void CardInfo(List<CreditCard> creditCards, int userID)
+        public void CardInfo(int userID)
         {
-            var creditCard = creditCards.Find(x => x.OwnerID == userID);
+            var creditCard = _creditCardRepository.GetCreditCard().Find(x => x.OwnerID == userID);
 
             Console.Clear();
             Console.Write($"\nNúmero: {creditCard.NumberCard}\nCVV: {creditCard.CVV}\nData de Vencimento: {creditCard.ExpireDate}\nNome: {creditCard.NameOwner}");
             Console.Write("\n\nPressione ENTER para voltar");
             Console.ReadLine();
         }
-        public void Autodebit(List<User> users, int userID)
+        public void Autodebit(int userID)
         {
             Console.Clear();
-            var user = users.Find(x => x.Id == userID);
+            var user = _userRepository.GetUsers().Find(x => x.Id == userID);
             Console.WriteLine($"Auto Debito: {user.CurrentAccount}");
             Console.ReadLine();
         }
-        public void AccountCancellationValidator(List<User> users, List<CreditCard> creditCards, int userID, bool logged, bool menuProfile)
+        public void AccountCancellationValidator(int userID, bool logged, bool menuProfile)
         {
-            var user = users.Find(x => x.Id == userID);
+            var user = _userRepository.GetUsers().Find(x => x.Id == userID);
             bool emailAndCpfValidationMenu = true;
 
             while (emailAndCpfValidationMenu)
@@ -119,7 +130,7 @@ namespace EasyBankWeb.Services
 
                 if (userEmail == user.Email && finalUserCpf == user.CPF)
                 {
-                    ValidationAccountCancellation(emailAndCpfValidationMenu, users, creditCards, userID, logged, menuProfile);
+                    ValidationAccountCancellation(emailAndCpfValidationMenu, userID, logged, menuProfile);
                     emailAndCpfValidationMenu = false;
                 }
                 else
@@ -131,7 +142,7 @@ namespace EasyBankWeb.Services
                 }
             }
         }
-        public void ValidationAccountCancellation(bool backToViewProflie, List<User> users, List<CreditCard> creditCards, int userID, bool logged, bool menuProfile)
+        public void ValidationAccountCancellation(bool backToViewProflie, int userID, bool logged, bool menuProfile)
         {
             Console.Clear();
             Console.Write("Você tem certeza que deseja cancelar a conta? Após desativa-la não é possível recuperação!");
@@ -145,13 +156,13 @@ namespace EasyBankWeb.Services
 
             if (cancellationAccountOption == "2")
             {
-                ThreeChancesPasswords(users, creditCards, userID, logged, menuProfile);
+                ThreeChancesPasswords(userID, logged, menuProfile);
             }
         }
-        public void ThreeChancesPasswords(List<User> users, List<CreditCard> creditCards, int userID, bool logged, bool menuProfile)
+        public void ThreeChancesPasswords(int userID, bool logged, bool menuProfile)
         {
             int counter = 0;
-            var user = users.Find(x => x.Id == userID);
+            var user = _userRepository.GetUsers().Find(x => x.Id == userID);
 
             while (counter != 3)
             {
@@ -183,7 +194,7 @@ namespace EasyBankWeb.Services
                         }
                         else
                         {
-                            AccountCancellation(users, creditCards, userID);
+                            AccountCancellation(userID);
                             counter = 3;
                             logged = false;
                             menuProfile = false;
@@ -192,19 +203,20 @@ namespace EasyBankWeb.Services
                 }
             }
         }
-        public void AccountCancellation(List<User> users, List<CreditCard> creditCards, int userID)
+        public void AccountCancellation(int userID)
         {
-            var user = users.Find(x => x.Id == userID);
-            var creditCard = creditCards.Find(x => x.OwnerID == userID);
+            var profile = _profileRepository.GetProfile().Find(x => x.OwnerID == userID);
+            var user = _userRepository.GetUsers().Find(x => x.Id == userID);
+            var creditCard = _creditCardRepository.GetCreditCard().Find(x => x.OwnerID == userID);
 
-            users.Remove(user);
-            creditCards.Remove(creditCard);
-            SucessDeleted = true;
+            _userRepository.GetUsers().Remove(user);
+            _creditCardRepository.GetCreditCard().Remove(creditCard);
+            profile.SucessDeleted = true;
 
         }
-        public bool AskSafetyKey(List<User> users, int userID)
+        public bool AskSafetyKey(int userID)
         {
-            var user = users.Find(x => x.Id == userID);
+            var user = _userRepository.GetUsers().Find(x => x.Id == userID);
 
             Console.Write("Digite sua senha de segurança\n-> ");
             var inputSafetyKey = Console.ReadLine().ToUpper();
@@ -214,11 +226,11 @@ namespace EasyBankWeb.Services
 
             return false;
         }
-        public void PrintUserData(List<User> users, int userID)
+        public void PrintUserData(int userID)
         {
-            var user = users.Find(x => x.Id == userID);
+            var user = _userRepository.GetUsers().Find(x => x.Id == userID);
 
-            if (AskSafetyKey(users, userID) != true)
+            if (AskSafetyKey(userID) != true)
                 Message.ErrorGeneric("Senha incorreta");
 
             else

@@ -21,6 +21,10 @@ namespace EasyBankWeb.Services
             this.user = user;
         }
 
+        public Register()
+        {
+        }
+
         public void UserRegister()
         {
 

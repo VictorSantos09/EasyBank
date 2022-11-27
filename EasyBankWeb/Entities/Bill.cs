@@ -1,6 +1,7 @@
 ﻿using EasyBankWeb.Crosscutting;
 using EasyBankWeb.Dto;
 using EasyBankWeb.Repository;
+using EasyBankWeb.Entities;
 
 namespace EasyBankWeb.Entities
 {
@@ -22,13 +23,15 @@ namespace EasyBankWeb.Entities
         }
         public void RemoveBills(int userID)
         {
-            var bill = _loanEntity.GetLoan().FindAll(x => x.OwnerID == userID);
+            var loan = new Loan();
+
+            var bill = _loanRepository.GetLoan().FindAll(x => x.OwnerID == userID);
 
             var loanBill = _billRepository.GetBill().Find(x => x.Name == "EMPRÉSTIMO" && x.OwnerID == userID);
 
             if (loanBill != null)
                 
-                Loan.CheckAndRemoveLoan(userID);
+                loan.CheckAndRemoveLoan(userID);
 
             for (int i = 0; i < bill.Count; i++)
             {
@@ -39,7 +42,7 @@ namespace EasyBankWeb.Entities
                     bill[i].RemainParcels--;
             }
         }
-        public void RemoveAutoDebits( bill)
+        public void RemoveAutoDebits(Bill bill)
         {
             _billRepository.GetBill().Remove(bill);
         }
