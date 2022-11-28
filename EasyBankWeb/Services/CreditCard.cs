@@ -10,6 +10,7 @@ namespace EasyBankWeb.Services
         private readonly BillRepository _billRepository;
         private readonly AutoDebitRepository _autoDebitRepository;
         private readonly Bill bill;
+        //private readonly UserValidator userValidator;
 
         public CreditCard(CreditCardRepository creditCardRepository, UserRepository userRepository, BillRepository billRepository, AutoDebitRepository autoDebitRepository, Bill bill)
         {

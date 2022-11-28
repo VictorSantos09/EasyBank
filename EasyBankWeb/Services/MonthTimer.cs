@@ -7,40 +7,48 @@ namespace EasyBankWeb.Services
         private readonly CreditCard creditCard;
         private readonly Loan loan;
         private readonly Saving saving;
-        private readonly int userID;
+        private readonly List<int> LoggedIDs;
+        private int _userID;
 
-        public MonthTimer(CreditCard creditCard, Loan loan, Saving saving, int userID)
+        public MonthTimer(CreditCard creditCard, Loan loan, Saving saving)
         {
             this.creditCard = creditCard;
             this.loan = loan;
             this.saving = saving;
-            this.userID = userID;
+            LoggedIDs = new List<int>();
         }
-        public MonthTimer()
-        {
 
-        }
-        public static void Main()
+
+        public void Main(int userID)
         {
+            if (Logged(userID))
+                return;
+
+            LoggedIDs.Add(userID);
+
+            _userID = userID;
+
             System.Timers.Timer aTimer = new System.Timers.Timer();
             aTimer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
             aTimer.Interval = 10000;
             aTimer.Enabled = true;
 
         }
-        static void OnTimedEvent(object source, ElapsedEventArgs e)
+
+        private bool Logged(int userID)
         {
-            MonthTimer monthTimer = new MonthTimer();
-            monthTimer.MainMonthlyAction();
+            return LoggedIDs.Contains(userID);
+        }
+
+        public void OnTimedEvent(object source, ElapsedEventArgs e)
+        {
+            MainMonthlyAction();
         }
         public void MainMonthlyAction()
         {
-            //if (creditCard != null)
-                creditCard.MonthlyAction(userID);
-
-            //if (saving != null)
-                saving.MonthlyAction(userID);
-            //loan.MonthlyAction(userID);
+            creditCard.MonthlyAction(_userID);
+            saving.MonthlyAction(_userID);
+            //loan.MonthlyAction(_userID);
         }
     }
 }

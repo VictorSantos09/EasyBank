@@ -14,9 +14,11 @@ namespace EasyBankWeb.Controllers
         private readonly Saving saving;
         private readonly MonthTimer monthTimer;
         private readonly SavingRepository _savingRepository;
+        private readonly UserValidator userValidator;
 
         public SavingController(Saving _saving, SavingRepository savingRepository)
         {
+
             saving = _saving;
             _savingRepository = savingRepository;
         }
@@ -45,8 +47,9 @@ namespace EasyBankWeb.Controllers
             return BadRequest("Usuario com empréstimo aberto existente");
         }
 
-        [HttpPost(Name = "InserIntoSaving")]
-        private IActionResult PostInsertMoney([FromBody] InsertSavingDto insertSavingDto)
+        [Route("InserIntoSaving")]
+        [HttpPost]
+        public IActionResult PostInsertMoney([FromBody] InsertSavingDto insertSavingDto)
         {
             if (insertSavingDto.Confirmed)
                 saving.InsertMoney(insertSavingDto.OwnerID, insertSavingDto.Value);
