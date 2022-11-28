@@ -9,24 +9,15 @@ namespace EasyBankWeb.Services
         private readonly UserRepository _userRepository;
         private readonly BillRepository _billRepository;
         private readonly AutoDebitRepository _autoDebitRepository;
-        private readonly Message message;
-        private readonly Holder holder;
         private readonly Bill bill;
 
-        public CreditCard(CreditCardRepository creditCardRepository, UserRepository userRepository, BillRepository billRepository,
-            AutoDebitRepository autoDebitRepository, Message message, Holder holder, Bill bill, CreditCard creditCard)
+        public CreditCard(CreditCardRepository creditCardRepository, UserRepository userRepository, BillRepository billRepository, AutoDebitRepository autoDebitRepository, Bill bill)
         {
             _creditCardRepository = creditCardRepository;
             _userRepository = userRepository;
             _billRepository = billRepository;
             _autoDebitRepository = autoDebitRepository;
-            this.message = message;
-            this.holder = holder;
             this.bill = bill;
-        }
-        public CreditCard()
-        {
-
         }
 
         public int R_Limit(int userMonthlyIncome)

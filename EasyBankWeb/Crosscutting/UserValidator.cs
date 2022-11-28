@@ -167,15 +167,11 @@ namespace EasyBankWeb.Crosscutting
 
             return finalInput;
         }
-        public bool IsCorrectSafeyKey(int userID)
+        public bool IsCorrectSafeyKey(int userID, string safetyKey)
         {
             var user = _userRepository.GetUserById(userID);
 
-            Console.WriteLine("Digite sua senha de segurança");
-            Console.Write("Digite: ");
-            var key = Console.ReadLine().ToUpper();
-
-            if (key == user.SafetyKey)
+            if (safetyKey == user.SafetyKey)
                 return true;
 
             return false;

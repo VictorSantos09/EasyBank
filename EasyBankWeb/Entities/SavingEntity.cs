@@ -13,6 +13,7 @@
             Value += _value;
             TaxesValue += _taxesValue;
             StartValue = _value;
+            Id = _id;
         }
     }
 }

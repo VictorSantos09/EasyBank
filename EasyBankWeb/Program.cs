@@ -17,14 +17,16 @@ builder.Services.AddSingleton<CreditCardRepository>();
 builder.Services.AddSingleton<LoanRepository>();
 builder.Services.AddSingleton<SavingRepository>();
 builder.Services.AddSingleton<UserRepository>();
+builder.Services.AddSingleton<AutoDebitRepository>();
 
 builder.Services.AddSingleton<Saving>();
+builder.Services.AddSingleton<Loan>();
+builder.Services.AddSingleton<Transfer>();
+builder.Services.AddSingleton<Bill>();
 builder.Services.AddSingleton<CreditCard>();
-builder.Services.AddSingleton<MonthTimer>();
-
 
 var app = builder.Build();
-MonthTimer.Main();
+//MonthTimer.Main();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
