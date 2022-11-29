@@ -216,6 +216,9 @@ namespace EasyBankWeb.Services
             else
                 return false;
         }
-
+        public void RemoveSaving(SavingEntity savingEntity)
+        {
+            _savingRepository.RemoveSavings(savingEntity);
+        }
     }
 }

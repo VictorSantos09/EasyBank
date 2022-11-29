@@ -5,7 +5,9 @@ VisualStudioVersion = 17.1.32210.238
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasyBank", "EasyBank\EasyBank.csproj", "{B8E16F7E-3395-4534-A0BF-52D15BE5629B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyBankWeb", "EasyBankWeb\EasyBankWeb.csproj", "{AAB0AA4B-ABEA-4306-AF66-1BE0ACDEDD77}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasyBankWeb", "EasyBankWeb\EasyBankWeb.csproj", "{AAB0AA4B-ABEA-4306-AF66-1BE0ACDEDD77}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyBank.Test", "EasyBank.Test\EasyBank.Test.csproj", "{325E6DC5-8901-4B47-AC44-0A5567492930}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{AAB0AA4B-ABEA-4306-AF66-1BE0ACDEDD77}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AAB0AA4B-ABEA-4306-AF66-1BE0ACDEDD77}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AAB0AA4B-ABEA-4306-AF66-1BE0ACDEDD77}.Release|Any CPU.Build.0 = Release|Any CPU
+		{325E6DC5-8901-4B47-AC44-0A5567492930}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{325E6DC5-8901-4B47-AC44-0A5567492930}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{325E6DC5-8901-4B47-AC44-0A5567492930}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{325E6DC5-8901-4B47-AC44-0A5567492930}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
