@@ -6,9 +6,9 @@ namespace EasyBankWeb.Controllers
     {
         public void Temp()
         {
-            var timer = (MonthTimer)app.Services.GetService(typeof(MonthTimer));
+            //var timer = (MonthTimer)app.Services.GetService(typeof(MonthTimer));
 
-            timer.Main();
+            //timer.Main();
         }
     }
 }

@@ -12,13 +12,10 @@ namespace EasyBankWeb.Controllers
     public class SavingController : ControllerBase
     {
         private readonly Saving saving;
-        private readonly MonthTimer monthTimer;
         private readonly SavingRepository _savingRepository;
-        private readonly UserValidator userValidator;
 
         public SavingController(Saving _saving, SavingRepository savingRepository)
         {
-
             saving = _saving;
             _savingRepository = savingRepository;
         }
@@ -32,51 +29,51 @@ namespace EasyBankWeb.Controllers
         [HttpPost(Name = "PostSaving")]
         public IActionResult Post([FromBody] SavingsDto savingsDto)
         {
-            if (!saving.HasExistentSaving(savingsDto.OwnerID))
-            {
-                var newSaving = new SavingEntity(savingsDto.OwnerID, savingsDto.Value, saving.IncrementID(),
-                    saving.CalculateTaxes(savingsDto.Value, 1));
+            if (saving.HasExistentSaving(savingsDto.OwnerID))
+                return BadRequest("Poupança já existente");
 
-                _savingRepository.AddSavings(newSaving);
-
-                saving.DiscountMoneyFromUser(savingsDto.OwnerID, savingsDto.Value);
-                
-                return Ok();
-            }
-
-            return BadRequest("Usuario com empréstimo aberto existente");
+            if (saving.CreateNewSaving(savingsDto))
+                return Ok("Poupança criada com sucesso");
+            
+            return BadRequest("Saldo insuficiente");
         }
 
         [Route("InserIntoSaving")]
         [HttpPost]
-        public IActionResult PostInsertMoney([FromBody] InsertSavingDto insertSavingDto)
+        public IActionResult InsertMoney([FromBody] InsertSavingDto insertSavingDto)
         {
             if (insertSavingDto.Confirmed)
-                saving.InsertMoney(insertSavingDto.OwnerID, insertSavingDto.Value);
+            {
+                if (!saving.SucessInsertMoney(insertSavingDto.OwnerID, insertSavingDto.Value))
+                    return BadRequest("Dinheiro insuficiente");
+            }
 
-            return Ok();
+            return Ok("Dinheiro aplicado com sucesso");
         }
 
-        [HttpPost(Name = "RescueMoney")]
-        private IActionResult RescueMoney([FromBody] RescueDto rescueDto)
+        [Route("RescueMoney")]
+        [HttpPost]
+        public IActionResult RescueMoney([FromBody] RescueDto rescueDto)
         {
-            if (rescueDto.Confirmed == true)
+            if (rescueDto.Confirmed)
                 saving.RescueMoney(rescueDto.OwnerID, rescueDto.AllMoney, rescueDto.Value);
 
-            return Ok();
+            return Ok("Concluido");
         }
 
-        [HttpDelete(Name = "DeleteSaving")]
-        private IActionResult DeleteSaving([FromBody] bool confirmed, int ownerID, string userSafetyKey)
+        [Route("DeleteSaving")]
+        [HttpDelete]
+        public IActionResult CancelSaving([FromBody] bool confirmed, int ownerID, string userSafetyKey)
         {
             if (confirmed)
-                saving.CancelSaving(ownerID, userSafetyKey);
+                saving.SucessCancelSaving(ownerID, userSafetyKey);
 
-            return Ok();
+            return Ok("Poupança cancelada");
         }
 
-        [HttpPost(Name = "ViewBenefits")]
-        private IActionResult ViewBenefits([FromBody] int ownerID)
+        [Route("ViewBenefits")]
+        [HttpPost]
+        public IActionResult ViewBenefits([FromBody] int ownerID)
         {
             var result = saving.PrintBenefits(ownerID);
 
