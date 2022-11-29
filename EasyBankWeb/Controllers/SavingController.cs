@@ -79,7 +79,7 @@ namespace EasyBankWeb.Controllers
         {
             var result = saving.PrintBenefits(ownerID);
 
-            return StatusCode(result._StatusCode, result._Data == null ? new { Mensagem = result._Message } : new { Data = result._Data });
+            return StatusCode(result._StatusCode, result._Data == null ? result._Message : result._Data );
         }
     }
 }

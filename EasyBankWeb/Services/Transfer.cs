@@ -1,4 +1,5 @@
 ﻿using EasyBankWeb.Crosscutting;
+using EasyBankWeb.Dto;
 using EasyBankWeb.Repository;
 
 namespace EasyBankWeb.Services
@@ -12,99 +13,52 @@ namespace EasyBankWeb.Services
             _userRepository = userRepository;
         }
 
-        public double Valuetransfer(int userID)
+        public BaseDto TransferProcess(int userID, string keyPix, bool confirmed, double value)
         {
-            var user = _userRepository.GetUserById(userID);
-            var informedValue = user.CurrentAccount;
-            Console.WriteLine("Informe o valor que você gostaria de transferir");
-            Console.WriteLine($"valor em conta: {user.CurrentAccount}");
-            informedValue = Convert.ToDouble(Console.ReadLine());
-            informedValue = CheckAmountInAccount(informedValue, userID);
-            var check_KeyPix = CheckPix();
-            ShowkeyPix(check_KeyPix);
-            ShowValuePix(informedValue);
-
-            Console.WriteLine("Digite 1 para transferir ou 2 para voltar ao menu");
-            string choice = Console.ReadLine();
-
-            if (choice == "1")
+            if (confirmed)
             {
-                user.CurrentAccount = user.CurrentAccount - informedValue;
-                Message.SuccessfulGeneric("Transferencia realizada.");
-            }
-            else
-            {
-                while (choice != "1" && choice != "2")
-                {
-                    Console.WriteLine("Escolha uma das opções acima");
-                    choice = Console.ReadLine();
-                }
+                if (!CheckAmountInAccount(value, userID))
+                    return new BaseDto("Quantia indisponivel", 406);
+
+                var result = CheckPix(keyPix);
+
+                if (TransferMoney(userID, value))
+                    return new BaseDto("Transferência realizada com sucesso", 200);
             }
 
-            Message.GeneralThread($"Você possui {user.CurrentAccount} em conta");
-            return informedValue;
+            return new BaseDto("Solicitação cancelada", 200);
         }
-        public double CheckAmountInAccount(double choiceQuantity, int userID)
+        public bool CheckAmountInAccount(double choiceQuantity, int userID)
         {
             var user = _userRepository.GetUserById(userID);
 
-            while (choiceQuantity > user.CurrentAccount)
-            {
-                Message.ErrorGeneric("Valor maior que o disponível em conta, favor informe um valor válido");
-                choiceQuantity = Convert.ToDouble(Console.ReadLine());
-            }
-            while (choiceQuantity <= 0)
-            {
-                Message.ErrorGeneric("Favor informe um valor válido");
-                choiceQuantity = Convert.ToDouble(Console.ReadLine());
-            }
-            return choiceQuantity;
-        }
-        public string CheckPix()
-        {
-            bool pixCorrect = false;
-            Console.WriteLine("Digite o pix que gostaria de transferir (E-MAIL, CPF/CNPJ OU TELEFONE)");
-            string pix = Console.ReadLine();
+            if (choiceQuantity > user.CurrentAccount || choiceQuantity <= 0)
+                return false;
 
-            while (pixCorrect != true)
-            {
-                if (pix.Contains("@"))
-                {
-                    Message.SuccessfulGeneric("E-mail Válido");
-                    pixCorrect = true;
-                }
-                else if (pix.Length == 11)
-                {
-                    Message.SuccessfulGeneric("CPF Válido");
-                    pixCorrect = true;
-                }
-                else if (pix.Length == 14)
-                {
-                    Message.SuccessfulGeneric("CNPJ Válido");
-                    pixCorrect = true;
-                }
-                else if (pix.Length == 12)
-                {
-                    Message.SuccessfulGeneric("Número de telefone válido");
-                    pixCorrect = true;
-                }
-                else
-                {
-                    Message.ErrorGeneric("Pix inválido");
-                    pix = Console.ReadLine();
-                }
-            }
-
-            return pix;
+            return true;
         }
-        public void ShowkeyPix(string confirmationPix)
+        public (string?, bool) CheckPix(string pix)
         {
-            Message.GeneralThread($"Voce está transferindo para o pix: {confirmationPix}");
-        }
+            if (UserValidator.ValidatorEmailFormat(UserValidator.Formats,pix.ToUpper()))
+                return ("EMAIL", true);
 
-        public void ShowValuePix(double confirmationValuePix)
+            else if (pix.Length == 11)
+                return ("CPF", true);
+
+            else if (pix.Length == 14)
+                return ("CNPJ", true);
+
+            else if (pix.Length == 12)
+                return ("PHONE", true);
+
+            return (null, false);
+        }
+        public bool TransferMoney(int userID, double value)
         {
-            Message.GeneralThread($"Voce está transferindo o valor de {confirmationValuePix}");
+            var user = _userRepository.GetUserById(userID);
+
+            user.CurrentAccount -= value;
+            return true;
         }
     }
 }

@@ -28,26 +28,6 @@ namespace EasyBankWeb.Services
 
             return j;
         }
-        public bool ConfirmApplySaving()
-        {
-            Console.WriteLine("Deseja confirmar o investimento na poupança?\n1 - Sim\n2 - Não");
-            Console.Write("Digite: ");
-            var confirmed = Console.ReadLine();
-
-            switch (confirmed)
-            {
-                case "1":
-                    return true;
-
-                case "2":
-                    return false;
-
-                default:
-                    Message.ErrorGeneric();
-                    break;
-            }
-            return false;
-        }
         public void MonthlyAction(int userID)
         {
             if (_savingRepository != null && _savingRepository.GetSavings().Exists(x => x.OwnerID == userID) == true)
@@ -83,7 +63,7 @@ namespace EasyBankWeb.Services
             var user = _userRepository.GetUsers().Find(x => x.Id == userID);
 
             if (!_savingRepository.GetSavings().Exists(x => x.OwnerID == userID))
-                return ("Não há poupança existente", 400);
+                return ("Não há poupança existente", 404);
 
             if (UserHasEnoughMoney(value, userID))
             {
@@ -103,7 +83,7 @@ namespace EasyBankWeb.Services
             var saving = _savingRepository.GetSavingById(userID);
 
             if (saving == null)
-                return new BaseDto("Usuario não contem poupança existente", 400);
+                return new BaseDto("Usuario não contem poupança existente", 404);
 
             var caseOption = 0;
 
@@ -204,7 +184,7 @@ namespace EasyBankWeb.Services
             var saving = _savingRepository.GetSavingById(userID);
 
             if (saving == null)
-                return new BaseDto("Nenhuma poupança registrada", 204);
+                return new BaseDto("Nenhuma poupança registrada", 404);
 
             return new BaseDto( $"Valor: {saving.Value }\nJuros: { saving.TaxesValue}\nTempo Investido: { saving.MonthsPassed}");
         }
