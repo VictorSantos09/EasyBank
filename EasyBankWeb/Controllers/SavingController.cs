@@ -3,6 +3,7 @@ using EasyBankWeb.Dto;
 using EasyBankWeb.Entities;
 using EasyBankWeb.Repository;
 using EasyBankWeb.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EasyBankWeb.Controllers
@@ -12,30 +13,24 @@ namespace EasyBankWeb.Controllers
     public class SavingController : ControllerBase
     {
         private readonly Saving saving;
-        private readonly SavingRepository _savingRepository;
 
-        public SavingController(Saving _saving, SavingRepository savingRepository)
+        public SavingController(Saving _saving)
         {
             saving = _saving;
-            _savingRepository = savingRepository;
         }
 
         [HttpGet(Name = "GetSaving")]
         public IActionResult Get()
         {
-            return Ok(_savingRepository.GetSavings());
+            return Ok(saving.GetSavings());
         }
 
         [HttpPost(Name = "PostSaving")]
         public IActionResult Post([FromBody] SavingsDto savingsDto)
         {
-            if (saving.HasExistentSaving(savingsDto.OwnerID))
-                return BadRequest("Poupança já existente");
+            var (data, statusCode) = saving.NewSavingProcess(savingsDto.OwnerID, savingsDto);
 
-            if (saving.CreateNewSaving(savingsDto))
-                return Ok("Poupança criada com sucesso");
-            
-            return BadRequest("Saldo insuficiente");
+            return StatusCode(statusCode, data);
         }
 
         [Route("InserIntoSaving")]
@@ -44,11 +39,12 @@ namespace EasyBankWeb.Controllers
         {
             if (insertSavingDto.Confirmed)
             {
-                if (!saving.SucessInsertMoney(insertSavingDto.OwnerID, insertSavingDto.Value))
-                    return BadRequest("Dinheiro insuficiente");
+                var (data, statusCode) = saving.InsertMoneyProcess(insertSavingDto.OwnerID, insertSavingDto.Value);
+
+                return StatusCode(statusCode, data);
             }
 
-            return Ok("Dinheiro aplicado com sucesso");
+            return Ok("Solicitação cancelada");
         }
 
         [Route("RescueMoney")]
@@ -56,19 +52,25 @@ namespace EasyBankWeb.Controllers
         public IActionResult RescueMoney([FromBody] RescueDto rescueDto)
         {
             if (rescueDto.Confirmed)
-                saving.RescueMoney(rescueDto.OwnerID, rescueDto.AllMoney, rescueDto.Value);
+            {
+                var result = saving.RescueMoneyProcess(rescueDto.OwnerID, rescueDto.AllMoney, rescueDto.Value);
 
-            return Ok("Concluido");
+                return StatusCode(result._StatusCode, result._Data == null ? result._Message : result._Data);
+            }
+
+            return Ok("");
         }
 
         [Route("DeleteSaving")]
         [HttpDelete]
         public IActionResult CancelSaving([FromBody] bool confirmed, int ownerID, string userSafetyKey)
         {
+            var (data, statusCode) = ("", 0);
+            
             if (confirmed)
-                saving.SucessCancelSaving(ownerID, userSafetyKey);
+                (data, statusCode) = saving.CancelSavingProcess(ownerID, userSafetyKey);
 
-            return Ok("Poupança cancelada");
+            return StatusCode(statusCode, data);
         }
 
         [Route("ViewBenefits")]
@@ -77,10 +79,7 @@ namespace EasyBankWeb.Controllers
         {
             var result = saving.PrintBenefits(ownerID);
 
-            if (result == null)
-                return NoContent();
-
-            return Ok(result);
+            return StatusCode(result._StatusCode, result._Data == null ? new { Mensagem = result._Message } : new { Data = result._Data });
         }
     }
 }

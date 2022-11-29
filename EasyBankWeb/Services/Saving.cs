@@ -59,69 +59,77 @@ namespace EasyBankWeb.Services
                 saving.Value += saving.TaxesValue;
             }
         }
+        public (string, int) NewSavingProcess(int userID, SavingsDto savingsDto)
+        {
+            if (HasExistentSaving(userID))
+                return ("Poupança já existente", 400);
+
+            if (CreateNewSaving(savingsDto))
+                return ("Poupança criada com sucesso", 200);
+
+            return ("Saldo insuficiente", 400);
+        }
         public bool HasExistentSaving(int userID)
         {
-            if (_savingRepository.GetSavings().Exists(x => x.OwnerID == userID) == false)
-                return false;
-
-            return true;
+            return _savingRepository.GetSavings().Exists(x => x.OwnerID == userID);
         }
         public void DiscountMoneyFromUser(int userID, double investMoneyValue)
         {
             var user = _userRepository.GetUsers().Find(x => x.Id == userID);
             user.CurrentAccount -= investMoneyValue;
         }
-        public bool SucessInsertMoney(int userID, int value)
+        public (string, int) InsertMoneyProcess(int userID, int value)
         {
             var user = _userRepository.GetUsers().Find(x => x.Id == userID);
 
             if (!_savingRepository.GetSavings().Exists(x => x.OwnerID == userID))
-                return false;
+                return ("Não há poupança existente", 400);
 
-            if (UserHasEnoughMoney(value, userID) == true)
+            if (UserHasEnoughMoney(value, userID))
             {
                 var saving = _savingRepository.GetSavingById(userID);
 
                 user.CurrentAccount -= value;
                 saving.Value += value;
 
-                return true;
+                return ("Valor inserido com sucesso", 200);
             }
 
-            return false;
+            return ("Saldo insuficiente", 400);
         }
-        public bool RescueMoney(int userID, bool rescueAllMoney, int value)
+        public BaseDto RescueMoneyProcess(int userID, bool rescueAllMoney, int value)
         {
             var user = _userRepository.GetUsers().Find(x => x.Id == userID);
             var saving = _savingRepository.GetSavingById(userID);
 
-            if (saving != null)
+            if (saving == null)
+                return new BaseDto("Usuario não contem poupança existente", 400);
+
+            var caseOption = 0;
+
+            if (rescueAllMoney == true)
+                caseOption = 1;
+
+            else
+                caseOption = 2;
+
+            switch (caseOption)
             {
-                var caseOption = 0;
+                case 1:
+                    TransferAllMoney(userID);
+                    return new BaseDto("Saldo resgatado com sucesso", 200);
 
-                if (rescueAllMoney == true)
-                    caseOption = 1;
+                case 2:
+                    if (SavingHasEnoughMoney(value, userID))
+                    {
+                        user.CurrentAccount += value;
+                        saving.Value -= value;
 
-                else
-                    caseOption = 2;
-
-                switch (caseOption)
-                {
-                    case 1:
-                        TransferAllMoney(userID);
-                        return true;
-
-                    case 2:
-                        if (SavingHasEnoughMoney(value, userID))
-                        {
-                            user.CurrentAccount += value;
-                            saving.Value -= value;
-                            return true;
-                        }
-                        break;
-                }
+                        return new BaseDto("Saldo resgatado com sucesso", 200);
+                    }
+                    break;
             }
-            return false;
+            return new BaseDto("Quantia indisponivel", 400);
         }
         public bool UserHasEnoughMoney(double value, int userID)
         {
@@ -156,7 +164,7 @@ namespace EasyBankWeb.Services
             saving.TaxesValue = 0.0;
             saving.MonthsPassed = 1;
         }
-        public bool SucessCancelSaving(int userID, string safetyKey)
+        public (string, int) CancelSavingProcess(int userID, string safetyKey)
         {
             var saving = _savingRepository.GetSavingById(userID);
 
@@ -165,10 +173,10 @@ namespace EasyBankWeb.Services
             if (userValidator.IsCorrectSafeyKey(userID, safetyKey) == true)
             {
                 _savingRepository.RemoveSavings(saving);
-                return true;
+                return ("Poupança deletada com sucesso", 200);
             }
 
-            return false;
+            return ("Solicitação cancelada", 200);
         }
         public bool InsertAfterRescue(int userID)
         {
@@ -191,14 +199,14 @@ namespace EasyBankWeb.Services
             }
             return false;
         }
-        public string PrintBenefits(int userID)
+        public BaseDto PrintBenefits(int userID)
         {
             var saving = _savingRepository.GetSavingById(userID);
 
             if (saving == null)
-                return null;
+                return new BaseDto("Nenhuma poupança registrada", 204);
 
-            return $"Saldo Atual: {saving.Value}\nSaldo Inicial: {saving.StartValue}\nJuros Totais: {saving.TaxesValue}\nTempo Aplicado: {saving.MonthsPassed}";
+            return new BaseDto( $"Valor: {saving.Value }\nJuros: { saving.TaxesValue}\nTempo Investido: { saving.MonthsPassed}");
         }
         public void AddSavings(SavingsDto savingsDto)
         {
@@ -228,5 +236,6 @@ namespace EasyBankWeb.Services
             else
                 return false;
         }
+
     }
 }
