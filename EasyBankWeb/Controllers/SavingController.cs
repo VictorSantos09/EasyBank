@@ -1,9 +1,5 @@
-﻿using EasyBankWeb.Crosscutting;
-using EasyBankWeb.Dto;
-using EasyBankWeb.Entities;
-using EasyBankWeb.Repository;
+﻿using EasyBankWeb.Dto;
 using EasyBankWeb.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EasyBankWeb.Controllers
@@ -66,7 +62,7 @@ namespace EasyBankWeb.Controllers
         public IActionResult CancelSaving([FromBody] bool confirmed, int ownerID, string userSafetyKey)
         {
             var (data, statusCode) = ("", 0);
-            
+
             if (confirmed)
                 (data, statusCode) = saving.CancelSavingProcess(ownerID, userSafetyKey);
 
@@ -79,7 +75,7 @@ namespace EasyBankWeb.Controllers
         {
             var result = saving.PrintBenefits(ownerID);
 
-            return StatusCode(result._StatusCode, result._Data == null ? result._Message : result._Data );
+            return StatusCode(result._StatusCode, result._Data == null ? result._Message : result._Data);
         }
     }
 }

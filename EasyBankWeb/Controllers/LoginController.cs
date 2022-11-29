@@ -1,6 +1,4 @@
-﻿using EasyBankWeb.Services;
-
-namespace EasyBankWeb.Controllers
+﻿namespace EasyBankWeb.Controllers
 {
     public class LoginCntroller
     {

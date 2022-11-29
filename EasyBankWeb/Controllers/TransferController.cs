@@ -1,7 +1,5 @@
-﻿using EasyBankWeb.Repository;
-using EasyBankWeb.Services;
+﻿using EasyBankWeb.Services;
 using Microsoft.AspNetCore.Mvc;
-using System.Xml.Linq;
 
 namespace EasyBankWeb.Controllers
 {

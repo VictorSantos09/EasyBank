@@ -1,8 +1,6 @@
-using EasyBankWeb.Crosscutting;
 using EasyBankWeb.Entities;
 using EasyBankWeb.Repository;
 using EasyBankWeb.Services;
-using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 

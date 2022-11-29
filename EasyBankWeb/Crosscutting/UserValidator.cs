@@ -5,7 +5,7 @@ namespace EasyBankWeb.Crosscutting
     public class UserValidator
     {
         public static string[] Formats { get; set; } = { "@HOTMAIL.COM", "@GMAIL.COM", "@YAHOO.COM.BR", @"OUTLOOK.COM", "@ICLOUD.COM" };
-        
+
         private readonly UserRepository _userRepository;
 
         public UserValidator(UserRepository userRepository)

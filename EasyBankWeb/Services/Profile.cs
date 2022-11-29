@@ -1,7 +1,4 @@
-﻿using EasyBankWeb.Crosscutting;
-using EasyBankWeb.Entities;
-
-namespace EasyBankWeb.Services
+﻿namespace EasyBankWeb.Services
 {
     public class Profile
     {

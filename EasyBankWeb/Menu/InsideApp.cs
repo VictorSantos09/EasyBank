@@ -60,7 +60,7 @@ namespace EasyBankWeb.Menu
 
                     case "1":
                         //if (profile.ViewProfile(userID, logged) == true)
-                            logged = false;
+                        logged = false;
                         break;
 
                     case "2":

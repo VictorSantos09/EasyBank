@@ -27,14 +27,14 @@ namespace EasyBankWeb.Services
             if (loanBill != null)
                 //loan.CheckAndRemoveLoan(userID);
 
-            for (int i = 0; i < bill.Count; i++)
-            {
-                if (bill[i].RemainParcels <= 1)
-                    _billRepository.RemoveBill(bill[i]);
+                for (int i = 0; i < bill.Count; i++)
+                {
+                    if (bill[i].RemainParcels <= 1)
+                        _billRepository.RemoveBill(bill[i]);
 
-                else
-                    bill[i].RemainParcels--;
-            }
+                    else
+                        bill[i].RemainParcels--;
+                }
         }
         public void RemoveAutoDebits(BillEntity billEntity)
         {

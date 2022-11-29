@@ -1,6 +1,4 @@
-﻿using EasyBankWeb.Crosscutting;
-
-namespace EasyBankWeb.Entities
+﻿namespace EasyBankWeb.Entities
 {
     public class Loan : BaseEntity
     {

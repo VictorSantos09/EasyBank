@@ -39,7 +39,7 @@ namespace EasyBankWeb.Services
         }
         public (string?, bool) CheckPix(string pix)
         {
-            if (UserValidator.ValidatorEmailFormat(UserValidator.Formats,pix.ToUpper()))
+            if (UserValidator.ValidatorEmailFormat(UserValidator.Formats, pix.ToUpper()))
                 return ("EMAIL", true);
 
             else if (pix.Length == 11)

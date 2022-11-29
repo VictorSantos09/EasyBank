@@ -186,7 +186,7 @@ namespace EasyBankWeb.Services
             if (saving == null)
                 return new BaseDto("Nenhuma poupança registrada", 404);
 
-            return new BaseDto( $"Valor: {saving.Value }\nJuros: { saving.TaxesValue}\nTempo Investido: { saving.MonthsPassed}");
+            return new BaseDto($"Valor: {saving.Value}\nJuros: {saving.TaxesValue}\nTempo Investido: {saving.MonthsPassed}");
         }
         public void AddSavings(SavingsDto savingsDto)
         {
