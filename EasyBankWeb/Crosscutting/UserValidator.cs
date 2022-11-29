@@ -4,6 +4,8 @@ namespace EasyBankWeb.Crosscutting
 {
     public class UserValidator
     {
+        public static string[] Formats { get; set; } = { "@HOTMAIL.COM", "@GMAIL.COM", "@YAHOO.COM.BR", @"OUTLOOK.COM", "@ICLOUD.COM" };
+        
         private readonly UserRepository _userRepository;
 
         public UserValidator(UserRepository userRepository)
@@ -53,11 +55,9 @@ namespace EasyBankWeb.Crosscutting
         }
         public static string IsValidEmail(string input)
         {
-            string[] formats = { "@HOTMAIL.COM", "@GMAIL.COM", "@YAHOO.COM.BR", @"OUTLOOK.COM", "@ICLOUD.COM" };
-
             while (true)
             {
-                if (ValidatorEmailFormat(formats, input))
+                if (ValidatorEmailFormat(Formats, input))
                     break;
                 else
                 {
