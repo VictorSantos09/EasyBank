@@ -1,5 +1,9 @@
-﻿using EasyBankWeb.Dto;
+﻿using EasyBankWeb.Crosscutting;
+using EasyBankWeb.Dto;
+using EasyBankWeb.Entities;
+using EasyBankWeb.Repository;
 using EasyBankWeb.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EasyBankWeb.Controllers
@@ -8,32 +12,74 @@ namespace EasyBankWeb.Controllers
     [Route("[controller]")]
     public class SavingController : ControllerBase
     {
-        private readonly Savings _savings;
+        private readonly Saving saving;
 
-        public SavingController(Savings savings)
+        public SavingController(Saving _saving)
         {
-            _savings = savings;
+            saving = _saving;
         }
 
         [HttpGet(Name = "GetSaving")]
         public IActionResult Get()
         {
-            return Ok(_savings.GetSavings());
+            return Ok(saving.GetSavings());
         }
 
         [HttpPost(Name = "PostSaving")]
-        public IActionResult Post([FromBody] SavingsDto savings)
+        public IActionResult Post([FromBody] SavingsDto savingsDto)
         {
-            _savings.AddSavings(savings);
+            var (data, statusCode) = saving.NewSavingProcess(savingsDto.OwnerID, savingsDto);
 
-            return Ok();
+            return StatusCode(statusCode, data);
         }
-        [HttpGet(Name = "Invest")]
-        public IActionResult InvestMoney(int userID)
-        {
-            _savings.SavingSteps(userID);
 
-            return Ok();
+        [Route("InserIntoSaving")]
+        [HttpPost]
+        public IActionResult InsertMoney([FromBody] InsertSavingDto insertSavingDto)
+        {
+            if (insertSavingDto.Confirmed)
+            {
+                var (data, statusCode) = saving.InsertMoneyProcess(insertSavingDto.OwnerID, insertSavingDto.Value);
+
+                return StatusCode(statusCode, data);
+            }
+
+            return Ok("Solicitação cancelada");
+        }
+
+        [Route("RescueMoney")]
+        [HttpPost]
+        public IActionResult RescueMoney([FromBody] RescueDto rescueDto)
+        {
+            if (rescueDto.Confirmed)
+            {
+                var result = saving.RescueMoneyProcess(rescueDto.OwnerID, rescueDto.AllMoney, rescueDto.Value);
+
+                return StatusCode(result._StatusCode, result._Data == null ? result._Message : result._Data);
+            }
+
+            return Ok("");
+        }
+
+        [Route("DeleteSaving")]
+        [HttpDelete]
+        public IActionResult CancelSaving([FromBody] bool confirmed, int ownerID, string userSafetyKey)
+        {
+            var (data, statusCode) = ("", 0);
+            
+            if (confirmed)
+                (data, statusCode) = saving.CancelSavingProcess(ownerID, userSafetyKey);
+
+            return StatusCode(statusCode, data);
+        }
+
+        [Route("ViewBenefits")]
+        [HttpPost]
+        public IActionResult ViewBenefits([FromBody] int ownerID)
+        {
+            var result = saving.PrintBenefits(ownerID);
+
+            return StatusCode(result._StatusCode, result._Data == null ? new { Mensagem = result._Message } : new { Data = result._Data });
         }
     }
 }

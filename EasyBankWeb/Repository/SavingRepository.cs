@@ -28,7 +28,7 @@ namespace EasyBankWeb.Repository
 
         public SavingEntity? GetSavingById(int id)
         {
-            return Savings.Find(x => x.Id == id);
+            return Savings.Find(x => x.OwnerID == id);
         }
     }
 }
