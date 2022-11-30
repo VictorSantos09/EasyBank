@@ -1,4 +1,6 @@
+using EasyBankWeb.Entities;
 using EasyBankWeb.Repository;
+using EasyBankWeb.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +16,17 @@ builder.Services.AddSingleton<CreditCardRepository>();
 builder.Services.AddSingleton<LoanRepository>();
 builder.Services.AddSingleton<SavingRepository>();
 builder.Services.AddSingleton<UserRepository>();
+builder.Services.AddSingleton<AutoDebitRepository>();
+
+builder.Services.AddSingleton<Saving>();
+builder.Services.AddSingleton<Loan>();
+builder.Services.AddSingleton<Transfer>();
+builder.Services.AddSingleton<Bill>();
+builder.Services.AddSingleton<CreditCard>();
+builder.Services.AddSingleton<MonthTimer>();
+builder.Services.AddSingleton<SafetyPassword>();
+builder.Services.AddSingleton<CancelAccountService>();
+builder.Services.AddSingleton<Register>();
 
 var app = builder.Build();
 
@@ -27,7 +40,11 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
-
 app.MapControllers();
 
+
 app.Run();
+
+
+
+//var service = builder.Services.sGetService(typeof(IFooService));

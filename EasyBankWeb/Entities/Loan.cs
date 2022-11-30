@@ -23,18 +23,18 @@ namespace EasyBankWeb.Entities
         {
             var user = _userRepository.GetUsers().Find(x => x.Id == userID);
 
-            if (user.OpenLoan == true)
-                Message.ErrorGeneric("Não é possivel abrir mais de um empréstimo");
+        //    if (user.OpenLoan == true)
+        //        Message.ErrorGeneric("Não é possivel abrir mais de um empréstimo");
 
-            else
-            {
-                Console.Write("Digite a quantia: ");
-                var loanValue = Convert.ToInt32(Console.ReadLine());
+        //    else
+        //    {
+        //        Console.Write("Digite a quantia: ");
+        //        var loanValue = Convert.ToInt32(Console.ReadLine());
 
-                var twoYearsSalary = user.MonthlyIncome * 24;
+        //        var twoYearsSalary = user.MonthlyIncome * 24;
 
-                if (loanValue > twoYearsSalary || loanValue <= 0)
-                    Message.ErrorGeneric("Quantia não disponivel para você");
+        //        if (loanValue > twoYearsSalary || loanValue <= 0)
+        //            Message.ErrorGeneric("Quantia não disponivel para você");
 
                 else
                     PaymentOption(loanValue, userID);
@@ -44,10 +44,10 @@ namespace EasyBankWeb.Entities
         {
             var paymentOptions = "Crédito";
 
-            Console.WriteLine("Forma de pagamento permitida");
-            Console.WriteLine("Credíto até 12x - MasterCard\nDigite 1 para continuar");
-            Console.Write("Digite: ");
-            var userInputChoice = Console.ReadLine();
+        //    Console.WriteLine("Forma de pagamento permitida");
+        //    Console.WriteLine("Credíto até 12x - MasterCard\nDigite 1 para continuar");
+        //    Console.Write("Digite: ");
+        //    var userInputChoice = Console.ReadLine();
 
             if (userInputChoice == "1")
                 ChooseQtdParcels(loanValue, paymentOptions, userID);
@@ -56,17 +56,17 @@ namespace EasyBankWeb.Entities
         {
             // gerador automatico de calculo para juros
 
-            /*Random random = new();
-            var percentual = random.Next(10);
-            var calculator = random.Next(8);
+        //    /*Random random = new();
+        //    var percentual = random.Next(10);
+        //    var calculator = random.Next(8);
 
-            var amount = (value / percentual) * calculator;
-            */
+        //    var amount = (value / percentual) * calculator;
+        //    */
 
-            var standardCalculate = 3;
-            var percentualBase = 2;
+        //    var standardCalculate = 3;
+        //    var percentualBase = 2;
 
-            var finalValue = value / percentualBase * standardCalculate;
+        //    var finalValue = value / percentualBase * standardCalculate;
 
             return finalValue;
         }
@@ -75,36 +75,36 @@ namespace EasyBankWeb.Entities
             Console.Write("Digite o numero de parcelas: ");
             var qtdParcels = Convert.ToInt32(Console.ReadLine());
 
-            if (qtdParcels > 12 || qtdParcels < 1)
-            {
-                Message.ErrorGeneric("Escolha indisponivel");
-            }
+        //    if (qtdParcels > 12 || qtdParcels < 1)
+        //    {
+        //        Message.ErrorGeneric("Escolha indisponivel");
+        //    }
 
-            else
-            {
-                var finalInterestValue = AmountInterest(loanValue);
+        //    else
+        //    {
+        //        var finalInterestValue = AmountInterest(loanValue);
 
-                var finalValue = loanValue + finalInterestValue;
+        //        var finalValue = loanValue + finalInterestValue;
 
-                Console.WriteLine($"Valor do emprestimo: {loanValue} | Forma de Pagamento: {paymentOptions} | " +
-                    $"Parcelas: {qtdParcels} | Valor Parcela:{finalValue / qtdParcels} | " +
-                    $"Juros: {finalInterestValue} | Total: {loanValue + finalInterestValue}");
+        //        Console.WriteLine($"Valor do emprestimo: {loanValue} | Forma de Pagamento: {paymentOptions} | " +
+        //            $"Parcelas: {qtdParcels} | Valor Parcela:{finalValue / qtdParcels} | " +
+        //            $"Juros: {finalInterestValue} | Total: {loanValue + finalInterestValue}");
 
                 if (ConfirmLoan() == true)
                     ApplyLoan(qtdParcels, finalValue, userID);
 
-                else
-                {
-                    Message.SuccessfulGeneric("Empréstimo cancelado");
-                }
-            }
-        }
-        public bool ConfirmLoan()
-        {
-            Console.Write("1 - Confirmar\n2 - Cancelar\nDigite: ");
-            var Choice = Console.ReadLine();
-            if (Choice == "1")
-                return true;
+        //        else
+        //        {
+        //            Message.SuccessfulGeneric("Empréstimo cancelado");
+        //        }
+        //    }
+        //}
+        //public bool ConfirmLoan()
+        //{
+        //    Console.Write("1 - Confirmar\n2 - Cancelar\nDigite: ");
+        //    var Choice = Console.ReadLine();
+        //    if (Choice == "1")
+        //        return true;
 
             return false;
         }
@@ -116,8 +116,8 @@ namespace EasyBankWeb.Entities
             var user = _userRepository.GetUsers().Find(x => x.Id == userID);
             var bill = new Bill();
 
-            user.OpenLoan = true;
-            user.CurrentAccount += finalValue;
+        //    user.OpenLoan = true;
+        //    user.CurrentAccount += finalValue;
 
             _billRepository.AddBill(new BillEntity()
             {

@@ -7,13 +7,13 @@
         public double StartValue { get; set; }
         public int MonthsPassed { get; set; } = 1;
         public int OwnerID { get; set; }
-        public SavingEntity(int userID, double _value, int _id, double _taxesValue, double _startValue)
+        public SavingEntity(int userID, double _value, int _id, double _taxesValue)
         {
             OwnerID = userID;
             Value += _value;
-            Id = _id;
             TaxesValue += _taxesValue;
-            StartValue = _startValue;
+            StartValue = _value;
+            Id = _id;
         }
     }
 }

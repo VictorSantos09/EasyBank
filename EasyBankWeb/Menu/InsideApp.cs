@@ -14,12 +14,12 @@ namespace EasyBankWeb.Menu
         private readonly ProfileConfig profileConfig;
         private readonly Bill bill;
         private readonly Transfer transfer;
-        private readonly Savings saving;
+        private readonly Saving saving;
         private readonly CreditCard creditCard;
 
         public InsideApp(UserRepository userRepository, Loan loan,
             AutoDebit autoDebit, Profile profile, ProfileConfig profileConfig, Bill bill,
-            Transfer transfer, Savings saving, CreditCard creditCard)
+            Transfer transfer, Saving saving, CreditCard creditCard)
         {
             _userRepository = userRepository;
             this.loan = loan;
@@ -34,7 +34,7 @@ namespace EasyBankWeb.Menu
 
         public void Home(int userID)
         {
-            MonthTimer.Main();
+            //MonthTimer.Main();
 
             bool logged = true;
             while (logged)
@@ -59,21 +59,21 @@ namespace EasyBankWeb.Menu
                 {
 
                     case "1":
-                        if (profile.ViewProfile(userID, logged) == true)
-                            logged = false;
+                        //if (profile.ViewProfile(userID, logged) == true)
+                        logged = false;
                         break;
 
                     case "2":
-                        loan.LoanRequest(userID);
+                        //loan.LoanRequest(userID);
                         break;
 
                     case "3":
-                        transfer.Valuetransfer(userID);
+                        //transfer.(userID);
                         break;
 
                     case "4":
 
-                        saving.Menu(userID);
+                        //saving.Menu(userID);
                         break;
 
                     case "5":

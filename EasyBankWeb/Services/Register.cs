@@ -1,4 +1,5 @@
 ﻿using EasyBankWeb.Crosscutting;
+using EasyBankWeb.Dto;
 using EasyBankWeb.Entities;
 using EasyBankWeb.Repository;
 
@@ -8,196 +9,113 @@ namespace EasyBankWeb.Services
     {
         private readonly CreditCardRepository _creditCardRepository;
         private readonly UserRepository _userRepository;
-        private readonly AdressEntity adress;
-        private readonly User user;
-        private readonly CreditCard creditCard;
+        private readonly CreditCard _creditCard;
+        private readonly SafetyPassword _safetyPassword;
 
-        public Register(CreditCardRepository creditCardRepository, UserRepository userRepository, AdressEntity adress, CreditCard creditCard, User user)
+        public Register(CreditCardRepository creditCardRepository, UserRepository userRepository, CreditCard creditCard, SafetyPassword safetyPassword)
         {
             _creditCardRepository = creditCardRepository;
             _userRepository = userRepository;
-            this.adress = adress;
-            this.creditCard = creditCard;
-            this.user = user;
+            _creditCard = creditCard;
+            _safetyPassword = safetyPassword;
         }
 
-        public Register()
+        /// <summary>
+        /// Efetua o processo de validação dos dados do usuario, nome, endereço, email, cpf, rg, idade, senha, senha de segurança e telefone
+        /// </summary>
+        /// <param name="userDto"></param>
+        /// <returns>Retorna um BaseDto, 200 (OK) ou 406 (Not Acceptable)</returns>
+        public BaseDto ValidationProcess(UserDto userDto)
         {
+            if (IsExistentUser(userDto))
+                return new BaseDto("Usuário já cadastrado", 406);
+
+            if (!UserValidator.IsValidName(userDto.Name))
+                return new BaseDto("Nome inválido", 406);
+
+            if (!UserValidator.IsValidEmail(userDto.Email))
+                return new BaseDto("Email inválido", 406);
+
+            if (!UserValidator.IsValidCPF(userDto.CPF))
+                return new BaseDto("CPF inválido", 406);
+
+            if (UserValidator.DynamicSizeRG(userDto.RG) == null)
+                return new BaseDto("RG inválido", 406);
+
+            if (!UserValidator.IsValidAge(userDto.DateBorn.ToString()))
+                return new BaseDto("Você precisa ter no minimo 18 anos", 406);
+
+            if (!UserValidator.IsValidPassword(userDto.Password))
+                return new BaseDto("Senha inválida para cadastro", 406);
+
+            if (_safetyPassword.ConfirmNumberOfLetters(userDto.SafetyKey) == null)
+                return new BaseDto("Senha de segurança inválida para cadastro", 406);
+
+            if (!UserValidator.IsValidPhoneNumber(userDto.PhoneNumber))
+                return new BaseDto("Telefone inválido para cadastro", 406);
+
+            if (userDto.Adress.Country == null)
+                return new BaseDto("Páis inválido", 406);
+
+            if (userDto.Adress.State == null)
+                return new BaseDto("Estado inválido", 406);
+
+            if (userDto.Adress.HouseNumber == null)
+                return new BaseDto("Número inválido", 406);
+
+            if (userDto.Adress.Neiborhood == null)
+                return new BaseDto("Bairro inválido", 406);
+
+            if (userDto.Adress.Street == null)
+                return new BaseDto("Rua inválida", 406);
+
+            if (userDto.Adress.City == null)
+                return new BaseDto("Cidade inválida", 406);
+
+
+            return new BaseDto(200);
         }
-
-        public void UserRegister()
+        /// <summary>
+        /// Efetua a validação dos dados do usuario, cria o cartão de credito e armazena as entidades
+        /// </summary>
+        /// <param name="userDto"></param>
+        /// <returns>Retorna um BaseDto, 200 ou 406</returns>
+        public BaseDto UserRegisterSucessed(UserDto userDto)
         {
+            var result = ValidationProcess(userDto);
 
-            var userName = R_Name();
-            var userMonthlyIncome = MonthlyIncome();
+            if (result._StatusCode != 200)
+                return new BaseDto(result._Message, 406);
 
             var userID = GeneralValidator.ID_AUTOINCREMENT(_userRepository.GetUsers());
-            SafetyPassword safetyPassword = new SafetyPassword();
 
-            var user = new User(userName, R_Age_DateBorn(), PhoneNumber(), Email(),
-                 Password(), CPF(), RG(), userMonthlyIncome, Adress(), userID, adress, safetyPassword.LetterCreation());
+            var dateBornSubstring = Convert.ToString(userDto.DateBorn).Substring(0, 10);
+
+            var user = new UserEntity(userDto.Name, dateBornSubstring, userDto.PhoneNumber, userDto.Email,
+                userDto.Password, userDto.CPF, userDto.RG, userDto.MonthlyIncome, userID, userDto.SafetyKey);
 
             _userRepository.AddUser(user);
 
+            CreditCardRegister(userDto, userID);
+
+            return new BaseDto("Dados válidos, cadastro efetuado", 200);
+        }
+        public void CreditCardRegister(UserDto userDto, int userID)
+        {
             var creditCardID = GeneralValidator.ID_AUTOINCREMENT(_creditCardRepository.GetCreditCard());
 
-            var creditCardConstructor = new CreditCardEntity(creditCard.R_Limit(userMonthlyIncome), userName,
-                creditCard.R_CVV(), creditCard.R_ExpireDate(), creditCardID, creditCard.R_CardNumber(), userID);
+            var creditCardConstructor = new CreditCardEntity(_creditCard.R_Limit(userDto.MonthlyIncome), userDto.Name,
+                _creditCard.R_CVV(), _creditCard.R_ExpireDate(), creditCardID, _creditCard.R_CardNumber(), userID);
 
             _creditCardRepository.AddCreditCard(creditCardConstructor);
         }
-        public string R_Name()
+        public bool IsExistentUser(UserDto userDto)
         {
-            string? inputName;
-            while (true)
-            {
-                Console.Write("Cadastre seu nome completo: ");
-                inputName = UserValidator.IsValidName(Console.ReadLine());
-                var checker = GeneralValidator.HasNumberOrSpecialCaracter(inputName);
-
-                if (!checker)
-                    break;
-
-                else
-                    Message.ErrorGeneric("Numeros e caracteres especiais não são válidos");
-            }
-
-            return inputName;
+            return _userRepository.GetUsers().Exists(x => x.CPF == userDto.CPF || x.Email == userDto.Email);
         }
-
-        public string R_Age_DateBorn()
+        public List<UserEntity> GetUsers()
         {
-            Console.Write("Cadastre sua data de nascimento no formato 00/00/0000\nDigite: ");
-            return UserValidator.IsValidAge(Console.ReadLine());
-
-        }
-        public string CPF()
-        {
-            string? inputCPF;
-            while (true)
-            {
-                Console.Write("Cadastre seu CPF: ");
-                inputCPF = UserValidator.IsValidCPF(Console.ReadLine());
-                var checker = GeneralValidator.HasLetterOrSpecialCaracter(inputCPF);
-
-                if (!checker)
-                    break;
-
-                else
-                {
-                    Message.ErrorGeneric("Letras e caracteres especiais não são válidos");
-                }
-            }
-
-            string finalInput = Convert.ToInt64(inputCPF).ToString(@"000\.000\.000\-00");
-
-            return finalInput;
-        }
-        public string RG()
-        {
-            string? inputRG;
-            while (true)
-            {
-                Console.Write("Cadastre seu RG: ");
-                inputRG = UserValidator.DynamicSizeRG(Console.ReadLine());
-                var checker = GeneralValidator.HasLetterOrSpecialCaracter(inputRG);
-
-                if (!checker)
-                    break;
-
-                else
-                    Message.ErrorGeneric("Letras e caracteres especiais não são válidos");
-            }
-
-            return inputRG;
-        }
-        public string PhoneNumber()
-        {
-            string? inputPhoneNumber;
-            while (true)
-            {
-                Console.Write("Cadastre seu telefone com DDD.\nExemplo: 13991256286\nDigite: ");
-                inputPhoneNumber = UserValidator.IsValidPhoneNumber(Console.ReadLine());
-                var checker = GeneralValidator.HasLetterOrSpecialCaracter(inputPhoneNumber);
-
-                if (!checker)
-                    break;
-
-                else
-                    Message.ErrorGeneric("Letras e caracteres especiais não são válidos");
-            }
-
-            var finalNumber = user.PhoneCodeArea + inputPhoneNumber;
-
-            return finalNumber;
-        }
-        public string Email()
-        {
-            Console.Write("Cadastre seu email: ");
-            return UserValidator.IsValidEmail(Console.ReadLine().ToUpper());
-
-        }
-        public string Password()
-        {
-            Console.Write("Cadastre sua senha de 4 digitos: ");
-
-            return UserValidator.IsValidPassword(Console.ReadLine());
-
-        }
-        public int MonthlyIncome()
-        {
-            Console.WriteLine("Cadastre sua renda mensal bruta");
-            Console.Write("Digite: ");
-            var inputMonthlyIncome = GeneralValidator.OutputNoLetterAndSpecialCaracter(Console.ReadLine());
-
-            return Convert.ToInt32(inputMonthlyIncome);
-        }
-        public string[] Adress()
-        {
-            string[] dataAdress = new string[6];
-
-            Console.WriteLine("Cadastre seu endereço");
-            dataAdress[0] = City();
-            dataAdress[1] = State();
-            dataAdress[2] = Neighborhood();
-            dataAdress[3] = StreetOrAvenue();
-            dataAdress[4] = HouseNumber();
-            dataAdress[5] = Complement();
-
-            return dataAdress;
-        }
-        public string City()
-        {
-            Console.Write("Cidade: ");
-            return GeneralValidator.OutputNoNumberAndSpecialCaracteres(Console.ReadLine()).ToUpper();
-        }
-        public string State()
-        {
-            Console.Write("Estado: ");
-            return GeneralValidator.OutputNoNumberAndSpecialCaracteres(Console.ReadLine()).ToUpper();
-
-        }
-        public string Neighborhood()
-        {
-            Console.Write("Bairro: ");
-            return GeneralValidator.OutputNoNumberAndSpecialCaracteres(Console.ReadLine()).ToUpper();
-        }
-        public string StreetOrAvenue()
-        {
-            Console.Write("Rua/Avenida: ");
-            return GeneralValidator.OutputNoSpecialCaracter(Console.ReadLine().ToUpper());
-
-        }
-        public string HouseNumber()
-        {
-            Console.Write("Numero: ");
-            return GeneralValidator.OutputNoLetterAndSpecialCaracter(Console.ReadLine());
-
-        }
-        public string Complement()
-        {
-            Console.Write("Complemento: ");
-            return GeneralValidator.OutputNoSpecialCaracter(Console.ReadLine()).ToUpper();
+            return _userRepository.GetUsers();
         }
     }
 }

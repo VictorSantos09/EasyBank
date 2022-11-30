@@ -4,6 +4,8 @@ namespace EasyBankWeb.Crosscutting
 {
     public class UserValidator
     {
+        public static string[] Formats { get; set; } = { "@HOTMAIL.COM", "@GMAIL.COM", "@YAHOO.COM.BR", @"OUTLOOK.COM", "@ICLOUD.COM" };
+
         private readonly UserRepository _userRepository;
 
         public UserValidator(UserRepository userRepository)
@@ -11,61 +13,41 @@ namespace EasyBankWeb.Crosscutting
             _userRepository = userRepository;
         }
 
-        public static string IsValidName(string input)
+        public static bool IsValidName(string input)
         {
             var minimalSize = 5;
 
-            while (true)
-            {
-                if (input.Length < minimalSize)
-                {
-                    input = Message.ErrorGenericWrite("Digite seu nome completo", input);
-                }
+            if (input.Length < minimalSize)
+                return false;
 
-                else
-                    break;
-            }
-
-            return input.ToUpper();
+            return true;
         }
-        public static string IsValidAge(string input)
+        public static bool IsValidAge(string input)
         {
-            while (true)
-            {
-                var toCheck = DateTime.ParseExact(input, "dd/MM/yyyy", null);
+            var toCheck = Convert.ToDateTime(input);
 
-                var today = DateTime.Today;
+            //var toCheck = DateTime.ParseExact(input, "d", null);
 
-                var age = today.Year - toCheck.Year;
+            //var toCheck = DateTime.ParseExact(finalInput, "dd/MM/yyyy", null);
 
-                if (toCheck.Date > today.AddYears(-age))
-                    age--;
+            var today = DateTime.Today;
 
-                if (age < 18)
-                {
-                    input = Message.ErrorGenericWrite("Você precisa ter no mínimo 18 anos para se registrar", input);
-                }
-                else
-                    break;
-            }
+            var age = today.Year - toCheck.Year;
 
-            return input;
+            if (toCheck.Date > today.AddYears(-age))
+                age--;
+
+            if (age < 18)
+                return false;
+
+            return true;
         }
-        public static string IsValidEmail(string input)
+        public static bool IsValidEmail(string input)
         {
-            string[] formats = { "@HOTMAIL.COM", "@GMAIL.COM", "@YAHOO.COM.BR", @"OUTLOOK.COM", "@ICLOUD.COM" };
+            if (ValidatorEmailFormat(Formats, input))
+                return true;
 
-            while (true)
-            {
-                if (ValidatorEmailFormat(formats, input))
-                    break;
-                else
-                {
-                    input = Message.ErrorGenericWrite("Email inválido", input).ToUpper();
-                }
-            }
-
-            return input;
+            return false;
         }
         public static bool ValidatorEmailFormat(string[] formats, string input)
         {
@@ -76,106 +58,55 @@ namespace EasyBankWeb.Crosscutting
             }
             return false;
         }
-        public static string IsValidPassword(string input)
+        public static bool IsValidPassword(string input)
         {
             var size = 4;
 
-            while (true)
-            {
-                if (input.Length < size || input.Length > size)
-                    input = Message.ErrorGenericWrite($"Sua senha precisa ter {size}", input);
-
-                else
-                    break;
-            }
-
-            return input;
+            return false ? input.Length < size || input.Length > size : true;
         }
-        public static string IsValidCPF(string input)
+        public static bool IsValidCPF(string input)
         {
-            while (true)
-            {
-                if (input.Length < 11 || input.Length > 11)
-                    input = Message.ErrorGenericWrite("Tamanho de CPF inválido", input);
-
-                else
-                    break;
-            }
-
-            return input;
+            return false ? input.Length < 11 || input.Length > 11 : true;
         }
-        public static string IsValidPhoneNumber(string input)
+        public static bool IsValidPhoneNumber(string input)
         {
-            while (true)
-            {
-                if (input.Length < 11 || input.Length > 12)
-                    input = Message.ErrorGenericWrite("Telefone inválido", input);
-
-                else
-                    break;
-            }
-
-            return input;
+            return false ? input.Length < 11 || input.Length > 12 : true;
         }
-        public static string DynamicSizeRG(string input)
+        public static string? DynamicSizeRG(string input)
         {
-            string finalInput = "";
+            var size1 = 7;
+            var size2 = 8;
+            var size3 = 9;
+            var size4 = 13;
+            var size5 = 6;
+            string patternSize1 = @"00\.00\.00\-0";
+            string patternSize2 = @"00\.00\.000\-0";
+            string patternSize3 = @"00\.000\.000\-0";
+            string patternSize4 = @"000\.000\.000\-0000";
+            string patternSize5 = @"000\.00\-0";
 
-            while (true)
-            {
-                var size1 = 7;
-                var size2 = 8;
-                var size3 = 9;
-                var size4 = 13;
-                var size5 = 6;
-                string patternSize1 = @"00\.00\.00\-0";
-                string patternSize2 = @"00\.00\.000\-0";
-                string patternSize3 = @"00\.000\.000\-0";
-                string patternSize4 = @"000\.000\.000\-0000";
-                string patternSize5 = @"000\.00\-0";
+            if (input.Length == size1)
+                return Convert.ToInt64(input).ToString(patternSize1);
 
-                if (input.Length == size1)
-                {
-                    finalInput = Convert.ToInt64(input).ToString(patternSize1);
-                    break;
-                }
-                else if (input.Length == size2)
-                {
-                    finalInput = Convert.ToInt64(input).ToString(patternSize2);
-                    break;
-                }
-                else if (input.Length == size3)
-                {
-                    finalInput = Convert.ToInt64(input).ToString(patternSize3);
-                    break;
-                }
-                else if (input.Length == size4)
-                {
-                    finalInput = Convert.ToInt64(input).ToString(patternSize4);
-                    break;
-                }
-                else if (input.Length == size5)
-                {
-                    finalInput = Convert.ToInt64(input).ToString(patternSize5);
-                    break;
-                }
-                else
-                {
-                    input = Message.ErrorGenericWrite("Tamanho de RG inválido", input);
-                }
-            }
+            if (input.Length == size2)
+                return Convert.ToInt64(input).ToString(patternSize2);
 
-            return finalInput;
+            if (input.Length == size3)
+                return Convert.ToInt64(input).ToString(patternSize3);
+
+            if (input.Length == size4)
+                return Convert.ToInt64(input).ToString(patternSize4);
+
+            if (input.Length == size5)
+                return Convert.ToInt64(input).ToString(patternSize5);
+
+            return null;
         }
-        public bool IsCorrectSafeyKey(int userID)
+        public bool IsCorrectSafeyKey(int userID, string safetyKey)
         {
             var user = _userRepository.GetUserById(userID);
 
-            Console.WriteLine("Digite sua senha de segurança");
-            Console.Write("Digite: ");
-            var key = Console.ReadLine().ToUpper();
-
-            if (key == user.SafetyKey)
+            if (safetyKey == user.SafetyKey)
                 return true;
 
             return false;

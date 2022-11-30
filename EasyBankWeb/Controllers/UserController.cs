@@ -1,5 +1,5 @@
-using EasyBankWeb.Entities;
-using EasyBankWeb.Repository;
+using EasyBankWeb.Dto;
+using EasyBankWeb.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EasyBankWeb.Controllers
@@ -8,25 +8,37 @@ namespace EasyBankWeb.Controllers
     [Route("[controller]")]
     public class UserController : ControllerBase
     {
-        private readonly UserRepository _userRepository;
+        private readonly Register _register;
+        private readonly CancelAccountService _cancelAccountService;
 
-        public UserController(UserRepository userRepository)
+        public UserController(Register register, CancelAccountService cancelAccountService)
         {
-            _userRepository = userRepository;
+            _register = register;
+            _cancelAccountService = cancelAccountService;
         }
 
-        [HttpGet(Name = "GetUser")]
+        [Route("GetUsers")]
+        [HttpGet]
         public IActionResult Get()
         {
-            return Ok(_userRepository.GetUsers());
+            return Ok(_register.GetUsers());
         }
 
-        [HttpPost(Name = "PostUser")]
-        public IActionResult Post([FromBody] User user)
+        [Route("RegisterUser")]
+        [HttpPost]
+        public IActionResult Register([FromBody] UserDto userDto)
         {
-            _userRepository.AddUser(user);
+            var result = _register.UserRegisterSucessed(userDto);
+            return StatusCode(result._StatusCode, result._Data == null ? result._Message : result._Data);
+        }
 
-            return Ok();
+        [Route("DeleteUser")]
+        [HttpDelete]
+        public IActionResult DeleteAccount([FromBody] UserDto userDto, bool confirmed)
+        {
+            var result = _cancelAccountService.DeleteProcess(userDto, confirmed);
+
+            return StatusCode(result._StatusCode, result._Data == null ? result._Message : result._Data);
         }
     }
 }
