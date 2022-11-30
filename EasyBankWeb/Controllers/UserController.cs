@@ -17,13 +17,15 @@ namespace EasyBankWeb.Controllers
             _cancelAccountService = cancelAccountService;
         }
 
-        [HttpGet(Name = "GetUser")]
+        [Route("GetUsers")]
+        [HttpGet]
         public IActionResult Get()
         {
             return Ok(_register.GetUsers());
         }
 
-        [HttpPost(Name = "PostUser")]
+        [Route("RegisterUser")]
+        [HttpPost]
         public IActionResult Register([FromBody] UserDto userDto)
         {
             var result = _register.UserRegisterSucessed(userDto);

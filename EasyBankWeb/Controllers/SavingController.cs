@@ -15,13 +15,15 @@ namespace EasyBankWeb.Controllers
             saving = _saving;
         }
 
-        [HttpGet(Name = "GetSaving")]
+        [Route("GetSavings")]
+        [HttpGet]
         public IActionResult Get()
         {
             return Ok(saving.GetSavings());
         }
 
-        [HttpPost(Name = "PostSaving")]
+        [Route("NewSaving")]
+        [HttpPost]
         public IActionResult Post([FromBody] SavingsDto savingsDto)
         {
             var (data, statusCode) = saving.NewSavingProcess(savingsDto.OwnerID, savingsDto);
@@ -29,7 +31,7 @@ namespace EasyBankWeb.Controllers
             return StatusCode(statusCode, data);
         }
 
-        [Route("InserIntoSaving")]
+        [Route("InsertIntoSaving")]
         [HttpPost]
         public IActionResult InsertMoney([FromBody] InsertSavingDto insertSavingDto)
         {
