@@ -1,6 +1,4 @@
 ﻿using EasyBankWeb.Repository;
-using System.Globalization;
-using System.Reflection.Metadata.Ecma335;
 
 namespace EasyBankWeb.Crosscutting
 {

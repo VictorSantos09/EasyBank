@@ -1,5 +1,4 @@
 using EasyBankWeb.Dto;
-using EasyBankWeb.Repository;
 using EasyBankWeb.Services;
 using Microsoft.AspNetCore.Mvc;
 

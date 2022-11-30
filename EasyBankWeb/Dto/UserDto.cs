@@ -15,7 +15,7 @@ namespace EasyBankWeb.Dto
         public DateTime DateBorn { get; set; }
         public AdressEntity Adress { get; set; }
 
-        public UserDto(int monthlyIncome, string name, string email, string cPF, string rG, string phoneNumber, 
+        public UserDto(int monthlyIncome, string name, string email, string cPF, string rG, string phoneNumber,
             string password, string safetyKey, DateTime dateBorn, AdressEntity adress)
         {
             MonthlyIncome = monthlyIncome;

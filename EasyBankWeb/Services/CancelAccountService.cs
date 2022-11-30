@@ -23,7 +23,7 @@ namespace EasyBankWeb.Services
         {
             if (!confirmed)
                 return new BaseDto("Solicitação cancelada", 200);
-            
+
             if (!IsCorrectData(userDto))
                 return new BaseDto("Dados incorretos", 400);
 

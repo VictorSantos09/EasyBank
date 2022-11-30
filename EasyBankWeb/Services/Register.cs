@@ -89,7 +89,7 @@ namespace EasyBankWeb.Services
 
             var userID = GeneralValidator.ID_AUTOINCREMENT(_userRepository.GetUsers());
 
-            var dateBornSubstring = Convert.ToString(userDto.DateBorn).Substring(0,10);
+            var dateBornSubstring = Convert.ToString(userDto.DateBorn).Substring(0, 10);
 
             var user = new UserEntity(userDto.Name, dateBornSubstring, userDto.PhoneNumber, userDto.Email,
                 userDto.Password, userDto.CPF, userDto.RG, userDto.MonthlyIncome, userID, userDto.SafetyKey);
