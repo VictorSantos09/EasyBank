@@ -27,11 +27,14 @@ namespace EasyBankWeb.Services
         /// <returns>Retorna um BaseDto, 200 (OK) ou 406 (Not Acceptable)</returns>
         public BaseDto ValidationProcess(UserDto userDto)
         {
+            if (IsExistentUser(userDto))
+                return new BaseDto("Usuário já cadastrado", 406);
+
             if (!UserValidator.IsValidName(userDto.Name))
                 return new BaseDto("Nome inválido", 406);
 
             if (!UserValidator.IsValidEmail(userDto.Email))
-                return new BaseDto("Email", 406);
+                return new BaseDto("Email inválido", 406);
 
             if (!UserValidator.IsValidCPF(userDto.CPF))
                 return new BaseDto("CPF inválido", 406);
@@ -70,28 +73,32 @@ namespace EasyBankWeb.Services
                 return new BaseDto("Cidade inválida", 406);
 
 
-            return new BaseDto("Dados validos, cadastro em processo", 200);
+            return new BaseDto(200);
         }
         /// <summary>
         /// Efetua a validação dos dados do usuario, cria o cartão de credito e armazena as entidades
         /// </summary>
         /// <param name="userDto"></param>
-        /// <returns>false para dados inválidos, true para sucesso</returns>
-        public bool UserRegisterSucessed(UserDto userDto)
+        /// <returns>Retorna um BaseDto, 200 ou 406</returns>
+        public BaseDto UserRegisterSucessed(UserDto userDto)
         {
-            if (ValidationProcess(userDto)._StatusCode != 200)
-                return false;
+            var result = ValidationProcess(userDto);
+
+            if (result._StatusCode != 200)
+                return new BaseDto(result._Message, 406);
 
             var userID = GeneralValidator.ID_AUTOINCREMENT(_userRepository.GetUsers());
 
-            var user = new User(userDto.Name, userDto.DateBorn.ToString(), userDto.PhoneNumber, userDto.Email,
+            var dateBornSubstring = Convert.ToString(userDto.DateBorn).Substring(0,10);
+
+            var user = new UserEntity(userDto.Name, dateBornSubstring, userDto.PhoneNumber, userDto.Email,
                 userDto.Password, userDto.CPF, userDto.RG, userDto.MonthlyIncome, userID, userDto.SafetyKey);
 
             _userRepository.AddUser(user);
 
             CreditCardRegister(userDto, userID);
 
-            return true;
+            return new BaseDto("Dados válidos, cadastro efetuado", 200);
         }
         public void CreditCardRegister(UserDto userDto, int userID)
         {
@@ -101,6 +108,14 @@ namespace EasyBankWeb.Services
                 _creditCard.R_CVV(), _creditCard.R_ExpireDate(), creditCardID, _creditCard.R_CardNumber(), userID);
 
             _creditCardRepository.AddCreditCard(creditCardConstructor);
+        }
+        public bool IsExistentUser(UserDto userDto)
+        {
+            return _userRepository.GetUsers().Exists(x => x.CPF == userDto.CPF || x.Email == userDto.Email);
+        }
+        public List<UserEntity> GetUsers()
+        {
+            return _userRepository.GetUsers();
         }
     }
 }

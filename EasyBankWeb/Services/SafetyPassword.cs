@@ -44,13 +44,13 @@ namespace EasyBankWeb.Services
 
             return confirmQuantity;
         }
-        public static string ConfirmationOfTheThreeLetters(string confirmationThreeLetters)
+        public string ConfirmationOfTheThreeLetters(string confirmationThreeLetters)
         {
             Console.WriteLine($"Voce escolheu as Letras    '{confirmationThreeLetters}'  Digite sim para confirmar ou não para inserir novamente");
             confirmationThreeLetters = Console.ReadLine().ToUpper();
             return confirmationThreeLetters;
         }
-        public static string DifferentFromYesOrNo(string checkConfirmation)
+        public string DifferentFromYesOrNo(string checkConfirmation)
         {
             while (checkConfirmation != "não".ToUpper() && checkConfirmation != "sim".ToUpper())
             {
@@ -109,7 +109,7 @@ namespace EasyBankWeb.Services
                 Console.WriteLine(item);
             }
         }
-        public bool CheckLetters(List<User> users, int userID)
+        public bool CheckLetters(List<UserEntity> users, int userID)
         {
             var user = users.Find(x => x.Id == userID);
             GenerateLetters();

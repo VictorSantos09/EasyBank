@@ -24,6 +24,9 @@ builder.Services.AddSingleton<Transfer>();
 builder.Services.AddSingleton<Bill>();
 builder.Services.AddSingleton<CreditCard>();
 builder.Services.AddSingleton<MonthTimer>();
+builder.Services.AddSingleton<SafetyPassword>();
+builder.Services.AddSingleton<CancelAccountService>();
+builder.Services.AddSingleton<Register>();
 
 var app = builder.Build();
 

@@ -20,7 +20,7 @@ namespace EasyBankWeb.Dto
         {
             MonthlyIncome = monthlyIncome;
             Name = name;
-            Email = email;
+            Email = email.ToUpper();
             CPF = cPF;
             RG = rG;
             PhoneNumber = phoneNumber;

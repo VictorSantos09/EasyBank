@@ -1,4 +1,5 @@
 ﻿using EasyBankWeb.Repository;
+using System.Globalization;
 using System.Reflection.Metadata.Ecma335;
 
 namespace EasyBankWeb.Crosscutting
@@ -25,7 +26,11 @@ namespace EasyBankWeb.Crosscutting
         }
         public static bool IsValidAge(string input)
         {
-            var toCheck = DateTime.ParseExact(input, "dd/MM/yyyy", null);
+            var toCheck = Convert.ToDateTime(input);
+
+            //var toCheck = DateTime.ParseExact(input, "d", null);
+
+            //var toCheck = DateTime.ParseExact(finalInput, "dd/MM/yyyy", null);
 
             var today = DateTime.Today;
 
@@ -37,7 +42,7 @@ namespace EasyBankWeb.Crosscutting
             if (age < 18)
                 return false;
 
-            return false;
+            return true;
         }
         public static bool IsValidEmail(string input)
         {
@@ -84,16 +89,16 @@ namespace EasyBankWeb.Crosscutting
 
             if (input.Length == size1)
                 return Convert.ToInt64(input).ToString(patternSize1);
-            
+
             if (input.Length == size2)
                 return Convert.ToInt64(input).ToString(patternSize2);
-            
+
             if (input.Length == size3)
                 return Convert.ToInt64(input).ToString(patternSize3);
-            
+
             if (input.Length == size4)
                 return Convert.ToInt64(input).ToString(patternSize4);
-            
+
             if (input.Length == size5)
                 return Convert.ToInt64(input).ToString(patternSize5);
 
