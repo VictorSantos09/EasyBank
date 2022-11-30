@@ -4,26 +4,31 @@ namespace EasyBankWeb.Repository
 {
     public class UserRepository
     {
-        private List<User> Users { get; set; }
+        private List<UserEntity> Users { get; set; }
 
         public UserRepository()
         {
-            Users = new List<User>();
+            Users = new List<UserEntity>();
         }
 
-        public List<User> GetUsers()
+        public List<UserEntity> GetUsers()
         {
             return Users;
         }
 
-        public void AddUser(User user)
+        public void AddUser(UserEntity user)
         {
             Users.Add(user);
         }
 
-        public User? GetUserById(int id)
+        public UserEntity? GetUserById(int id)
         {
             return Users.Find(x => x.Id == id);
+        }
+
+        public void RemoveUser(UserEntity user)
+        {
+            Users.Remove(user);
         }
     }
 }
