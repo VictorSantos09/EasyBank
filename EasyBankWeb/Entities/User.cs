@@ -21,7 +21,7 @@
         public bool OpenLoan { get; set; }
         public AdressEntity Adress { get; set; }
         public User(string _name, string _dateBorn, string _phoneNumber, string _email,
-            string _password, string _CPF, string _RG, int _monthlyIncome, string[] _adress, int _id, AdressEntity adress, string _safetyKey)
+            string _password, string _CPF, string _RG, int _monthlyIncome, int _id, string _safetyKey)
         {
             Adress = adress;
             Name = _name;
@@ -32,19 +32,23 @@
             CPF = _CPF;
             RG = _RG;
             MonthlyIncome = _monthlyIncome;
-            Adress.City = _adress[0];
-            Adress.State = _adress[1];
-            Adress.Neiborhood = _adress[2];
-            Adress.Street = _adress[3];
-            Adress.HouseNumber = _adress[4];
-            Adress.HouseComplement = _adress[5];
-            Adress.FullAdress = $"Pais: {Adress.Country} Cidade: {_adress[0]} Estado: {_adress[1]} Bairro: {_adress[2]} " +
-            $"Rua: {_adress[3]} Numero: {_adress[4]} Complemento: {_adress[5]}";
             Age = DateTime.Today.Year - DateBorn.Year;
             Id = _id;
             SafetyKey = _safetyKey;
             CurrentAccount = _monthlyIncome;
         }
+
+        public User(string street, string houseNumber,string houseComplement, string city, string neiborhood, string state)
+        {
+            Adress.Street = street;
+            Adress.HouseNumber = houseNumber;
+            Adress.HouseComplement = houseComplement;
+            Adress.City = city;
+            Adress.Neiborhood = neiborhood;
+            Adress.State = state;
+            Adress.FullAdress = null;
+        }
+
         public User()
         {
 

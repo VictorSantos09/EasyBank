@@ -13,7 +13,7 @@
             _Data = data;
         }
 
-        public BaseDto(string message, int statusCode)
+        public BaseDto(string? message, int statusCode)
         {
             _Message = message;
             _StatusCode = statusCode;

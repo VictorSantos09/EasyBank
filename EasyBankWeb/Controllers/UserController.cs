@@ -1,5 +1,7 @@
+using EasyBankWeb.Dto;
 using EasyBankWeb.Entities;
 using EasyBankWeb.Repository;
+using EasyBankWeb.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EasyBankWeb.Controllers
@@ -9,10 +11,12 @@ namespace EasyBankWeb.Controllers
     public class UserController : ControllerBase
     {
         private readonly UserRepository _userRepository;
+        private readonly Register _register;
 
-        public UserController(UserRepository userRepository)
+        public UserController(UserRepository userRepository, Register register)
         {
             _userRepository = userRepository;
+            _register = register;
         }
 
         [HttpGet(Name = "GetUser")]
@@ -22,11 +26,9 @@ namespace EasyBankWeb.Controllers
         }
 
         [HttpPost(Name = "PostUser")]
-        public IActionResult Post([FromBody] User user)
+        public IActionResult Post([FromBody] UserDto userDto)
         {
-            _userRepository.AddUser(user);
-
-            return Ok();
+            _register.UserRegister(userDto);
         }
     }
 }

@@ -37,15 +37,11 @@ namespace EasyBankWeb.Services
             }
             return numberLetters;
         }
-        public static string ConfirmNumberOfLetters(string confirmQuantity)
+        public string? ConfirmNumberOfLetters(string confirmQuantity)
         {
-            while (confirmQuantity.Length < 3 || confirmQuantity.Length > 3)
-            {
-                Message.ErrorGeneric("Favor informar apenas 3 letras");
-                GenerateLetters();
-                confirmQuantity = GeneralValidator.OutputNoNumberAndSpecialCaracteres(Console.ReadLine());
-                Console.Clear();
-            }
+            if (confirmQuantity.Length < 3 || confirmQuantity.Length > 3)
+                return null;
+
             return confirmQuantity;
         }
         public static string ConfirmationOfTheThreeLetters(string confirmationThreeLetters)
