@@ -1,5 +1,4 @@
-﻿using EasyBankWeb.Dto;
-using EasyBankWeb.Entities;
+﻿using static Xunit.Assert;
 using EasyBankWeb.Services;
 
 namespace EasyBank.Test.Services
@@ -8,36 +7,22 @@ namespace EasyBank.Test.Services
     {
         private readonly Saving _saving;
 
-        public SavingTest(Saving saving)
+        public SavingTest()
         {
-            _saving = saving;
+            _saving = new Saving(null, null);
         }
 
         [Fact]
         public void CalculateTaxes_ShouldReturnCorrectCalculate()
         {
-            var actual = _saving.CalculateTaxes(500, 1);
+            var c = 1000;
+            var n = 12;
 
-            var expected = 775.00;
+            var actual = _saving.CalculateTaxes(c, n);
 
-            Assert.Equal(expected, actual);
-        }
-        [Fact]
-        public void NewSavingProcess_ShouldReturnStatusCode200()
-        {
-            var savingDto = new SavingsDto { Value = 1500, OwnerID = 1 };
+            var expected = 1600.00;
 
-            var savingEntity = new SavingEntity(savingDto.OwnerID, savingDto.Value, 1, 0);
-
-            _saving.AddSavings(savingDto);
-
-            var actual = _saving.NewSavingProcess(savingDto.OwnerID, savingDto);
-
-            var expected = ("Valor inserido com sucesso", 200);
-
-            Assert.Equal(expected, actual);
-
-            _saving.RemoveSaving(savingEntity);
+            Equal(expected, actual);
         }
     }
 }

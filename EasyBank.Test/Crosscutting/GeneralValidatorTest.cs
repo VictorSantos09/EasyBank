@@ -1,54 +1,73 @@
 using EasyBankWeb.Crosscutting;
+using static Xunit.Assert;
+using static EasyBankWeb.Crosscutting.GeneralValidator;
 
 namespace EasyBank.Test.Crosscutting
 {
     public class GeneralValidatorTest
     {
         [Fact]
-        public void hasWhiteSpace_ShouldReturnTrue()
+        public void HasWhiteSpace_CheckIfContains_ShouldReturnTrue()
         {
 
-            var actual = GeneralValidator.HasWhiteSpace(" ");
+            var actual = HasWhiteSpace(" ");
 
             var expected = true;
 
-            Assert.Equal(expected, actual);
+            Equal(expected, actual);
         }
         [Fact]
-        public void HasLetter_ShouldReturnTrue()
+        public void HasWhiteSpace_CheckIfContains_ShouldReturnFalse()
         {
-            var actual = GeneralValidator.HasLetter("123a");
 
-            var expected = true;
+            var actual = HasWhiteSpace("Lorem50");
 
-            Assert.Equal(expected, actual);
+            False(actual);
         }
         [Fact]
-        public void HasEspecialCaracter_ShouldReturnTrue()
+        public void HasLetter_VerifyString_ShouldReturnTrue()
         {
-            var actual = GeneralValidator.HasSpecialCaracter("Alberto@");
+            var actual = HasLetter("123a");
 
             var expected = true;
 
-            Assert.Equal(expected, actual);
+            Equal(expected, actual);
         }
         [Fact]
-        public void hasNumberOrSpecialCaracter_ShouldReturnTrue()
+        public void HasEspecialCaracter_Verifystring_ShouldReturnTrue()
         {
-            var actual = GeneralValidator.HasNumberOrSpecialCaracter("Ola1 Mundo@");
+            var actual = HasSpecialCaracter("Alberto@");
 
             var expected = true;
 
-            Assert.Equal(expected, actual);
+            Equal(expected, actual);
         }
         [Fact]
-        public void HasLetterOrSpecialCaracter_ShouldReturnTrue()
+        public void HasNumberOrSpecialCaracter_VerifyString_ShouldReturnTrue()
         {
-            var actual = GeneralValidator.HasLetterOrSpecialCaracter("123a345[");
+            var actual = HasNumberOrSpecialCaracter("Ola1 Mundo@");
 
             var expected = true;
 
-            Assert.Equal(expected, actual);
+            Equal(expected, actual);
+        }
+        [Fact]
+        public void HasLetterOrSpecialCaracter_VerifyString_ShouldReturnTrue()
+        {
+            var actual = HasLetterOrSpecialCaracter("123a345[");
+
+            var expected = true;
+
+            Equal(expected, actual);
+        }
+        [Fact]
+        public void RemoveWhiteSpace_ShouldBeTrue()
+        {
+            var actual = RemoveWhiteSpace("Ola Mundo");
+
+            var expected = "OlaMundo";
+
+            Equal(expected, actual);
         }
     }
 }
