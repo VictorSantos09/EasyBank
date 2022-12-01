@@ -1,5 +1,5 @@
-﻿using EasyBankWeb.Entities;
-using EasyBankWeb.Repository;
+﻿using EasyBankWeb.Dto;
+using EasyBankWeb.Entities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EasyBankWeb.Controllers
@@ -8,26 +8,36 @@ namespace EasyBankWeb.Controllers
     [Route("[controller]")]
     public class LoanController : ControllerBase
     {
-        private readonly LoanRepository _loanRepository;
+        private readonly Loan loan;
 
-        public LoanController(LoanRepository laonRepository)
+        public LoanController(Loan _loan)
         {
-            _loanRepository = laonRepository;
+            loan = _loan;
         }
 
         [HttpGet(Name = "GetLoans")]
         public IActionResult Get()
         {
-            return Ok(_loanRepository.GetLoan());
+            return Ok(loan.GetLoan());
         }
 
         [HttpPost(Name = "PostLoan")]
-        public IActionResult Post([FromBody] Loan loan)
+        public IActionResult Post([FromBody] LoanDto loanDto)
         {
-            _loanRepository.AddLoan(loan);
+            loan.AddLoan(loanDto);
 
             return Ok();
         }
-
+        [Route("AplyLoan")]
+        [HttpPost]
+        public IActionResult ApplylLoan([FromBody] LoanDto loandto)
+        {
+            if (loandto.Open == true)
+            {
+                var result = loan.ApplyLoan(loandto.RemainParcels, loandto.Value, loandto.Id);
+                return Ok(result);
+            }
+            return Ok("");
+        } 
     }
 }
