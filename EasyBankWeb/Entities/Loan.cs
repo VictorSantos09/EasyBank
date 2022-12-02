@@ -10,50 +10,33 @@ namespace EasyBankWeb.Entities
         private readonly UserRepository _userRepository;
         private readonly BillRepository _billRepository;
 
-        public Loan(LoanRepository laonRepository, SavingRepository savingRepository, BillRepository billRepository)
+        public Loan(LoanRepository loanRepository, UserRepository userRepository, BillRepository billRepository)
         {
-            _loanRepository = laonRepository;
+            _loanRepository = loanRepository;
+            _userRepository = userRepository;
             _billRepository = billRepository;
         }
-        public Loan()
-        {
 
-        }
-        public string LoanRequest(int userID)
+        public BaseDto LoanRequest(int userID, LoanDto loanDto, bool confirmed)
         {
             var user = _userRepository.GetUsers().Find(x => x.Id == userID);
             var loan = _loanRepository.GetLoan().Find(x => x.Id == userID);
+            if (!confirmed)
+                return new BaseDto("Solicitação cancelada", 200);
+
 
             if (user.OpenLoan == true)
-               return("Não é possivel abrir mais de um empréstimo");
+                return new BaseDto("Não é possivel abrir mais de um empréstimo", 400);
 
-            else
-            {
-                
-                double loanValue = loan.Value;
+            var twoYearsSalary = user.MonthlyIncome * 24;
 
-                var twoYearsSalary = user.MonthlyIncome * 24;
+            if (loanDto.Value > twoYearsSalary || loanDto.Value <= 0)
+                return new BaseDto("Quantia não disponivel para você", 406);
 
-                if (loanValue > twoYearsSalary || loanValue <= 0)
-                    return("Quantia não disponivel para você");
+            if (!VerifyParcelsAndApplyLoan(loanDto.Value, userID, loanDto.Confirmed, loanDto.Parcels))
+                return new BaseDto("Qauntidade de parcelas indisponíveis", 406);
 
-                if (ChooseQtdParcels(loanValue, userID));
-                return ("Emprestimo realizado com sucesso");
-
-                
-            }
-        }
-        public void PaymentOption(double loanValue, int userID)
-        {
-            //var paymentOptions = "Crédito";
-
-            //Console.WriteLine("Forma de pagamento permitida");
-            //Console.WriteLine("Credíto até 12x - MasterCard\nDigite 1 para continuar");
-            //Console.Write("Digite: ");
-            //var userInputChoice = Console.ReadLine();
-
-            //if (userInputChoice == "1")
-                //ChooseQtdParcels(loanValue, paymentOptions, userID);
+            return new BaseDto("Emprestimo realizado com sucesso", 200);
         }
         public double AmountInterest(double value)
         {
@@ -64,7 +47,7 @@ namespace EasyBankWeb.Entities
             var calculator = random.Next(8);
 
             var amount = (value / percentual) * calculator;
-            
+
 
             var standardCalculate = 3;
             var percentualBase = 2;
@@ -73,45 +56,27 @@ namespace EasyBankWeb.Entities
 
             return finalValue;
         }
-        public bool ChooseQtdParcels(double loanValue, int userID)
+        public bool VerifyParcelsAndApplyLoan(double loanValue, int userID, bool confirmed, int quantityParcel)
         {
-            var loan = _loanRepository.GetLoan().Find(x => x.Id == userID);
-            if (loan.RemainParcels > 12 || loan.RemainParcels < 1)
+
+            if (quantityParcel > 12 || quantityParcel <= 0)
                 return false;
-            
-            else
-            {
-                var finalInterestValue = AmountInterest(loanValue);
-                var finalValue = loanValue + finalInterestValue;
 
-                
+            var finalInterestValue = AmountInterest(loanValue);
 
-                //if (ConfirmLoan() == true)
-                if (ApplyLoan(loan.RemainParcels, finalValue, userID))
+            var finalValue = loanValue + finalInterestValue;
+
+            if (SucessfullApply(quantityParcel, finalValue, userID))
                 return true;
 
-                else
-                {
-                   return false;
-                }
-            }
+            return false;
         }
-        //public bool ConfirmLoan()
-        //{
-        //    Console.Write("1 - Confirmar\n2 - Cancelar\nDigite: ");
-        //    var Choice = Console.ReadLine();
-        //    if (Choice == "1")
-        //        return true;
-
-        //    return false;
-        //}
-        public bool ApplyLoan(int qtdParcels, double finalValue, int userID)
+        public bool SucessfullApply(int qtdParcels, double finalValue, int userID)
         {
             var loan = new LoanEntity(finalValue, qtdParcels, userID, true, IncrementID());
             _loanRepository.AddLoan(loan);
 
             var user = _userRepository.GetUsers().Find(x => x.Id == userID);
-            var bill = new Bill();
 
             user.OpenLoan = true;
             user.CurrentAccount += finalValue;
@@ -122,7 +87,7 @@ namespace EasyBankWeb.Entities
                 NumberParcels = qtdParcels,
                 OwnerID = userID,
                 Value = finalValue,
-                Id = bill.IncrementID(),
+                //Id = bill.IncrementID(),
                 ValueParcel = finalValue / qtdParcels,
                 RemainParcels = qtdParcels,
             });
@@ -146,10 +111,9 @@ namespace EasyBankWeb.Entities
         {
             CheckAndRemoveLoan(userID);
         }
-        public void AddLoan(LoanDto loanDto)
+        public void AddLoan(LoanEntity loanEntity)
         {
-            var loan = new LoanEntity();
-            _loanRepository.AddLoan(loan);
+            _loanRepository.AddLoan(loanEntity);
         }
         public List<LoanEntity> GetLoan()
         {

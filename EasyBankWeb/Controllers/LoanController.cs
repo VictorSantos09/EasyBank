@@ -24,20 +24,10 @@ namespace EasyBankWeb.Controllers
         [HttpPost(Name = "PostLoan")]
         public IActionResult Post([FromBody] LoanDto loanDto)
         {
-            loan.AddLoan(loanDto);
+            var result = loan.LoanRequest(loanDto.OwnerID, loanDto, loanDto.Confirmed);
 
-            return Ok();
+            return Ok(StatusCode(result._StatusCode, result._Data == null ? result._Message : result._Data));
         }
-        [Route("AplyLoan")]
-        [HttpPost]
-        public IActionResult ApplylLoan([FromBody] LoanDto loandto)
-        {
-            if (loandto.Open == true)
-            {
-                var result = loan.ApplyLoan(loandto.RemainParcels, loandto.Value, loandto.Id);
-                return Ok(result);
-            }
-            return Ok("");
-        } 
+        
     }
 }
