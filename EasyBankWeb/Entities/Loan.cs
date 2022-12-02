@@ -20,7 +20,8 @@ namespace EasyBankWeb.Entities
         public BaseDto LoanRequest(int userID, LoanDto loanDto, bool confirmed)
         {
             var user = _userRepository.GetUsers().Find(x => x.Id == userID);
-            var loan = _loanRepository.GetLoan().Find(x => x.Id == userID);
+            if (user == null)
+                return new BaseDto("Usuário não encontrado", 404);
             if (!confirmed)
                 return new BaseDto("Solicitação cancelada", 200);
 
