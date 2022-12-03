@@ -1,5 +1,5 @@
 ﻿using EasyBankWeb.Dto;
-using EasyBankWeb.Entities;
+using EasyBankWeb.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EasyBankWeb.Controllers
@@ -26,7 +26,7 @@ namespace EasyBankWeb.Controllers
         {
             var result = loan.LoanRequest(loanDto.OwnerID, loanDto, loanDto.Confirmed);
 
-            return Ok(StatusCode(result._StatusCode, result._Data == null ? result._Message : result._Data));
+            return StatusCode(result._StatusCode, result._Data == null ? result._Message : result._Data);
         }
         
     }

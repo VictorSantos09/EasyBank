@@ -1,21 +1,18 @@
-﻿using EasyBankWeb.Entities;
+﻿using EasyBankWeb.Crosscutting;
+using EasyBankWeb.Entities;
 using EasyBankWeb.Repository;
 
 namespace EasyBankWeb.Services
 {
     public class Bill
     {
-        private readonly LoanRepository _loanRepository;
         private readonly BillRepository _billRepository;
         private readonly AutoDebitRepository _autoDebitRepository;
-        private readonly Loan loan;
 
-        public Bill(LoanRepository loanRepository, BillRepository billRepository, AutoDebitRepository autoDebitRepository, Loan loan)
+        public Bill(BillRepository billRepository, AutoDebitRepository autoDebitRepository)
         {
-            _loanRepository = loanRepository;
             _billRepository = billRepository;
             _autoDebitRepository = autoDebitRepository;
-            this.loan = loan;
         }
 
         public void RemoveBills(int userID)
@@ -48,6 +45,10 @@ namespace EasyBankWeb.Services
                 return false;
 
             return true;
+        }
+        public int IncrementID()
+        {
+            return GeneralValidator.ID_AUTOINCREMENT(_billRepository.GetBill());
         }
     }
 }

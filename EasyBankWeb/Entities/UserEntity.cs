@@ -67,7 +67,6 @@
             Adress.City = city;
             Adress.Neiborhood = neiborhood;
             Adress.State = state;
-            Adress.FullAdress = null;
         }
     }
 }

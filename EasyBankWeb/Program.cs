@@ -11,6 +11,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+
 builder.Services.AddSingleton<BillRepository>();
 builder.Services.AddSingleton<CreditCardRepository>();
 builder.Services.AddSingleton<LoanRepository>();
@@ -20,8 +21,8 @@ builder.Services.AddSingleton<AutoDebitRepository>();
 
 builder.Services.AddSingleton<Saving>();
 builder.Services.AddSingleton<Loan>();
-builder.Services.AddSingleton<Transfer>();
 builder.Services.AddSingleton<Bill>();
+builder.Services.AddSingleton<Transfer>();
 builder.Services.AddSingleton<CreditCard>();
 builder.Services.AddSingleton<MonthTimer>();
 builder.Services.AddSingleton<SafetyPassword>();
