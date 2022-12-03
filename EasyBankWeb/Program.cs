@@ -29,6 +29,7 @@ builder.Services.AddSingleton<SafetyPassword>();
 builder.Services.AddSingleton<CancelAccountService>();
 builder.Services.AddSingleton<Register>();
 
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

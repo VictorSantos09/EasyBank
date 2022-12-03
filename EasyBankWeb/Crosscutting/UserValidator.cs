@@ -17,10 +17,7 @@ namespace EasyBankWeb.Crosscutting
         {
             var minimalSize = 5;
 
-            if (input.Length < minimalSize)
-                return false;
-
-            return true;
+            return input.Length >= minimalSize;
         }
         public static bool IsValidAge(string input)
         {
@@ -37,10 +34,7 @@ namespace EasyBankWeb.Crosscutting
             if (toCheck.Date > today.AddYears(-age))
                 age--;
 
-            if (age < 18)
-                return false;
-
-            return true;
+            return age >= 18;
         }
         public static bool IsValidEmail(string input)
         {
@@ -70,7 +64,7 @@ namespace EasyBankWeb.Crosscutting
         }
         public static bool IsValidPhoneNumber(string input)
         {
-            return input.Length < 11 || input.Length > 12;
+            return input.Length == 11 || input.Length == 12;
         }
         public static string? DynamicSizeRG(string input)
         {

@@ -7,11 +7,9 @@ namespace EasyBankWeb.Services
     {
         public string LetterCreation()
         {
-            string numberLetters;
+            string numberLetters = "";
             Console.WriteLine("Crie 3 letras de segurança");
-            numberLetters = GeneralValidator.OutputNoNumberAndSpecialCaracteres(Console.ReadLine().ToUpper());
             numberLetters = ConfirmNumberOfLetters(numberLetters);
-            numberLetters = GeneralValidator.OutputNoWhiteSpace(numberLetters).ToUpper();
             string confirmation = ConfirmationOfTheThreeLetters(numberLetters);
 
             if (confirmation == "sim".ToUpper())
@@ -28,8 +26,6 @@ namespace EasyBankWeb.Services
             {
                 Message.ErrorGeneric("Favor insira novamente as 3 letras");
                 GenerateLetters();
-                numberLetters = GeneralValidator.OutputNoNumberAndSpecialCaracteres(Console.ReadLine().ToUpper());
-                numberLetters = GeneralValidator.OutputNoWhiteSpace(numberLetters);
                 numberLetters = ConfirmNumberOfLetters(numberLetters);
                 confirmation = ConfirmationOfTheThreeLetters(numberLetters);
                 confirmation = DifferentFromYesOrNo(confirmation);
@@ -55,7 +51,6 @@ namespace EasyBankWeb.Services
             while (checkConfirmation != "não".ToUpper() && checkConfirmation != "sim".ToUpper())
             {
                 Message.ErrorGeneric("Favor escreva sim ou não corretamente");
-                checkConfirmation = GeneralValidator.OutputNoNumberAndSpecialCaracteres(Console.ReadLine().ToUpper());
                 Console.Clear();
             }
             return checkConfirmation;

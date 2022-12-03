@@ -16,17 +16,17 @@ namespace EasyBankWeb.Services
         }
         public double CalculateTaxes(double userValueInvested, int monthsPasseds)
         {
-            // J = C * I * T
-            // M = C + J;
+            // Calculo de juros simples
 
-            double c = userValueInvested;
-            double i = 0.055;
-            int t = monthsPasseds;
+            var c = userValueInvested;
 
-            double j = c * i * t;
-            //double m = c * (1 + (i * t));
+            var i = Convert.ToDouble(5) / 100;
 
-            return j;
+            var n = monthsPasseds;
+
+            var j = c * i * n;
+
+            return j + c;
         }
         public void MonthlyAction(int userID)
         {
@@ -165,7 +165,7 @@ namespace EasyBankWeb.Services
 
             if (saving.TaxesValue == 0 && saving.MonthsPassed >= 1)
             {
-                var value = 1;  //ChooseValue();
+                var value = 1;
 
                 var taxesValue = CalculateTaxes(value, saving.MonthsPassed);
 
