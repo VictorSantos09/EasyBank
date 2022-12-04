@@ -29,6 +29,10 @@ builder.Services.AddSingleton<SafetyPassword>();
 builder.Services.AddSingleton<CancelAccountService>();
 builder.Services.AddSingleton<Register>();
 
+builder.Services.AddCors(p => p.AddPolicy("corsapp", builder =>
+{
+    builder.WithOrigins("*").AllowAnyMethod().AllowAnyHeader();
+}));
 
 var app = builder.Build();
 
@@ -42,6 +46,9 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.UseCors("corsapp");
+
 app.MapControllers();
 
 

@@ -41,6 +41,9 @@ namespace EasyBankWeb.Services
         }
         public (string, int) NewSavingProcess(int userID, SavingsDto savingsDto)
         {
+            if (!IsExistentUser(userID))
+                return ("Usuario não encontrado", 404);
+
             if (HasExistentSaving(userID))
                 return ("Poupança já existente", 400);
 
@@ -190,7 +193,7 @@ namespace EasyBankWeb.Services
         }
         public void AddSavings(SavingsDto savingsDto)
         {
-            var newSaving = new SavingEntity(savingsDto.OwnerID, savingsDto.Value, IncrementID(), CalculateTaxes(savingsDto.Value, 1));
+            var newSaving = new SavingEntity(savingsDto.OwnerID, savingsDto.Value, IncrementID(), CalculateTaxes(savingsDto.Value, 1), true);
 
             _savingRepository.AddSavings(newSaving);
         }
@@ -219,6 +222,10 @@ namespace EasyBankWeb.Services
         public void RemoveSaving(SavingEntity savingEntity)
         {
             _savingRepository.RemoveSavings(savingEntity);
+        }
+        public bool IsExistentUser(int userID)
+        {
+            return _userRepository.GetUsers().Exists(x => x.Id == userID);
         }
     }
 }
