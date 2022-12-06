@@ -1,5 +1,4 @@
 ﻿using EasyBankWeb.Dto;
-using EasyBankWeb.Entities;
 using EasyBankWeb.Repository;
 
 namespace EasyBankWeb.Services

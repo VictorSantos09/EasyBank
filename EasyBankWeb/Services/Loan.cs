@@ -1,7 +1,7 @@
 ﻿using EasyBankWeb.Crosscutting;
-using EasyBankWeb.Repository;
 using EasyBankWeb.Dto;
 using EasyBankWeb.Entities;
+using EasyBankWeb.Repository;
 
 namespace EasyBankWeb.Services
 {

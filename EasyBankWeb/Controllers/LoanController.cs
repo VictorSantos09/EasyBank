@@ -28,6 +28,6 @@ namespace EasyBankWeb.Controllers
 
             return StatusCode(result._StatusCode, result._Data == null ? result._Message : result._Data);
         }
-        
+
     }
 }

@@ -1,14 +1,11 @@
-﻿using EasyBankWeb.Dto;
-using EasyBankWeb.Repository;
-using EasyBankWeb.Services;
-using Microsoft.AspNetCore.Mvc;
+﻿using EasyBankWeb.Services;
 
 namespace EasyBankWeb.Controllers
 {
     public class LoginController
     {
         private readonly LogIn _logIn;
-        
+
         public LoginController(LogIn logIn)
         {
             _logIn = logIn;

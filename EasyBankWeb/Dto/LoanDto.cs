@@ -1,6 +1,4 @@
-﻿using EasyBankWeb.Entities;
-
-namespace EasyBankWeb.Dto
+﻿namespace EasyBankWeb.Dto
 {
     public class LoanDto
     {

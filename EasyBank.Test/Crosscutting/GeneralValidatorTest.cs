@@ -1,6 +1,5 @@
-using EasyBankWeb.Crosscutting;
-using static Xunit.Assert;
 using static EasyBankWeb.Crosscutting.GeneralValidator;
+using static Xunit.Assert;
 
 namespace EasyBank.Test.Crosscutting
 {

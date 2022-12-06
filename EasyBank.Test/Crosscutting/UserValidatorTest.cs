@@ -1,6 +1,6 @@
 ﻿using EasyBankWeb.Crosscutting;
-using static Xunit.Assert;
 using static EasyBankWeb.Crosscutting.UserValidator;
+using static Xunit.Assert;
 
 namespace EasyBank.Test.Crosscutting
 {
@@ -91,7 +91,7 @@ namespace EasyBank.Test.Crosscutting
         public void IsValidAge_CheckTheDateBorn_ShouldBeFalse()
         {
             var tomorrow = DateTime.Now.AddDays(1.0).ToString();
-            
+
             var actual = IsValidAge(tomorrow);
 
             False(actual);

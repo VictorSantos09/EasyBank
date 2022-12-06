@@ -1,4 +1,3 @@
-using EasyBankWeb.Entities;
 using EasyBankWeb.Repository;
 using EasyBankWeb.Services;
 

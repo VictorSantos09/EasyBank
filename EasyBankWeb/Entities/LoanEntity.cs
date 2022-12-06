@@ -1,6 +1,4 @@
-﻿using EasyBankWeb.Repository;
-
-namespace EasyBankWeb.Entities
+﻿namespace EasyBankWeb.Entities
 {
     public class LoanEntity : BaseEntity
     {
@@ -11,7 +9,7 @@ namespace EasyBankWeb.Entities
         public int RemainParcels { get; set; }
         public int OwnerID { get; set; }
 
-        public LoanEntity(double value, double taxesValue, int parcels, bool open,  int ownerID, int id)
+        public LoanEntity(double value, double taxesValue, int parcels, bool open, int ownerID, int id)
         {
             Value = value;
             TaxesValue = taxesValue;

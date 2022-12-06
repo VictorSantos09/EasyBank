@@ -1,5 +1,5 @@
-﻿using static Xunit.Assert;
-using EasyBankWeb.Services;
+﻿using EasyBankWeb.Services;
+using static Xunit.Assert;
 
 namespace EasyBank.Test.Services
 {
