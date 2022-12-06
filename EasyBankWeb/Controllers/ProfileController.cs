@@ -17,13 +17,13 @@ namespace EasyBankWeb.Controllers
         }
 
         [HttpGet(Name = "GetProfile")]
-        public IActionResult Get()
+        public IActionResult SeeInformation()
         {
             return Ok(_profileRepository.GetProfile());
         }
 
         [HttpPost(Name = "PostProfile")]
-        public IActionResult Post([FromBody] Profile profile)
+        public IActionResult ViewSecu([FromBody] Profile profile)
         {
             _profileRepository.AddProfile(profile);
 

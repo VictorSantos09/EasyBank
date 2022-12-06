@@ -10,11 +10,13 @@ namespace EasyBankWeb.Controllers
     {
         private readonly Register _register;
         private readonly CancelAccountService _cancelAccountService;
+        private readonly Profile _profile;
 
-        public UserController(Register register, CancelAccountService cancelAccountService)
+        public UserController(Register register, CancelAccountService cancelAccountService, Profile profile)
         {
             _register = register;
             _cancelAccountService = cancelAccountService;
+            _profile = profile;
         }
 
         [Route("GetUsers")]
@@ -37,6 +39,15 @@ namespace EasyBankWeb.Controllers
         public IActionResult DeleteAccount([FromBody] UserDto userDto, bool confirmed)
         {
             var result = _cancelAccountService.DeleteProcess(userDto, confirmed);
+
+            return StatusCode(result._StatusCode, result._Data == null ? result._Message : result._Data);
+        }
+
+        [Route("SeeData")]
+        [HttpGet]
+        public IActionResult SeeInformation([FromBody] bool confirmed, int userID)
+        {
+            var result = _profile.ViewProfile(userID, confirmed);
 
             return StatusCode(result._StatusCode, result._Data == null ? result._Message : result._Data);
         }

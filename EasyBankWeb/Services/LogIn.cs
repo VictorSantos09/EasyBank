@@ -1,4 +1,5 @@
-﻿using EasyBankWeb.Crosscutting;
+﻿using EasyBankWeb.Dto;
+using EasyBankWeb.Entities;
 using EasyBankWeb.Repository;
 
 namespace EasyBankWeb.Services
@@ -12,59 +13,20 @@ namespace EasyBankWeb.Services
             _userRepository = userRepository;
         }
 
-        public int CheckLogin()
+        public BaseDto CheckLogin(string emailOrCpf, string password)
         {
-            var counter = 3;
-            while (true)
-            {
-                if (counter <= 0)
-                {
-                    Message.ErrorGeneric("Você atingiu o limite de tentativas.");
-                    break;
-                }
+            UserEntity? user = _userRepository.GetUsers().Find(x => x.Email == emailOrCpf && x.Password == password);
 
-                else
-                {
-                    Console.WriteLine("Digite o seu e-mail ou CPF");
-                    var userCpfOrEmail = Console.ReadLine().ToUpper();
+            if (user != null)
+                return new BaseDto("Login realizado com sucesso!", 200, user);
 
-                    Console.WriteLine("Digite a sua senha");
-                    var userPassword = Console.ReadLine();
 
-                    if (_userRepository.GetUsers().Exists(x => x.Email == userCpfOrEmail && x.Password == userPassword))
-                    {
-                        return _userRepository.GetUsers().Find(x => x.Email == userCpfOrEmail).Id;
+            //var userCPF = Convert.ToInt64(emailOrCpf).ToString(@"000\.000\.000\-00");
 
-                        Message.SuccessfulGeneric("Login realizado com sucesso!");
-                    }
-                    else
-                    {
-                        string userCPF = "";
-                        try
-                        {
-                            userCPF = Convert.ToInt64(userCpfOrEmail).ToString(@"000\.000\.000\-00");
-                        }
-                        catch (Exception)
-                        {
-                            userCPF = "0";
-                            throw;
-                        }
+            //if (_userRepository.GetUsers().Find(x => x.CPF == userCPF && x.Password == password))
 
-                        if (_userRepository.GetUsers().Exists(x => x.CPF == userCPF && x.Password == userPassword))
-                        {
-                            return _userRepository.GetUsers().Find(x => x.CPF == userCpfOrEmail).Id;
-
-                            Message.SuccessfulGeneric("Login realizado com sucesso!");
-                        }
-                        else
-                        {
-                            counter--;
-                            break;
-                        }
-                    }
-                }
-            }
-            return 0;// se for 0 não foi efetuado o login
+            return new BaseDto("Usuario não encontrado", 404);
+                
         }
     }
 }
