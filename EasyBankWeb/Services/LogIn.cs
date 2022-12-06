@@ -25,7 +25,7 @@ namespace EasyBankWeb.Services
             var userEntityCPF = _userRepository.GetUsers().Find(x => x.CPF == userCPF && x.Password == password);
 
             if (userEntityCPF != null)
-                return new BaseDto("Login realizado com sucesso!", 200, user);
+                return new BaseDto("Login realizado com sucesso!", 200, userEntityCPF);
 
             return new BaseDto("Usuario não encontrado", 404);
         }
