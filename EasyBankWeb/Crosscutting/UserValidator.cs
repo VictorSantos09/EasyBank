@@ -98,7 +98,7 @@ namespace EasyBankWeb.Crosscutting
         }
         public bool IsCorrectSafeyKey(int userID, string safetyKey)
         {
-            var user = _userRepository.GetUserById(userID);
+            var user = _userRepository.GetById(userID);
 
             if (safetyKey == user.SafetyKey)
                 return true;

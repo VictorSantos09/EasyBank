@@ -30,7 +30,7 @@ namespace EasyBankWeb.Services
         }
         public bool CheckAmountInAccount(double choiceQuantity, int userID)
         {
-            var user = _userRepository.GetUserById(userID);
+            var user = _userRepository.GetById(userID);
 
             if (choiceQuantity > user.CurrentAccount || choiceQuantity <= 0)
                 return false;
@@ -55,7 +55,7 @@ namespace EasyBankWeb.Services
         }
         public bool TransferMoney(int userID, double value)
         {
-            var user = _userRepository.GetUserById(userID);
+            var user = _userRepository.GetById(userID);
 
             user.CurrentAccount -= value;
             return true;

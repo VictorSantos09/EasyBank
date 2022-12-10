@@ -84,7 +84,7 @@ namespace EasyBankWeb.Services
         }
         public void AutoDebitPaymentAutomatic(int userID)
         {
-            var user = _userRepository.GetUserById(userID);
+            var user = _userRepository.GetById(userID);
             var userAutoDebits = _autoDebitRepository.GetAutoDebits().FindAll(x => x.OwnerID == userID);
 
             foreach (var item in userAutoDebits)
@@ -103,7 +103,7 @@ namespace EasyBankWeb.Services
             if (HasPendingPayments(userID) == true)
             {
                 var creditcard = _creditCardRepository.GetCreditCardById(userID);
-                var user = _userRepository.GetUserById(userID);
+                var user = _userRepository.GetById(userID);
                 var billsUser = _billRepository.GetBill().FindAll(x => x.OwnerID == userID);
 
                 var valueToPay = 0.0;
@@ -147,7 +147,7 @@ namespace EasyBankWeb.Services
         }
         public void MonthlyAction(int userID)
         {
-            var user = _userRepository.GetUserById(userID);
+            var user = _userRepository.GetById(userID);
             user.CurrentAccount += user.MonthlyIncome;
 
             IncrementMonthInvoice(userID);

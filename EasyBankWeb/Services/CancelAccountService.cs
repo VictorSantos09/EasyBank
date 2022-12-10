@@ -37,16 +37,16 @@ namespace EasyBankWeb.Services
         }
         private void Delete(UserEntity user)
         {
-            _userRepository.RemoveUser(user);
+            _userRepository.Remove(user.Id);
         }
         private bool IsCorrectData(UserDto userDto)
         {
-            return _userRepository.GetUsers().Exists(x => x.Email == userDto.Email && x.CPF == userDto.CPF &&
+            return _userRepository.GetAll().Exists(x => x.Email == userDto.Email && x.CPF == userDto.CPF &&
             x.SafetyKey == userDto.SafetyKey && x.Password == userDto.Password);
         }
         private UserEntity? GetUser(UserDto userDto)
         {
-            return _userRepository.GetUsers().Find(x => x.Email == userDto.Email && x.CPF == userDto.CPF && x.Name == userDto.Name);
+            return _userRepository.GetAll().Find(x => x.Email == userDto.Email && x.CPF == userDto.CPF && x.Name == userDto.Name);
         }
     }
 }

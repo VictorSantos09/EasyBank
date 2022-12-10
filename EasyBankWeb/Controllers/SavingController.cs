@@ -28,7 +28,7 @@ namespace EasyBankWeb.Controllers
         {
             var (message, statusCode) = saving.NewSavingProcess(savingsDto.OwnerID, savingsDto);
 
-            return StatusCode(statusCode, message);
+            return StatusCode(statusCode, new { Message = message });
         }
 
         [Route("InsertIntoSaving")]

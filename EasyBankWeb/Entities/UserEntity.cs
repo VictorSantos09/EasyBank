@@ -50,6 +50,10 @@
             SafetyKey = _safetyKey;
             CurrentAccount = _monthlyIncome;
         }
+        public UserEntity()
+        {
+
+        }
         /// <summary>
         /// Aplica as propriedades do endereço, ATENÇÂO PARA NÂO CONFUNDIR COM O CADASTRO DOS DADOS
         /// </summary>

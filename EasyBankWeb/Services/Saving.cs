@@ -58,12 +58,12 @@ namespace EasyBankWeb.Services
         }
         public void DiscountMoneyFromUser(int userID, double investMoneyValue)
         {
-            var user = _userRepository.GetUsers().Find(x => x.Id == userID);
+            var user = _userRepository.GetAll().Find(x => x.Id == userID);
             user.CurrentAccount -= investMoneyValue;
         }
         public (string, int) InsertMoneyProcess(int userID, int value)
         {
-            var user = _userRepository.GetUsers().Find(x => x.Id == userID);
+            var user = _userRepository.GetAll().Find(x => x.Id == userID);
 
             if (!_savingRepository.GetSavings().Exists(x => x.OwnerID == userID))
                 return ("Não há poupança existente", 404);
@@ -82,7 +82,7 @@ namespace EasyBankWeb.Services
         }
         public BaseDto RescueMoneyProcess(int userID, bool rescueAllMoney, int value)
         {
-            var user = _userRepository.GetUsers().Find(x => x.Id == userID);
+            var user = _userRepository.GetAll().Find(x => x.Id == userID);
             var saving = _savingRepository.GetSavingById(userID);
 
             if (saving == null)
@@ -116,7 +116,7 @@ namespace EasyBankWeb.Services
         }
         public bool UserHasEnoughMoney(double value, int userID)
         {
-            var user = _userRepository.GetUsers().Find(x => x.Id == userID);
+            var user = _userRepository.GetAll().Find(x => x.Id == userID);
 
             if (value > user.CurrentAccount)
                 return false;
@@ -138,7 +138,7 @@ namespace EasyBankWeb.Services
         public void TransferAllMoney(int userID)
         {
             var saving = _savingRepository.GetSavingById(userID);
-            var user = _userRepository.GetUsers().Find(x => x.Id == userID);
+            var user = _userRepository.GetAll().Find(x => x.Id == userID);
 
             user.CurrentAccount += saving.Value;
 
@@ -164,7 +164,7 @@ namespace EasyBankWeb.Services
         public bool InsertAfterRescue(int userID)
         {
             var saving = _savingRepository.GetSavingById(userID);
-            var user = _userRepository.GetUsers().Find(x => x.Id == userID);
+            var user = _userRepository.GetAll().Find(x => x.Id == userID);
 
             if (saving.TaxesValue == 0 && saving.MonthsPassed >= 1)
             {
@@ -225,7 +225,7 @@ namespace EasyBankWeb.Services
         }
         public bool IsExistentUser(int userID)
         {
-            return _userRepository.GetUsers().Exists(x => x.Id == userID);
+            return _userRepository.GetAll().Exists(x => x.Id == userID);
         }
     }
 }

@@ -19,7 +19,7 @@ namespace EasyBankWeb.Services
             if (!confirmed)
                 return new BaseDto("Solicitação cancelada", 200);
 
-            var user = _userRepository.GetUsers().Find(x => x.Id == userID);
+            var user = _userRepository.GetAll().Find(x => x.Id == userID);
             var creditCard = _creditCardRepository.GetCreditCard().Find(x => x.OwnerID == userID);
 
             return new BaseDto($"{user.Name} {user.Email} {user.PhoneNumber} {user.DateBorn} {user.Email}" +

@@ -14,14 +14,14 @@ namespace EasyBankWeb.Services
 
         public BaseDto CheckLogin(string emailOrCpf, string password)
         {
-            var user = _userRepository.GetUsers().Find(x => x.Email == emailOrCpf && x.Password == password);
+            var user = _userRepository.GetAll().Find(x => x.Email == emailOrCpf && x.Password == password);
 
             if (user != null)
                 return new BaseDto("Login realizado com sucesso!", 200, user);
 
             string userCPF = Convert.ToInt64(emailOrCpf).ToString(@"000\.000\.000\-00");
 
-            var userEntityCPF = _userRepository.GetUsers().Find(x => x.CPF == userCPF && x.Password == password);
+            var userEntityCPF = _userRepository.GetAll().Find(x => x.CPF == userCPF && x.Password == password);
 
             if (userEntityCPF != null)
                 return new BaseDto("Login realizado com sucesso!", 200, userEntityCPF);

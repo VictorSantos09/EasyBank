@@ -87,14 +87,14 @@ namespace EasyBankWeb.Services
             if (result._StatusCode != 200)
                 return new BaseDto(result._Message, 406);
 
-            var userID = GeneralValidator.ID_AUTOINCREMENT(_userRepository.GetUsers());
+            var userID = GeneralValidator.ID_AUTOINCREMENT(_userRepository.GetAll());
 
             var dateBornSubstring = Convert.ToString(userDto.DateBorn).Substring(0, 10);
 
             var user = new UserEntity(userDto.Name, dateBornSubstring, userDto.PhoneNumber, userDto.Email,
                 userDto.Password, userDto.CPF, userDto.RG, userDto.MonthlyIncome, userID, userDto.SafetyKey);
 
-            _userRepository.AddUser(user);
+            _userRepository.Add(user);
 
             CreditCardRegister(userDto, userID);
 
@@ -111,11 +111,11 @@ namespace EasyBankWeb.Services
         }
         public bool IsExistentUser(UserDto userDto)
         {
-            return _userRepository.GetUsers().Exists(x => x.CPF == userDto.CPF || x.Email == userDto.Email);
+            return _userRepository.GetAll().Exists(x => x.CPF == userDto.CPF || x.Email == userDto.Email);
         }
-        public List<UserEntity> GetUsers()
+        public List<UserEntity> GetAll()
         {
-            return _userRepository.GetUsers();
+            return _userRepository.GetAll();
         }
     }
 }

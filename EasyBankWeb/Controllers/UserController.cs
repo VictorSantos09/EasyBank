@@ -19,11 +19,11 @@ namespace EasyBankWeb.Controllers
             _profile = profile;
         }
 
-        [Route("GetUsers")]
+        [Route("GetAll")]
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(_register.GetUsers());
+            return Ok(_register.GetAll());
         }
 
         [Route("RegisterUser")]
@@ -31,7 +31,7 @@ namespace EasyBankWeb.Controllers
         public IActionResult Register([FromBody] UserDto userDto)
         {
             var result = _register.UserRegisterSucessed(userDto);
-            return StatusCode(result._StatusCode, result._Data == null ? result._Message : result._Data);
+            return StatusCode(result._StatusCode, new { Message = result._Message });
         }
 
         [Route("DeleteUser")]

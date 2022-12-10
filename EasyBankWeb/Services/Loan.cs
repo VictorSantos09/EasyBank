@@ -22,7 +22,7 @@ namespace EasyBankWeb.Services
 
         public BaseDto LoanRequest(int userID, LoanDto loanDto, bool confirmed)
         {
-            var user = _userRepository.GetUsers().Find(x => x.Id == userID);
+            var user = _userRepository.GetAll().Find(x => x.Id == userID);
 
             if (user == null)
                 return new BaseDto("Usuário não encontrado", 404);
@@ -74,7 +74,7 @@ namespace EasyBankWeb.Services
 
             _loanRepository.AddLoan(loan);
 
-            var user = _userRepository.GetUsers().Find(x => x.Id == userID);
+            var user = _userRepository.GetAll().Find(x => x.Id == userID);
 
             user.OpenLoan = true;
             user.CurrentAccount += finalValue;
@@ -95,7 +95,7 @@ namespace EasyBankWeb.Services
         public void CheckAndRemoveLoan(int userID)
         {
             var loan = _loanRepository.GetLoan().Find(x => x.OwnerID == userID);
-            var user = _userRepository.GetUsers().Find(x => x.Id == userID);
+            var user = _userRepository.GetAll().Find(x => x.Id == userID);
 
             if (loan != null)
             {

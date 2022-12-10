@@ -2,13 +2,11 @@
 
 namespace EasyBankWeb.Repository
 {
-    public class SavingRepository
+    public class SavingRepository : BaseRepository<SavingEntity>
     {
-        private List<SavingEntity> Savings { get; set; }
-
-        public SavingRepository()
+        public SavingRepository() : base("Saving")
         {
-            Savings = new List<SavingEntity>();
+
         }
 
         public List<SavingEntity> GetSavings()

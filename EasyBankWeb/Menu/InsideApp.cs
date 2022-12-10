@@ -38,7 +38,7 @@ namespace EasyBankWeb.Menu
             bool logged = true;
             while (logged)
             {
-                var user = _userRepository.GetUserById(userID);
+                var user = _userRepository.GetById(userID);
 
                 Console.Clear();
                 Console.WriteLine($"Conta Corrente: {user.CurrentAccount}\n\n");

@@ -129,7 +129,7 @@ namespace EasyBankWeb.Services
         }
         public double FillInInformation(string option, int userID)
         {
-            var user = _userRepository.GetUserById(userID);
+            var user = _userRepository.GetById(userID);
 
             double amountDebit;
             while (true)

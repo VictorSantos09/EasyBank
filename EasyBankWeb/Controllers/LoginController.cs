@@ -11,12 +11,12 @@ namespace EasyBankWeb.Controllers
             _logIn = logIn;
         }
 
-        //[Route("GetUsers")]
+        //[Route("GetAll")]
         //[HttpGet]
         //public IActionResult Login()
         //{
         //    var result = _logIn.CheckLogin();
-        //    return Ok(_register.GetUsers());
+        //    return Ok(_register.GetAll());
         //}
 
         //[Route("RegisterUser")]
