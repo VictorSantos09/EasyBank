@@ -2,7 +2,7 @@
 {
     public class AdressEntity
     {
-        public string Country { get; set; } = "BRASIL";
+        public string Country { get; set; }
         public string City { get; set; }
         public string State { get; set; }
         public string Neiborhood { get; set; }

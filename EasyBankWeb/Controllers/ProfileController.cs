@@ -8,26 +8,38 @@ namespace EasyBankWeb.Controllers
     [Route("[controller]")]
     public class ProfileController : ControllerBase
     {
-        private readonly ProfileRepository _profileRepository;
+        private readonly ProfileConfig _profileConfig;
 
-        public ProfileController(ProfileRepository profileRepository)
+        public ProfileController(ProfileConfig profileConfig)
         {
-            _profileRepository = profileRepository;
+            _profileConfig = profileConfig;
         }
 
-        [HttpGet(Name = "GetProfile")]
-        public IActionResult SeeInformation()
+        [Route("ChangeEmail")]
+        [HttpPost]
+        public IActionResult UpdateEmail([FromBody] string newemail, int userID)
         {
-            return Ok(_profileRepository.GetProfile());
+            var result = _profileConfig.ChangeEmail(newemail, userID);
+
+            return StatusCode(result._StatusCode, new { result._Message });
         }
 
-        [HttpPost(Name = "PostProfile")]
-        public IActionResult ViewSecu([FromBody] Profile profile)
+        [Route("ChangePassword")]
+        [HttpPost]
+        public IActionResult UpdatePassword([FromBody] string newPassword, int userID)
         {
-            _profileRepository.AddProfile(profile);
+            var result = _profileConfig.ChangePassword(newPassword, userID);
 
-            return Ok();
+            return StatusCode(result._StatusCode, new { result._Message });
         }
 
+        [Route("ChangePhoneNumber")]
+        [HttpPost]
+        public IActionResult UpdatePhoneNumber([FromBody] string newPhoneNumber, int userID)
+        {
+            var result = _profileConfig.ChangePhoneNumber(newPhoneNumber, userID);
+
+            return StatusCode(result._StatusCode, new { result._Message });
+        }
     }
 }

@@ -38,7 +38,7 @@ namespace EasyBankWeb.Crosscutting
         }
         public static bool IsValidEmail(string input)
         {
-            if (ValidatorEmailFormat(Formats, input))
+            if (ValidatorEmailFormat(Formats, input.ToUpper()))
                 return true;
 
             return false;
@@ -60,11 +60,11 @@ namespace EasyBankWeb.Crosscutting
         }
         public static bool IsValidCPF(string input)
         {
-            return input.Length == 11;
+            return input.Length == 14;
         }
         public static bool IsValidPhoneNumber(string input)
         {
-            return input.Length == 11 || input.Length == 12;
+            return input.Length == 11 || input.Length == 14;
         }
         public static string? DynamicSizeRG(string input)
         {

@@ -1,4 +1,5 @@
 ﻿using EasyBankWeb.Entities;
+using EasyBankWeb.Services;
 
 namespace EasyBankWeb.Dto
 {
@@ -13,29 +14,31 @@ namespace EasyBankWeb.Dto
         public string Password { get; set; }
         public string SafetyKey { get; set; }
         public DateTime DateBorn { get; set; }
-        public AdressEntity Adress { get; set; }
+        public string City { get; set; }
+        public string State { get; set; }
+        public string Neiborhood { get; set; }
+        public string Street { get; set; }
+        public string HouseNumber { get; set; }
+        public string? HouseComplement { get; set; }
 
-        public UserDto(int monthlyIncome, string name, string email, string cPF, string rG, string phoneNumber,
-            string password, string safetyKey, DateTime dateBorn, AdressEntity adress)
+        public UserDto(int monthlyIncome, string name, string email, string cPF, string rG, string phoneNumber, string password, string safetyKey, DateTime dateBorn, 
+            string street, string neiborhood, string city, string houseComplement, string houseNumber, string state)
         {
-            Adress = new AdressEntity();
-
-            MonthlyIncome = monthlyIncome;
+            MonthlyIncome = Register.RemoveSymbolFrontEnd(monthlyIncome);
             Name = name;
-            Email = email.ToUpper();
+            Email = email;
             CPF = cPF;
             RG = rG;
             PhoneNumber = phoneNumber;
             Password = password;
             SafetyKey = safetyKey;
             DateBorn = dateBorn;
-            Adress.Street = adress.Street;
-            Adress.State = adress.State;
-            Adress.Country = adress.Country;
-            Adress.Neiborhood = adress.Neiborhood;
-            Adress.HouseNumber = adress.HouseNumber;
-            Adress.HouseComplement = adress.HouseComplement;
-            Adress.City = adress.City;
+            Street = street;
+            Neiborhood = neiborhood;
+            City = city;
+            HouseComplement = houseComplement;
+            HouseNumber = houseNumber;
+            State = state;
         }
     }
 }

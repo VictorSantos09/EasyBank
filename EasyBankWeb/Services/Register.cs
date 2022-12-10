@@ -54,22 +54,19 @@ namespace EasyBankWeb.Services
             if (!UserValidator.IsValidPhoneNumber(userDto.PhoneNumber))
                 return new BaseDto("Telefone inválido para cadastro", 406);
 
-            if (userDto.Adress.Country == null)
-                return new BaseDto("Páis inválido", 406);
-
-            if (userDto.Adress.State == null)
+            if (userDto.State == null)
                 return new BaseDto("Estado inválido", 406);
 
-            if (userDto.Adress.HouseNumber == null)
+            if (userDto.HouseNumber == null)
                 return new BaseDto("Número inválido", 406);
 
-            if (userDto.Adress.Neiborhood == null)
+            if (userDto.Neiborhood == null)
                 return new BaseDto("Bairro inválido", 406);
 
-            if (userDto.Adress.Street == null)
+            if (userDto.Street == null)
                 return new BaseDto("Rua inválida", 406);
 
-            if (userDto.Adress.City == null)
+            if (userDto.City == null)
                 return new BaseDto("Cidade inválida", 406);
 
 
@@ -92,8 +89,8 @@ namespace EasyBankWeb.Services
             var dateBornSubstring = Convert.ToString(userDto.DateBorn).Substring(0, 10);
 
             var user = new UserEntity(userDto.Name, dateBornSubstring, userDto.PhoneNumber, userDto.Email,
-                userDto.Password, userDto.CPF, userDto.RG, userDto.MonthlyIncome, userID, userDto.SafetyKey, userDto.Adress.Street,
-                userDto.Adress.HouseNumber, userDto.Adress.HouseComplement, userDto.Adress.City, userDto.Adress.Neiborhood, userDto.Adress.State);
+                userDto.Password, userDto.CPF, userDto.RG, userDto.MonthlyIncome, userID, userDto.SafetyKey, userDto.Street,
+                userDto.HouseNumber, userDto.HouseComplement, userDto.City, userDto.Neiborhood, userDto.State);
 
             _userRepository.Add(user);
 
@@ -117,6 +114,18 @@ namespace EasyBankWeb.Services
         public List<UserEntity> GetAll()
         {
             return _userRepository.GetAll();
+        }
+        public static int RemoveSymbolFrontEnd(int input)
+        {
+            var rules = "R$.-,";
+            var inputST = Convert.ToString(input);
+
+            foreach (var item in inputST)
+            {
+                if (inputST.Contains(rules))
+                    inputST.Remove(item);
+            }
+            return Convert.ToInt32(inputST);
         }
     }
 }

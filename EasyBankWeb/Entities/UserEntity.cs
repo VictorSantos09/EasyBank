@@ -58,6 +58,7 @@
             Adress.City = city.ToUpper();
             Adress.Neiborhood = neiborhood.ToUpper();
             Adress.State = state.ToUpper();
+            Adress.Country = "BRASIL";
         }
         public UserEntity()
         {
