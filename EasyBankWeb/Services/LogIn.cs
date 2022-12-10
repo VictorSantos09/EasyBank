@@ -14,7 +14,6 @@ namespace EasyBankWeb.Services
 
         public BaseDto CheckLogin(string emailOrCpf, string password)
         {
-            var userCPF = "";
             if (emailOrCpf == null)
                 return new BaseDto("Email ou CPF inválido", 406);
 
@@ -23,19 +22,10 @@ namespace EasyBankWeb.Services
             if (user != null)
                 return new BaseDto("Login realizado com sucesso!", 200, user.Id);
 
-            try
-            {
-                userCPF = Convert.ToInt64(emailOrCpf).ToString(@"000\.000\.000\-00");
-            }
-            catch (FormatException)
-            {
-                userCPF = "000.000.000-00";
-            }
+            var userByCPF = _userRepository.GetAll().Find(x => x.CPF == emailOrCpf && x.Password == password);
 
-            var userEntityCPF = _userRepository.GetAll().Find(x => x.CPF == userCPF && x.Password == password);
-
-            if (userEntityCPF != null)
-                return new BaseDto("Login realizado com sucesso!", 200, userEntityCPF.Id);
+            if (userByCPF != null)
+                return new BaseDto("Login realizado com sucesso!", 200, userByCPF.Id);
 
             return new BaseDto("Usuario não encontrado", 404);
         }
