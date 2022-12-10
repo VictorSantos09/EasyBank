@@ -92,7 +92,8 @@ namespace EasyBankWeb.Services
             var dateBornSubstring = Convert.ToString(userDto.DateBorn).Substring(0, 10);
 
             var user = new UserEntity(userDto.Name, dateBornSubstring, userDto.PhoneNumber, userDto.Email,
-                userDto.Password, userDto.CPF, userDto.RG, userDto.MonthlyIncome, userID, userDto.SafetyKey);
+                userDto.Password, userDto.CPF, userDto.RG, userDto.MonthlyIncome, userID, userDto.SafetyKey, userDto.Adress.Street,
+                userDto.Adress.HouseNumber, userDto.Adress.HouseComplement, userDto.Adress.City, userDto.Adress.Neiborhood, userDto.Adress.State);
 
             _userRepository.Add(user);
 
@@ -102,12 +103,12 @@ namespace EasyBankWeb.Services
         }
         public void CreditCardRegister(UserDto userDto, int userID)
         {
-            var creditCardID = GeneralValidator.ID_AUTOINCREMENT(_creditCardRepository.GetCreditCard());
+            var creditCardID = GeneralValidator.ID_AUTOINCREMENT(_creditCardRepository.GetAll());
 
             var creditCardConstructor = new CreditCardEntity(_creditCard.R_Limit(userDto.MonthlyIncome), userDto.Name,
                 _creditCard.R_CVV(), _creditCard.R_ExpireDate(), creditCardID, _creditCard.R_CardNumber(), userID);
 
-            _creditCardRepository.AddCreditCard(creditCardConstructor);
+            _creditCardRepository.Add(creditCardConstructor);
         }
         public bool IsExistentUser(UserDto userDto)
         {

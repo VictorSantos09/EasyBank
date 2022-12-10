@@ -194,7 +194,7 @@ namespace EasyBankWeb.Services
 
                 var biil = new BillEntity(accountValue, NameExpense, 1, null, userID, accountValue, true);
 
-                _billRepository.AddBill(biil);
+                _billRepository.Add(biil);
             }
         }
     }

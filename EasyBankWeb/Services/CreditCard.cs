@@ -56,9 +56,9 @@ namespace EasyBankWeb.Services
             //Este metodo será chamado a cada virada de mês, será necessario ver uma solução para armazenar e visualizar outras contas
             //fora o empréstimo
 
-            var bill = _billRepository.GetBill().FindAll(x => x.OwnerID == userID);
+            var bill = _billRepository.GetAll().FindAll(x => x.OwnerID == userID);
 
-            var creditCard = _creditCardRepository.GetCreditCardById(userID);
+            var creditCard = _creditCardRepository.GetById(userID);
 
             for (int i = 0; i < bill.Count; i++)
             {
@@ -68,7 +68,7 @@ namespace EasyBankWeb.Services
         }
         public void ViewInvoice(int userID)
         {
-            var bills = _billRepository.GetBill().FindAll(x => x.OwnerID == userID);
+            var bills = _billRepository.GetAll().FindAll(x => x.OwnerID == userID);
 
             if (bills == null || bills.Count == 0)
             {
@@ -91,9 +91,9 @@ namespace EasyBankWeb.Services
             {
                 user.CurrentAccount -= item.Value;
 
-                var autoDebitBill = _billRepository.GetBill().Find(x => x.Name == item.Name);
+                var autoDebitBill = _billRepository.GetAll().Find(x => x.Name == item.Name);
 
-                _billRepository.RemoveBill(autoDebitBill);
+                _billRepository.Remove(autoDebitBill.Id);
 
             }
             Message.SuccessfulGeneric("Debito automático pago com sucesso");
@@ -102,9 +102,9 @@ namespace EasyBankWeb.Services
         {
             if (HasPendingPayments(userID) == true)
             {
-                var creditcard = _creditCardRepository.GetCreditCardById(userID);
+                var creditcard = _creditCardRepository.GetById(userID);
                 var user = _userRepository.GetById(userID);
-                var billsUser = _billRepository.GetBill().FindAll(x => x.OwnerID == userID);
+                var billsUser = _billRepository.GetAll().FindAll(x => x.OwnerID == userID);
 
                 var valueToPay = 0.0;
 
@@ -126,7 +126,7 @@ namespace EasyBankWeb.Services
                 {
                     user.CurrentAccount -= valueToPay;
 
-                    bill.RemoveBills(userID);
+                    bill.Removes(userID);
 
                     creditcard.ValueInvoice = 0;
 
@@ -138,7 +138,7 @@ namespace EasyBankWeb.Services
         }
         public bool HasPendingPayments(int userID)
         {
-            var bill = _billRepository.GetBill().FindAll(x => x.OwnerID == userID);
+            var bill = _billRepository.GetAll().FindAll(x => x.OwnerID == userID);
 
             if (bill == null || bill.Count == 0)
                 return false;

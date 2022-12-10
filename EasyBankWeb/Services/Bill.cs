@@ -15,11 +15,11 @@ namespace EasyBankWeb.Services
             _autoDebitRepository = autoDebitRepository;
         }
 
-        public void RemoveBills(int userID)
+        public void Removes(int userID)
         {
-            var bill = _billRepository.GetBill().FindAll(x => x.OwnerID == userID);
+            var bill = _billRepository.GetAll().FindAll(x => x.OwnerID == userID);
 
-            var loanBill = _billRepository.GetBill().Find(x => x.Name == "EMPRÉSTIMO" && x.OwnerID == userID);
+            var loanBill = _billRepository.GetAll().Find(x => x.Name == "EMPRÉSTIMO" && x.OwnerID == userID);
 
             if (loanBill != null)
                 //loan.CheckAndRemoveLoan(userID);
@@ -27,7 +27,7 @@ namespace EasyBankWeb.Services
                 for (int i = 0; i < bill.Count; i++)
                 {
                     if (bill[i].RemainParcels <= 1)
-                        _billRepository.RemoveBill(bill[i]);
+                        _billRepository.Remove(bill[i].Id);
 
                     else
                         bill[i].RemainParcels--;
@@ -35,7 +35,7 @@ namespace EasyBankWeb.Services
         }
         public void RemoveAutoDebits(BillEntity billEntity)
         {
-            _billRepository.RemoveBill(billEntity);
+            _billRepository.Remove(billEntity.Id);
         }
         public bool HasAutoDebitActivated(int userID)
         {
@@ -48,7 +48,7 @@ namespace EasyBankWeb.Services
         }
         public int IncrementID()
         {
-            return GeneralValidator.ID_AUTOINCREMENT(_billRepository.GetBill());
+            return GeneralValidator.ID_AUTOINCREMENT(_billRepository.GetAll());
         }
     }
 }

@@ -15,11 +15,11 @@ namespace EasyBankWeb.Controllers
             saving = _saving;
         }
 
-        [Route("GetSavings")]
+        [Route("GetAll")]
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(saving.GetSavings());
+            return Ok(saving.GetAll());
         }
 
         [Route("NewSaving")]
@@ -53,7 +53,7 @@ namespace EasyBankWeb.Controllers
             {
                 var result = saving.RescueMoneyProcess(rescueDto.OwnerID, rescueDto.AllMoney, rescueDto.Value);
 
-                return StatusCode(result._StatusCode, result._Data == null ? result._Message : result._Data);
+                return StatusCode(result._StatusCode, result._Data == null ? new { result._Message } : result._Data);
             }
 
             return Ok("");
@@ -77,7 +77,7 @@ namespace EasyBankWeb.Controllers
         {
             var result = saving.PrintBenefits(ownerID);
 
-            return StatusCode(result._StatusCode, result._Data == null ? result._Message : result._Data);
+            return StatusCode(result._StatusCode, result._Data == null ? new { Message = result._Message } : result._Data);
         }
     }
 }

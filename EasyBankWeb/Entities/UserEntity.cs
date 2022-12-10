@@ -35,12 +35,15 @@
         /// <param name="_id"></param>
         /// <param name="_safetyKey"></param>
         public UserEntity(string _name, string _dateBorn, string _phoneNumber, string _email,
-            string _password, string _CPF, string _RG, int _monthlyIncome, int _id, string _safetyKey)
+            string _password, string _CPF, string _RG, int _monthlyIncome, int _id, string _safetyKey, string street, string houseNumber, 
+            string? houseComplement, string city, string neiborhood, string state)
         {
-            Name = _name;
+            Adress = new AdressEntity();
+
+            Name = _name.ToUpper();
             DateBorn = _dateBorn;
             PhoneNumber = PhoneCodeArea + _phoneNumber;
-            Email = _email;
+            Email = _email.ToUpper();
             Password = _password;
             CPF = _CPF;
             RG = _RG;
@@ -49,28 +52,16 @@
             Id = _id;
             SafetyKey = _safetyKey;
             CurrentAccount = _monthlyIncome;
+            Adress.Street = street.ToUpper();
+            Adress.HouseNumber = houseNumber.ToUpper();
+            Adress.HouseComplement = houseComplement.ToUpper();
+            Adress.City = city.ToUpper();
+            Adress.Neiborhood = neiborhood.ToUpper();
+            Adress.State = state.ToUpper();
         }
         public UserEntity()
         {
 
-        }
-        /// <summary>
-        /// Aplica as propriedades do endereço, ATENÇÂO PARA NÂO CONFUNDIR COM O CADASTRO DOS DADOS
-        /// </summary>
-        /// <param name="street"></param>
-        /// <param name="houseNumber"></param>
-        /// <param name="houseComplement"></param>
-        /// <param name="city"></param>
-        /// <param name="neiborhood"></param>
-        /// <param name="state"></param>
-        public UserEntity(string street, string houseNumber, string houseComplement, string city, string neiborhood, string state)
-        {
-            Adress.Street = street;
-            Adress.HouseNumber = houseNumber;
-            Adress.HouseComplement = houseComplement;
-            Adress.City = city;
-            Adress.Neiborhood = neiborhood;
-            Adress.State = state;
         }
     }
 }

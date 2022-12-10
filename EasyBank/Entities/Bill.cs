@@ -23,7 +23,7 @@
         {
 
         }
-        public void RemoveBills(List<Bill> bills, int userID, List<Loan> loans, List<User> users)
+        public void Removes(List<Bill> bills, int userID, List<Loan> loans, List<User> users)
         {
             var bill = bills.FindAll(x => x.OwnerID == userID);
 

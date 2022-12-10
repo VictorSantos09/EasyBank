@@ -1,8 +1,10 @@
-﻿using EasyBankWeb.Services;
+﻿using EasyBankWeb.Dto;
+using EasyBankWeb.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace EasyBankWeb.Controllers
 {
-    public class LoginController
+    public class LoginController : ControllerBase
     {
         private readonly LogIn _logIn;
 
@@ -11,29 +13,13 @@ namespace EasyBankWeb.Controllers
             _logIn = logIn;
         }
 
-        //[Route("GetAll")]
-        //[HttpGet]
-        //public IActionResult Login()
-        //{
-        //    var result = _logIn.CheckLogin();
-        //    return Ok(_register.GetAll());
-        //}
+        [Route("Login")]
+        [HttpPost]
+        public IActionResult Login(LoginDto loginDto)
+        {
+            var result = _logIn.CheckLogin(loginDto.EmailOrCPF.ToUpper(), loginDto.Password);
 
-        //[Route("RegisterUser")]
-        //[HttpPost]
-        //public IActionResult Register([FromBody] UserDto userDto)
-        //{
-        //    var result = _register.UserRegisterSucessed(userDto);
-        //    return StatusCode(result._StatusCode, result._Data == null ? result._Message : result._Data);
-        //}
-
-        //[Route("DeleteUser")]
-        //[HttpDelete]
-        //public IActionResult DeleteAccount([FromBody] UserDto userDto, bool confirmed)
-        //{
-        //    var result = _cancelAccountService.DeleteProcess(userDto, confirmed);
-
-        //    return StatusCode(result._StatusCode, result._Data == null ? result._Message : result._Data);
-        //}
+            return StatusCode(result._StatusCode, result._Data == null ? new { Message = result._Message } : new { Id = result._Data });
+        }
     }
 }

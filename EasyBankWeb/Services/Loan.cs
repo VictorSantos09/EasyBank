@@ -79,7 +79,7 @@ namespace EasyBankWeb.Services
             user.OpenLoan = true;
             user.CurrentAccount += finalValue;
 
-            _billRepository.AddBill(new BillEntity()
+            _billRepository.Add(new BillEntity()
             {
                 Name = "EMPRÉSTIMO",
                 NumberParcels = qtdParcels,

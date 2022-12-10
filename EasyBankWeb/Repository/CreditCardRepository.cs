@@ -2,28 +2,11 @@
 
 namespace EasyBankWeb.Repository
 {
-    public class CreditCardRepository
+    public class CreditCardRepository : BaseRepository<CreditCardEntity>
     {
-        private List<CreditCardEntity> CreditCards { get; set; }
-
-        public CreditCardRepository()
+        public CreditCardRepository() : base("CreditCard")
         {
-            CreditCards = new List<CreditCardEntity>();
-        }
 
-        public List<CreditCardEntity> GetCreditCard()
-        {
-            return CreditCards;
-        }
-
-        public void AddCreditCard(CreditCardEntity creditCard)
-        {
-            CreditCards.Add(creditCard);
-        }
-
-        public CreditCardEntity? GetCreditCardById(int id)
-        {
-            return CreditCards.Find(x => x.OwnerID == id);
         }
     }
 }

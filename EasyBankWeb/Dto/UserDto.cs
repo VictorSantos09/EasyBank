@@ -18,6 +18,8 @@ namespace EasyBankWeb.Dto
         public UserDto(int monthlyIncome, string name, string email, string cPF, string rG, string phoneNumber,
             string password, string safetyKey, DateTime dateBorn, AdressEntity adress)
         {
+            Adress = new AdressEntity();
+
             MonthlyIncome = monthlyIncome;
             Name = name;
             Email = email.ToUpper();
@@ -27,7 +29,13 @@ namespace EasyBankWeb.Dto
             Password = password;
             SafetyKey = safetyKey;
             DateBorn = dateBorn;
-            Adress = adress;
+            Adress.Street = adress.Street;
+            Adress.State = adress.State;
+            Adress.Country = adress.Country;
+            Adress.Neiborhood = adress.Neiborhood;
+            Adress.HouseNumber = adress.HouseNumber;
+            Adress.HouseComplement = adress.HouseComplement;
+            Adress.City = adress.City;
         }
     }
 }

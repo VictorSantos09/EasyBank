@@ -17,5 +17,9 @@
             Id = _id;
             Open = open;
         }
+        public SavingEntity()
+        {
+
+        }
     }
 }
