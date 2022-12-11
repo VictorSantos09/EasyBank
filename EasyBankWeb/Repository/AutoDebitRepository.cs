@@ -2,33 +2,11 @@
 
 namespace EasyBankWeb.Repository
 {
-    public class AutoDebitRepository
+    public class AutoDebitRepository : BaseRepository<AutoDebitEntity>
     {
-        private List<AutoDebitEntity> autoDebits { get; set; }
-
-        public AutoDebitRepository()
+        public AutoDebitRepository() : base("AutoDebit")
         {
-            autoDebits = new List<AutoDebitEntity>();
-        }
 
-        public List<AutoDebitEntity> GetAutoDebits()
-        {
-            return autoDebits;
-        }
-
-        public void AddAutoDebit(AutoDebitEntity autoDebit)
-        {
-            autoDebits.Add(autoDebit);
-        }
-
-        public void RemoveAutoDebit(AutoDebitEntity autoDebit)
-        {
-            autoDebits.Remove(autoDebit);
-        }
-
-        public AutoDebitEntity? GetAutoDebitById(int id)
-        {
-            return autoDebits.Find(x => x.OwnerID == id);
         }
     }
 }

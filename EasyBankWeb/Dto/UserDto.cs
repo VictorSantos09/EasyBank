@@ -1,5 +1,4 @@
-﻿using EasyBankWeb.Entities;
-using EasyBankWeb.Services;
+﻿using EasyBankWeb.Services;
 
 namespace EasyBankWeb.Dto
 {
@@ -21,7 +20,7 @@ namespace EasyBankWeb.Dto
         public string HouseNumber { get; set; }
         public string? HouseComplement { get; set; }
 
-        public UserDto(int monthlyIncome, string name, string email, string cPF, string rG, string phoneNumber, string password, string safetyKey, DateTime dateBorn, 
+        public UserDto(int monthlyIncome, string name, string email, string cPF, string rG, string phoneNumber, string password, string safetyKey, DateTime dateBorn,
             string street, string neiborhood, string city, string houseComplement, string houseNumber, string state)
         {
             MonthlyIncome = Register.RemoveSymbolFrontEnd(monthlyIncome);

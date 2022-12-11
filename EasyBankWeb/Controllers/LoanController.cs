@@ -15,10 +15,10 @@ namespace EasyBankWeb.Controllers
             loan = _loan;
         }
 
-        [HttpGet(Name = "GetLoans")]
+        [HttpGet(Name = "GetAlls")]
         public IActionResult Get()
         {
-            return Ok(loan.GetLoan());
+            return Ok(loan.GetAll());
         }
 
         [HttpPost(Name = "PostLoan")]

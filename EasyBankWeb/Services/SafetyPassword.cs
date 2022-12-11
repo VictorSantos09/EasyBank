@@ -1,5 +1,4 @@
-﻿using EasyBankWeb.Crosscutting;
-using EasyBankWeb.Entities;
+﻿using EasyBankWeb.Entities;
 
 namespace EasyBankWeb.Services
 {

@@ -1,5 +1,4 @@
-﻿using EasyBankWeb.Repository;
-using EasyBankWeb.Services;
+﻿using EasyBankWeb.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EasyBankWeb.Controllers
@@ -9,10 +8,12 @@ namespace EasyBankWeb.Controllers
     public class ProfileController : ControllerBase
     {
         private readonly ProfileConfig _profileConfig;
+        private readonly Profile _profile;
 
-        public ProfileController(ProfileConfig profileConfig)
+        public ProfileController(ProfileConfig profileConfig, Profile profile)
         {
             _profileConfig = profileConfig;
+            _profile = profile;
         }
 
         [Route("ChangeEmail")]
@@ -40,6 +41,14 @@ namespace EasyBankWeb.Controllers
             var result = _profileConfig.ChangePhoneNumber(newPhoneNumber, userID);
 
             return StatusCode(result._StatusCode, new { result._Message });
+        }
+        [HttpGet]
+        [Route("SeeProfile")]
+        public IActionResult SeeProfile([FromBody] int userID, bool confirmed)
+        {
+            var result = _profile.ViewProfile(userID, confirmed);
+
+            return StatusCode(result._StatusCode, result._Data == null ? new { result._Message } : result._Data);
         }
     }
 }

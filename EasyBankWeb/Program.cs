@@ -18,17 +18,17 @@ builder.Services.AddSingleton<SavingRepository>();
 builder.Services.AddSingleton<UserRepository>();
 builder.Services.AddSingleton<AutoDebitRepository>();
 
-builder.Services.AddSingleton<Saving>();
-builder.Services.AddSingleton<Loan>();
+builder.Services.AddSingleton<AutoDebit>();
 builder.Services.AddSingleton<Bill>();
-builder.Services.AddSingleton<Transfer>();
 builder.Services.AddSingleton<CreditCard>();
-builder.Services.AddSingleton<MonthTimer>();
-builder.Services.AddSingleton<SafetyPassword>();
-builder.Services.AddSingleton<CancelAccountService>();
-builder.Services.AddSingleton<Register>();
-builder.Services.AddSingleton<Profile>();
+builder.Services.AddSingleton<Loan>();
 builder.Services.AddSingleton<LogIn>();
+builder.Services.AddSingleton<MonthTimer>();
+builder.Services.AddSingleton<Profile>();
+builder.Services.AddSingleton<Register>();
+builder.Services.AddSingleton<SafetyPassword>();
+builder.Services.AddSingleton<Saving>();
+builder.Services.AddSingleton<Transfer>();
 
 builder.Services.AddCors(p => p.AddPolicy("corsapp", builder =>
 {

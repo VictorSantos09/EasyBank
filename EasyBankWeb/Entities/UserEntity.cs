@@ -20,22 +20,8 @@
         public int Age { get; set; }
         public bool OpenLoan { get; set; }
         public AdressEntity Adress { get; set; }
-
-        /// <summary>
-        /// Aplica os dados principais do usuario, nome, telefone, email, cpf... ATENÇÃO PARA NÃO CONFUNDIR COM O CADASTRO DO ENDEREÇO
-        /// </summary>
-        /// <param name="_name"></param>
-        /// <param name="_dateBorn"></param>
-        /// <param name="_phoneNumber"></param>
-        /// <param name="_email"></param>
-        /// <param name="_password"></param>
-        /// <param name="_CPF"></param>
-        /// <param name="_RG"></param>
-        /// <param name="_monthlyIncome"></param>
-        /// <param name="_id"></param>
-        /// <param name="_safetyKey"></param>
         public UserEntity(string _name, string _dateBorn, string _phoneNumber, string _email,
-            string _password, string _CPF, string _RG, int _monthlyIncome, int _id, string _safetyKey, string street, string houseNumber, 
+            string _password, string _CPF, string _RG, int _monthlyIncome, int _id, string _safetyKey, string street, string houseNumber,
             string? houseComplement, string city, string neiborhood, string state)
         {
             Adress = new AdressEntity();

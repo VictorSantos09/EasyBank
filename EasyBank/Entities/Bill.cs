@@ -41,7 +41,7 @@
                     bill[i].RemainParcels--;
             }
         }
-        public void RemoveAutoDebits(List<Bill> bills, Bill bill)
+        public void Removes(List<Bill> bills, Bill bill)
         {
             bills.Remove(bill);
         }

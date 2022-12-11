@@ -16,11 +16,9 @@ namespace EasyBankWeb.Controllers
         [HttpPost]
         public IActionResult Transfer([FromBody] int userID, double value, string keyPix, bool confirmed)
         {
-            // Precisa mostrar o saldo em conta no front
-
             var result = _transfer.TransferProcess(userID, keyPix, confirmed, value);
 
-            return StatusCode(result._StatusCode, result._Data == null ? result._Message : result._Data);
+            return StatusCode(result._StatusCode, new { result._Message });
         }
     }
 }

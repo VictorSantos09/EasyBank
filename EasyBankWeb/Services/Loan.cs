@@ -72,7 +72,7 @@ namespace EasyBankWeb.Services
         {
             var loan = new LoanEntity(finalValue, taxesValue, qtdParcels, true, userID, IncrementID());
 
-            _loanRepository.AddLoan(loan);
+            _loanRepository.Add(loan);
 
             var user = _userRepository.GetAll().Find(x => x.Id == userID);
 
@@ -94,7 +94,7 @@ namespace EasyBankWeb.Services
         }
         public void CheckAndRemoveLoan(int userID)
         {
-            var loan = _loanRepository.GetLoan().Find(x => x.OwnerID == userID);
+            var loan = _loanRepository.GetAll().Find(x => x.OwnerID == userID);
             var user = _userRepository.GetAll().Find(x => x.Id == userID);
 
             if (loan != null)
@@ -102,7 +102,7 @@ namespace EasyBankWeb.Services
                 if (loan.RemainParcels <= 1)
                 {
                     user.OpenLoan = false;
-                    _loanRepository.GetLoan().Remove(loan);
+                    _loanRepository.GetAll().Remove(loan);
                 }
             }
         }
@@ -110,17 +110,17 @@ namespace EasyBankWeb.Services
         {
             CheckAndRemoveLoan(userID);
         }
-        public void AddLoan(LoanEntity loanEntity)
+        public void Add(LoanEntity loanEntity)
         {
-            _loanRepository.AddLoan(loanEntity);
+            _loanRepository.Add(loanEntity);
         }
-        public List<LoanEntity> GetLoan()
+        public List<LoanEntity> GetAll()
         {
-            return _loanRepository.GetLoan();
+            return _loanRepository.GetAll();
         }
         public int IncrementID()
         {
-            return GeneralValidator.ID_AUTOINCREMENT(_loanRepository.GetLoan());
+            return GeneralValidator.ID_AUTOINCREMENT(_loanRepository.GetAll());
         }
     }
 }

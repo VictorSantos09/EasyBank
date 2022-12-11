@@ -45,7 +45,7 @@ namespace EasyBank.Entities
                         break;
 
                     case "4":
-                        RemoveAutoDebit(autoDebits, userID);
+                        Remove(autoDebits, userID);
                         break;
 
                     case "5":
@@ -99,25 +99,25 @@ namespace EasyBank.Entities
             switch (userOption)
             {
                 case "1":
-                    AddAutoDebit("Fatura", AutoDebits, userID, users, bills);
+                    Add("Fatura", AutoDebits, userID, users, bills);
                     //Aplicar método que faça a ligação entre DébitoAuto e Crédito;
                     //Se usuário escolher este método, a fatura do cartão todo mês
                     // será paga por aqui;
                     break;
 
                 case "2":
-                    AddAutoDebit("Água", AutoDebits, userID, users, bills);
+                    Add("Água", AutoDebits, userID, users, bills);
                     break;
 
                 case "3":
-                    AddAutoDebit("Seguro de Vida", AutoDebits, userID, users, bills);
+                    Add("Seguro de Vida", AutoDebits, userID, users, bills);
                     break;
 
                 case "4":
                     Console.WriteLine("Informe-nos a conta que deseja cadastrar:");
                     var otherOption = Console.ReadLine();
 
-                    AddAutoDebit(otherOption, AutoDebits, userID, users, bills);
+                    Add(otherOption, AutoDebits, userID, users, bills);
                     break;
 
                 default:
@@ -161,7 +161,7 @@ namespace EasyBank.Entities
 
             return false;
         }
-        public void RemoveAutoDebit(List<AutoDebit> autoDebits, int userID)
+        public void Remove(List<AutoDebit> autoDebits, int userID)
         {
             var userAutoDebits = autoDebits.FindAll(x => x.OwnerID == userID);
 
@@ -179,7 +179,7 @@ namespace EasyBank.Entities
                 autoDebits.Remove(autoDebit);
             }
         }
-        public void AddAutoDebit(string NameExpense, List<AutoDebit> AutoDebits, int userID, List<User> users, List<Bill> bills)
+        public void Add(string NameExpense, List<AutoDebit> AutoDebits, int userID, List<User> users, List<Bill> bills)
         {
             var accountValue = FillInInformation(NameExpense, users, userID);
 

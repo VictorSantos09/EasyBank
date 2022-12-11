@@ -1,4 +1,4 @@
-﻿using EasyBankWeb.Crosscutting;
+﻿using EasyBankWeb.Dto;
 using EasyBankWeb.Repository;
 
 namespace EasyBankWeb.Services
@@ -10,7 +10,6 @@ namespace EasyBankWeb.Services
         private readonly BillRepository _billRepository;
         private readonly AutoDebitRepository _autoDebitRepository;
         private readonly Bill bill;
-        //private readonly UserValidator userValidator;
 
         public CreditCard(CreditCardRepository creditCardRepository, UserRepository userRepository, BillRepository billRepository, AutoDebitRepository autoDebitRepository, Bill bill)
         {
@@ -18,7 +17,7 @@ namespace EasyBankWeb.Services
             _userRepository = userRepository;
             _billRepository = billRepository;
             _autoDebitRepository = autoDebitRepository;
-            this.bill = bill;
+            bill = bill;
         }
 
         public int R_Limit(int userMonthlyIncome)
@@ -61,31 +60,23 @@ namespace EasyBankWeb.Services
             var creditCard = _creditCardRepository.GetById(userID);
 
             for (int i = 0; i < bill.Count; i++)
-            {
-                creditCard.ValueInvoice += bill[i].Value; // Ver se incrementa as outras contas
-            }
+                creditCard.ValueInvoice += bill[i].Value;
+
             return creditCard.ValueInvoice;
         }
-        public void ViewInvoice(int userID)
+        public BaseDto ViewInvoice(int userID)
         {
             var bills = _billRepository.GetAll().FindAll(x => x.OwnerID == userID);
 
-            if (bills == null || bills.Count == 0)
-            {
-                Message.GeneralThread("Não há contas para pagar");
-            }
+            if (bills.Count == 0)
+                return new BaseDto("Não há contas para pagar", 200);
 
-            for (int i = 0; i < bills.Count; i++)
-            {
-                Console.WriteLine($"ITEM: {bills[i].Name} | PARCELAS RESTANTES: {bills[i].RemainParcels} | " +
-                    $"VALOR: {bills[i].Value} | VALOR PARCELA: {bills[i].ValueParcel}");
-            }
-            Holder.PressAnyKey();
+            return new BaseDto("Contas Registradas", 200, bills);
         }
-        public void AutoDebitPaymentAutomatic(int userID)
+        public BaseDto AutoDebitPaymentAutomatic(int userID)
         {
             var user = _userRepository.GetById(userID);
-            var userAutoDebits = _autoDebitRepository.GetAutoDebits().FindAll(x => x.OwnerID == userID);
+            var userAutoDebits = _autoDebitRepository.GetAll().FindAll(x => x.OwnerID == userID);
 
             foreach (var item in userAutoDebits)
             {
@@ -96,9 +87,9 @@ namespace EasyBankWeb.Services
                 _billRepository.Remove(autoDebitBill.Id);
 
             }
-            Message.SuccessfulGeneric("Debito automático pago com sucesso");
+            return new BaseDto("Debito automático pago com sucesso", 200);
         }
-        public void ManualMonthPaymentInvoice(int userID)
+        public BaseDto ManualMonthPaymentInvoice(int userID)
         {
             if (HasPendingPayments(userID) == true)
             {
@@ -109,19 +100,11 @@ namespace EasyBankWeb.Services
                 var valueToPay = 0.0;
 
                 for (int i = 0; i < billsUser.Count; i++)
-                {
-                    Console.WriteLine($"ITEM: {billsUser[i].Name} | PARCELAS RESTANTES: {billsUser[i].RemainParcels} | " +
-                        $"VALOR PARCELA: {billsUser[i].ValueParcel} | VALOR TOTAL: {billsUser[i].Value} ");
-
                     valueToPay += billsUser[i].ValueParcel;
-                }
-
-                Console.WriteLine($"TOTAL A PAGAR: {valueToPay}\nClique ENTER para pagar");
 
                 if (user.CurrentAccount < valueToPay)
-                {
-                    Message.ErrorGeneric("Saldo Indisponivel");
-                }
+                    return new BaseDto("Saldo Indisponivel", 406);
+
                 else
                 {
                     user.CurrentAccount -= valueToPay;
@@ -130,11 +113,11 @@ namespace EasyBankWeb.Services
 
                     creditcard.ValueInvoice = 0;
 
-                    Message.SuccessfulGeneric($"Pagamento efetuado");
+                    return new BaseDto("Pagamento efetuado", 200);
                 }
             }
-            else
-                Message.GeneralThread("Não há faturas á pagar");
+
+            return new BaseDto("Não há faturas á pagar", 200);
         }
         public bool HasPendingPayments(int userID)
         {
@@ -145,7 +128,7 @@ namespace EasyBankWeb.Services
 
             return true;
         }
-        public void MonthlyAction(int userID)
+        public BaseDto MonthlyAction(int userID)
         {
             var user = _userRepository.GetById(userID);
             user.CurrentAccount += user.MonthlyIncome;
@@ -156,7 +139,9 @@ namespace EasyBankWeb.Services
                 AutoDebitPaymentAutomatic(userID);
 
             else if (HasPendingPayments(userID) == true)
-                Message.GeneralThread("Novas Faturas, vá até a opção de Pagar Fatura em seu perfil", 1000);
+                return new BaseDto("Novas Faturas, vá até a opção de Pagar Fatura em seu perfil", 200);
+
+            return new BaseDto(200);
         }
     }
 }
