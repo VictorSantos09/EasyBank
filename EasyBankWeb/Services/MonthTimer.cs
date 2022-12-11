@@ -1,5 +1,5 @@
-﻿using System.Timers;
-using EasyBankWeb.Repository;
+﻿using EasyBankWeb.Repository;
+using System.Timers;
 namespace EasyBankWeb.Services
 {
     public class MonthTimer

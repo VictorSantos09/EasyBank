@@ -1,5 +1,4 @@
-﻿using EasyBankWeb.Entities;
-using System.Text.Json;
+﻿using System.Text.Json;
 
 namespace EasyBankWeb.Repository
 {
