@@ -2,23 +2,11 @@
 
 namespace EasyBankWeb.Repository
 {
-    public class LoanRepository
+    public class LoanRepository : BaseRepository<LoanEntity>
     {
-        private List<LoanEntity> Loans { get; set; }
-
-        public LoanRepository()
+        public LoanRepository() : base("Loan")
         {
-            Loans = new List<LoanEntity>();
-        }
 
-        public List<LoanEntity> GetLoan()
-        {
-            return Loans;
-        }
-
-        public void AddLoan(LoanEntity loan)
-        {
-            Loans.Add(loan);
         }
     }
 }
