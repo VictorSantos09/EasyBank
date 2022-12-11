@@ -23,7 +23,7 @@ namespace EasyBankWeb.Controllers
 
             return StatusCode(result._StatusCode, result._Data == null ? new { result._Message } : result._Data);
         }
-        [HttpGet]
+        [HttpPost]
         [Route("SeeAutoDebits")]
         public IActionResult SeeAutoDebits([FromBody] SeeAutoDebitDto seeAutoDebitDto)
         {

@@ -15,7 +15,7 @@ namespace EasyBankWeb.Controllers
             _creditCard = creditCard;
         }
         [Route("ViewBills")]
-        [HttpGet]
+        [HttpPost]
         public IActionResult ViewBills([FromBody] BillDto billDto)
         {
             var result = _creditCard.ViewInvoice(billDto.UserID);
