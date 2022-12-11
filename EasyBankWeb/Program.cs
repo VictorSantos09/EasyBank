@@ -12,11 +12,11 @@ builder.Services.AddSwaggerGen();
 
 
 builder.Services.AddSingleton<BillRepository>();
+builder.Services.AddSingleton<AutoDebitRepository>();
 builder.Services.AddSingleton<CreditCardRepository>();
 builder.Services.AddSingleton<LoanRepository>();
 builder.Services.AddSingleton<SavingRepository>();
 builder.Services.AddSingleton<UserRepository>();
-builder.Services.AddSingleton<AutoDebitRepository>();
 builder.Services.AddSingleton<LoggedIDsRepository>();
 
 builder.Services.AddSingleton<AutoDebit>();

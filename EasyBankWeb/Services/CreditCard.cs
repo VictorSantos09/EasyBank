@@ -1,4 +1,5 @@
 ﻿using EasyBankWeb.Dto;
+using EasyBankWeb.Entities;
 using EasyBankWeb.Repository;
 
 namespace EasyBankWeb.Services
@@ -142,6 +143,10 @@ namespace EasyBankWeb.Services
                 return new BaseDto("Novas Faturas, vá até a opção de Pagar Fatura em seu perfil", 200);
 
             return new BaseDto(200);
+        }
+        public List<CreditCardEntity> GetAll()
+        {
+            return _creditCardRepository.GetAll();
         }
     }
 }
