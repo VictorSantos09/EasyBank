@@ -9,7 +9,7 @@ namespace EasyBankWeb.Services
         private readonly UserRepository _userRepository;
         private readonly BillRepository _billRepository;
         private readonly AutoDebitRepository _autoDebitRepository;
-        private readonly Bill bill;
+        private readonly Bill _bill;
 
         public CreditCard(CreditCardRepository creditCardRepository, UserRepository userRepository, BillRepository billRepository, AutoDebitRepository autoDebitRepository, Bill bill)
         {
@@ -17,7 +17,7 @@ namespace EasyBankWeb.Services
             _userRepository = userRepository;
             _billRepository = billRepository;
             _autoDebitRepository = autoDebitRepository;
-            bill = bill;
+            _bill = bill;
         }
 
         public int R_Limit(int userMonthlyIncome)
@@ -109,7 +109,7 @@ namespace EasyBankWeb.Services
                 {
                     user.CurrentAccount -= valueToPay;
 
-                    bill.Removes(userID);
+                    _bill.Removes(userID);
 
                     creditcard.ValueInvoice = 0;
 
@@ -135,7 +135,7 @@ namespace EasyBankWeb.Services
 
             IncrementMonthInvoice(userID);
 
-            if (bill.HasAutoDebitActivated(userID) == true)
+            if (_bill.HasAutoDebitActivated(userID) == true)
                 AutoDebitPaymentAutomatic(userID);
 
             else if (HasPendingPayments(userID) == true)

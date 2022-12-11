@@ -1,4 +1,5 @@
 ﻿using System.Timers;
+using EasyBankWeb.Repository;
 namespace EasyBankWeb.Services
 {
     public class MonthTimer
@@ -6,20 +7,23 @@ namespace EasyBankWeb.Services
         private readonly CreditCard _creditCard;
         private readonly Loan _loan;
         private readonly Saving _saving;
-        private readonly List<int> _LoggedIDs;
+        private readonly LoggedIDsRepository _LoggedIDs;
+        private readonly UserRepository _userRepository;
         private int _userID;
 
-        public MonthTimer(CreditCard creditCard, Loan loan, List<int> loggedIDs, int userID)
+        public MonthTimer(CreditCard creditCard, Loan loan, Saving saving, LoggedIDsRepository loggedIDs, UserRepository userRepository, int userID)
         {
             _creditCard = creditCard;
             _loan = loan;
+            _saving = saving;
             _LoggedIDs = loggedIDs;
+            _userRepository = userRepository;
             _userID = userID;
         }
 
         public void Main(int userID)
         {
-            if (Logged(userID))
+            if (!Logged(userID))
                 return;
 
             _LoggedIDs.Add(userID);
@@ -30,12 +34,11 @@ namespace EasyBankWeb.Services
             aTimer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
             aTimer.Interval = 10000;
             aTimer.Enabled = true;
-
         }
 
         private bool Logged(int userID)
         {
-            return _LoggedIDs.Contains(userID);
+            return _LoggedIDs.GetAll().Exists(x => x == userID);
         }
 
         public void OnTimedEvent(object source, ElapsedEventArgs e)

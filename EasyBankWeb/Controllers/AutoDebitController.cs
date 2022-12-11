@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace EasyBankWeb.Controllers
 {
     [ApiController]
-    [Route("Controller")]
+    [Route("[controller]")]
     public class AutoDebitController : ControllerBase
     {
         private readonly AutoDebit _autoDebit;
@@ -17,9 +17,9 @@ namespace EasyBankWeb.Controllers
         }
         [Route("RegisterAutoDebit")]
         [HttpPost]
-        public IActionResult Register([FromBody] AutoDebitDto autoDebitDto, bool confirmed, int userID)
+        public IActionResult Register([FromBody] AutoDebitDto autoDebitDto)
         {
-            var result = _autoDebit.RegisterAutoDebitProcess(confirmed, userID, autoDebitDto.Value);
+            var result = _autoDebit.RegisterAutoDebitProcess(autoDebitDto.Confirmed, autoDebitDto.OwnerID, autoDebitDto.Value);
 
             return StatusCode(result._StatusCode, result._Data == null ? new { result._Message } : result._Data);
         }
