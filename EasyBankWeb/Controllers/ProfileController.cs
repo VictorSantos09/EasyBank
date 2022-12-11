@@ -1,4 +1,5 @@
-﻿using EasyBankWeb.Services;
+﻿using EasyBankWeb.Dto;
+using EasyBankWeb.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EasyBankWeb.Controllers
@@ -18,37 +19,29 @@ namespace EasyBankWeb.Controllers
 
         [Route("ChangeEmail")]
         [HttpPost]
-        public IActionResult UpdateEmail([FromBody] string newemail, int userID)
+        public IActionResult UpdateEmail([FromBody] ChangeEmailDto emailDto)
         {
-            var result = _profileConfig.ChangeEmail(newemail, userID);
+            var result = _profileConfig.ChangeEmail(emailDto.newEmail, emailDto.UserID);
 
             return StatusCode(result._StatusCode, new { result._Message });
         }
 
         [Route("ChangePassword")]
         [HttpPost]
-        public IActionResult UpdatePassword([FromBody] string newPassword, int userID)
+        public IActionResult UpdatePassword([FromBody] ChangePasswordDto passwordDto)
         {
-            var result = _profileConfig.ChangePassword(newPassword, userID);
+            var result = _profileConfig.ChangePassword(passwordDto.NewPassword, passwordDto.UserID);
 
             return StatusCode(result._StatusCode, new { result._Message });
         }
 
         [Route("ChangePhoneNumber")]
         [HttpPost]
-        public IActionResult UpdatePhoneNumber([FromBody] string newPhoneNumber, int userID)
+        public IActionResult UpdatePhoneNumber([FromBody] ChangePhoneNumberDto phoneNumberDto)
         {
-            var result = _profileConfig.ChangePhoneNumber(newPhoneNumber, userID);
+            var result = _profileConfig.ChangePhoneNumber(phoneNumberDto.NewPhoneNumber, phoneNumberDto.UserID);
 
             return StatusCode(result._StatusCode, new { result._Message });
-        }
-        [HttpGet]
-        [Route("SeeProfile")]
-        public IActionResult SeeProfile([FromBody] int userID, bool confirmed)
-        {
-            var result = _profile.ViewProfile(userID, confirmed);
-
-            return StatusCode(result._StatusCode, result._Data == null ? new { result._Message } : result._Data);
         }
     }
 }

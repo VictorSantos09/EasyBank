@@ -19,6 +19,7 @@ namespace EasyBankWeb.Dto
         public string Street { get; set; }
         public string HouseNumber { get; set; }
         public string? HouseComplement { get; set; }
+        public bool Confirmed { get; set; }
 
         public UserDto(int monthlyIncome, string name, string email, string cPF, string rG, string phoneNumber, string password, string safetyKey, DateTime dateBorn,
             string street, string neiborhood, string city, string houseComplement, string houseNumber, string state)

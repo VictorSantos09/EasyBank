@@ -23,7 +23,7 @@ namespace EasyBankWeb.Services
             var creditCard = _creditCardRepository.GetAll().Find(x => x.OwnerID == userID);
 
             return new BaseDto($"{user.Name} {user.Email} {user.PhoneNumber} {user.DateBorn} {user.Email}" +
-                $" {user.Password} {creditCard.Limit} {creditCard.ExpireDate} {creditCard.NameOwner}");
+                $" {user.Password} {creditCard.Limit} {creditCard.ExpireDate} {creditCard.NameOwner}", 200);
         }
     }
 }

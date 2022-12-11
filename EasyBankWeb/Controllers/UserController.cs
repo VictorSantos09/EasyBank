@@ -36,18 +36,18 @@ namespace EasyBankWeb.Controllers
 
         [Route("DeleteUser")]
         [HttpDelete]
-        public IActionResult DeleteAccount([FromBody] UserDto userDto, bool confirmed)
+        public IActionResult DeleteAccount([FromBody] UserDto userDto)
         {
-            var result = _cancelAccountService.DeleteProcess(userDto, confirmed);
+            var result = _cancelAccountService.DeleteProcess(userDto, userDto.Confirmed);
 
             return StatusCode(result._StatusCode, new { result._Message });
         }
 
-        [Route("SeeData")]
+        [Route("SeeProfileData")]
         [HttpGet]
-        public IActionResult SeeInformation([FromBody] bool confirmed, int userID)
+        public IActionResult SeeInformation([FromBody] SeeProfileDataDto seeProfileDataDto)
         {
-            var result = _profile.ViewProfile(userID, confirmed);
+            var result = _profile.ViewProfile(seeProfileDataDto.UserID, seeProfileDataDto.Confirmed);
 
             return StatusCode(result._StatusCode, new { result._Message });
         }

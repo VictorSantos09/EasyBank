@@ -1,4 +1,5 @@
-﻿using EasyBankWeb.Services;
+﻿using EasyBankWeb.Dto;
+using EasyBankWeb.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EasyBankWeb.Controllers
@@ -15,17 +16,17 @@ namespace EasyBankWeb.Controllers
         }
         [Route("ViewBills")]
         [HttpGet]
-        public IActionResult ViewBills(int userID)
+        public IActionResult ViewBills([FromBody]BillDto billDto)
         {
-            var result = _creditCard.ViewInvoice(userID);
+            var result = _creditCard.ViewInvoice(billDto.UserID);
 
             return StatusCode(result._StatusCode, result._Data == null ? new { result._Message } : result._Data);
         }
         [Route("PayBills")]
         [HttpPost]
-        public IActionResult ManuelPayment([FromBody] int userID)
+        public IActionResult ManuelPayment([FromBody] BillDto billDto)
         {
-            var result = _creditCard.ManualMonthPaymentInvoice(userID);
+            var result = _creditCard.ManualMonthPaymentInvoice(billDto.UserID);
 
             return StatusCode(result._StatusCode, result._Data == null ? new { result._Message } : result._Data);
         }

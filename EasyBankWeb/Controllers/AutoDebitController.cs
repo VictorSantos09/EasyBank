@@ -25,9 +25,9 @@ namespace EasyBankWeb.Controllers
         }
         [HttpGet]
         [Route("SeeAutoDebits")]
-        public IActionResult SeeAutoDebits([FromBody] int userID)
+        public IActionResult SeeAutoDebits([FromBody] SeeAutoDebitDto seeAutoDebitDto)
         {
-            var result = _autoDebit.DisplaysDebits(userID);
+            var result = _autoDebit.DisplaysDebits(seeAutoDebitDto.UserID);
 
             return StatusCode(result._StatusCode, result._Data == null ? new { result._Message } : result._Data);
         }
