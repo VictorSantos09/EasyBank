@@ -16,22 +16,24 @@ namespace EasyBankWeb.Services
         /// <summary>
         /// Efetua o processo de cancelamento de conta
         /// </summary>
-        /// <param name="userDto"></param>
+        /// <param name="deleteDto"></param>
         /// <param name="confirmed"></param>
         /// <returns>Retorna um BaseDto, se confirmed igual false "solicitação cancelada"; 404 para DADOS corretos mas NOME incorreto</returns>
-        public BaseDto DeleteProcess(UserDto userDto, bool confirmed)
+        public BaseDto DeleteProcess(DeleteAccountDto deleteDto, bool confirmed)
         {
             if (!confirmed)
                 return new BaseDto("Solicitação cancelada", 200);
 
-            if (!IsCorrectData(userDto))
+            if (!IsCorrectData(deleteDto))
                 return new BaseDto("Dados incorretos", 400);
 
-            var user = GetUser(userDto);
+            var user = GetUser(deleteDto);
+
             if (user == null)
                 return new BaseDto("Usuario não encontrado", 404);
 
             Delete(user);
+
             return new BaseDto("Conta deletada com sucesso", 200);
 
         }
@@ -39,14 +41,14 @@ namespace EasyBankWeb.Services
         {
             _userRepository.Remove(user.Id);
         }
-        private bool IsCorrectData(UserDto userDto)
+        private bool IsCorrectData(DeleteAccountDto deleteDto)
         {
-            return _userRepository.GetAll().Exists(x => x.Email == userDto.Email && x.CPF == userDto.CPF &&
-            x.SafetyKey == userDto.SafetyKey && x.Password == userDto.Password);
+            return _userRepository.GetAll().Exists(x => x.Email == deleteDto.Email && x.CPF == deleteDto.CPF &&
+            x.SafetyKey == deleteDto.SafetyPassword && x.Password == deleteDto.Password);
         }
-        private UserEntity? GetUser(UserDto userDto)
+        private UserEntity? GetUser(DeleteAccountDto deleteDto)
         {
-            return _userRepository.GetAll().Find(x => x.Email == userDto.Email && x.CPF == userDto.CPF && x.Name == userDto.Name);
+            return _userRepository.GetAll().Find(x => x.Email == deleteDto.Email && x.CPF == deleteDto.CPF && x.Name == deleteDto.Name);
         }
     }
 }

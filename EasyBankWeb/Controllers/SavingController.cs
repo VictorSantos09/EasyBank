@@ -61,12 +61,12 @@ namespace EasyBankWeb.Controllers
 
         [Route("DeleteSaving")]
         [HttpDelete]
-        public IActionResult CancelSaving([FromBody] bool confirmed, int ownerID, string userSafetyKey)
+        public IActionResult CancelSaving([FromBody] DeleteSavingDto deleteSavingDto)
         {
             var (data, statusCode) = ("", 0);
 
-            if (confirmed)
-                (data, statusCode) = saving.CancelSavingProcess(ownerID, userSafetyKey);
+            if (deleteSavingDto.Confirmed)
+                (data, statusCode) = saving.CancelSavingProcess(deleteSavingDto.OwnerID, deleteSavingDto.UserSafetyKey);
 
             return StatusCode(statusCode, data);
         }

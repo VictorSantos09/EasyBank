@@ -15,7 +15,7 @@ namespace EasyBankWeb.Entities
             string _NameOwner, string _CVV, DateTime _ExpireDate, int _id, string _numberCard, int _ownerID)
         {
             Limit = _Limit;
-            NameOwner = _NameOwner;
+            NameOwner = _NameOwner.ToUpper();
             CVV = _CVV;
             ExpireDate = _ExpireDate;
             Id = _id;

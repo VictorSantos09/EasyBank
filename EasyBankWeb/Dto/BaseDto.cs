@@ -23,5 +23,11 @@
         {
             _StatusCode = statusCode;
         }
+
+        public BaseDto(int statusCode, object? data)
+        {
+            _Data = data;
+            _StatusCode = statusCode;
+        }
     }
 }
