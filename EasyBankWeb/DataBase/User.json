@@ -1,3 +1,1 @@
-[
-
-]
+[{"CashbackLevel":0,"MonthMovimentation":0,"InvestedMoney":0,"CurrentAccount":10000,"MonthlyIncome":10000,"Name":"PEDRO","Email":"STRING@GMAIL.COM","CPF":"123.456.789-10","RG":"123456","PhoneNumber":"\u002B5512345678910","PhoneCodeArea":"\u002B55","Password":"1234","SafetyKey":"123","DateBorn":"16/02/2000","AutoDebit":false,"Age":22,"OpenLoan":false,"Adress":{"Country":"BRASIL","City":"BLUMENAU","State":"SC","Neiborhood":"STRING","Street":"STRING","HouseNumber":"STRING","HouseComplement":"STRING"},"Id":1}]
