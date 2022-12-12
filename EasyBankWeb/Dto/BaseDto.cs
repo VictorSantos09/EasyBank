@@ -19,11 +19,6 @@
             _StatusCode = statusCode;
         }
 
-        public BaseDto(object? data)
-        {
-            _Data = data;
-        }
-
         public BaseDto(int statusCode)
         {
             _StatusCode = statusCode;

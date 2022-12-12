@@ -94,8 +94,13 @@ namespace EasyBankWeb.Services
         }
         public void CheckAndRemoveLoan(int userID)
         {
+<<<<<<< HEAD
             var loan = _loanRepository.GetById(userID);
             var user = _userRepository.GetById(userID);
+=======
+            var loan = _loanRepository.GetAll().Find(x => x.OwnerID == userID);
+            var user = _userRepository.GetAll().Find(x => x.Id == userID);
+>>>>>>> 2146bd3c7ec1d22d3b6f8c1901b05062668ad9e2
 
             if (loan != null)
             {
@@ -110,11 +115,11 @@ namespace EasyBankWeb.Services
         {
             CheckAndRemoveLoan(userID);
         }
-        public void AddLoan(LoanEntity loanEntity)
+        public void Add(LoanEntity loanEntity)
         {
             _loanRepository.Add(loanEntity);
         }
-        public List<LoanEntity> GetLoan()
+        public List<LoanEntity> GetAll()
         {
             return _loanRepository.GetAll();
         }

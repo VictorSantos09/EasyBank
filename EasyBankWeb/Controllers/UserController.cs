@@ -9,14 +9,14 @@ namespace EasyBankWeb.Controllers
     public class UserController : ControllerBase
     {
         private readonly Register _register;
-        private readonly CancelAccountService _cancelAccountService;
         private readonly Profile _profile;
+        private readonly CancelAccountService _cancelAccountService;
 
-        public UserController(Register register, CancelAccountService cancelAccountService, Profile profile)
+        public UserController(Register register, Profile profile, CancelAccountService cancelAccountService)
         {
             _register = register;
-            _cancelAccountService = cancelAccountService;
             _profile = profile;
+            _cancelAccountService = cancelAccountService;
         }
 
         [Route("GetAll")]
@@ -36,20 +36,20 @@ namespace EasyBankWeb.Controllers
 
         [Route("DeleteUser")]
         [HttpDelete]
-        public IActionResult DeleteAccount([FromBody] UserDto userDto, bool confirmed)
+        public IActionResult DeleteAccount([FromBody] UserDto userDto)
         {
-            var result = _cancelAccountService.DeleteProcess(userDto, confirmed);
+            var result = _cancelAccountService.DeleteProcess(userDto, userDto.Confirmed);
 
-            return StatusCode(result._StatusCode, result._Data == null ? result._Message : result._Data);
+            return StatusCode(result._StatusCode, new { result._Message });
         }
 
-        [Route("SeeData")]
+        [Route("SeeProfileData")]
         [HttpGet]
-        public IActionResult SeeInformation([FromBody] bool confirmed, int userID)
+        public IActionResult SeeInformation([FromBody] SeeProfileDataDto seeProfileDataDto)
         {
-            var result = _profile.ViewProfile(userID, confirmed);
+            var result = _profile.ViewProfile(seeProfileDataDto.UserID, seeProfileDataDto.Confirmed);
 
-            return StatusCode(result._StatusCode, result._Data == null ? result._Message : result._Data);
+            return StatusCode(result._StatusCode, new { result._Message });
         }
     }
 }

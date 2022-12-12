@@ -43,7 +43,7 @@ namespace EasyBank.Test.Crosscutting
         [Fact]
         public void IsValidCPF_CheckTheSize_ShouldReturnTrue()
         {
-            var actual = IsValidCPF("68789456278");
+            var actual = IsValidCPF("687.894.562-78");
             True(actual);
         }
         [Fact]

@@ -1,10 +1,10 @@
 ﻿namespace EasyBankWeb.Dto
 {
-    public class BillDto
+    public class SeeAutoDebitDto
     {
         public int UserID { get; set; }
 
-        public BillDto(int userID)
+        public SeeAutoDebitDto(int userID)
         {
             UserID = userID;
         }

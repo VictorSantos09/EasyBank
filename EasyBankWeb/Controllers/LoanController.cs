@@ -15,13 +15,15 @@ namespace EasyBankWeb.Controllers
             loan = _loan;
         }
 
-        [HttpGet(Name = "GetLoans")]
+        [HttpGet]
+        [Route("GetAll")]
         public IActionResult Get()
         {
-            return Ok(loan.GetLoan());
+            return Ok(loan.GetAll());
         }
 
-        [HttpPost(Name = "PostLoan")]
+        [HttpPost]
+        [Route("PostLoan")]
         public IActionResult Post([FromBody] LoanDto loanDto)
         {
             var result = loan.LoanRequest(loanDto.OwnerID, loanDto, loanDto.Confirmed);

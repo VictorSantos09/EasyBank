@@ -73,9 +73,9 @@ namespace EasyBankWeb.Controllers
 
         [Route("ViewBenefits")]
         [HttpPost]
-        public IActionResult ViewBenefits([FromBody] int ownerID)
+        public IActionResult ViewBenefits([FromBody] ViewBenefitsDto benefitsDto)
         {
-            var result = saving.PrintBenefits(ownerID);
+            var result = saving.PrintBenefits(benefitsDto.UserID);
 
             return StatusCode(result._StatusCode, result._Data == null ? new { Message = result._Message } : result._Data);
         }

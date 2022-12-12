@@ -68,4 +68,4 @@ polimorfismo e divisão de responsabilidades
 
 **Back-end:** Visual Studio, C#, .NET
 
-**Data-base:** SQL Server
+**Data-base:** Json File

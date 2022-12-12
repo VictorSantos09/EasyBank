@@ -1,4 +1,5 @@
-﻿using EasyBankWeb.Services;
+﻿using EasyBankWeb.Dto;
+using EasyBankWeb.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EasyBankWeb.Controllers
@@ -14,13 +15,11 @@ namespace EasyBankWeb.Controllers
 
         [Route("TransferMoney")]
         [HttpPost]
-        public IActionResult Transfer([FromBody] int userID, double value, string keyPix, bool confirmed)
+        public IActionResult Transfer([FromBody] TransferMoneyDto moneyDto)
         {
-            // Precisa mostrar o saldo em conta no front
+            var result = _transfer.TransferProcess(moneyDto.UserID, moneyDto.KeyPix, moneyDto.Confirmed, moneyDto.Value);
 
-            var result = _transfer.TransferProcess(userID, keyPix, confirmed, value);
-
-            return StatusCode(result._StatusCode, result._Data == null ? result._Message : result._Data);
+            return StatusCode(result._StatusCode, new { result._Message });
         }
     }
 }

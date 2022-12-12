@@ -33,13 +33,13 @@ namespace EasyBankWeb.Services
                         bill[i].RemainParcels--;
                 }
         }
-        public void RemoveAutoDebits(BillEntity billEntity)
+        public void Removes(BillEntity billEntity)
         {
             _billRepository.Remove(billEntity.Id);
         }
         public bool HasAutoDebitActivated(int userID)
         {
-            var autoDebitActivated = _autoDebitRepository.GetAutoDebits().FindAll(x => x.OwnerID == userID);
+            var autoDebitActivated = _autoDebitRepository.GetAll().FindAll(x => x.OwnerID == userID);
 
             if (autoDebitActivated.Count == 0)
                 return false;

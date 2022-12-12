@@ -1,38 +1,38 @@
-﻿using EasyBankWeb.Crosscutting;
+﻿using EasyBankWeb.Dto;
 using EasyBankWeb.Entities;
 
 namespace EasyBankWeb.Services
 {
     public class SafetyPassword
     {
-        public string LetterCreation()
-        {
-            string numberLetters = "";
-            Console.WriteLine("Crie 3 letras de segurança");
-            numberLetters = ConfirmNumberOfLetters(numberLetters);
-            string confirmation = ConfirmationOfTheThreeLetters(numberLetters);
+        //public string LetterCreation()
+        //{
+        //    string numberLetters = "";
+        //    Console.WriteLine("Crie 3 letras de segurança");
+        //    numberLetters = ConfirmNumberOfLetters(numberLetters);
+        //    var confirmation = ConfirmationOfTheThreeLetters(numberLetters);
 
-            if (confirmation == "sim".ToUpper())
-            {
-                Console.WriteLine("Confirmando...");
-                Thread.Sleep(2000);
-                Message.SuccessfulGeneric("Confirmado.");
-                Console.WriteLine();
-            }
+        //    if (confirmation == "sim".ToUpper())
+        //    {
+        //        Console.WriteLine("Confirmando...");
+        //        Thread.Sleep(2000);
+        //        Message.SuccessfulGeneric("Confirmado.");
+        //        Console.WriteLine();
+        //    }
 
-            confirmation = DifferentFromYesOrNo(confirmation);
+        //    confirmation = DifferentFromYesOrNo(confirmation);
 
-            while (confirmation == "não".ToUpper())
-            {
-                Message.ErrorGeneric("Favor insira novamente as 3 letras");
-                GenerateLetters();
-                numberLetters = ConfirmNumberOfLetters(numberLetters);
-                confirmation = ConfirmationOfTheThreeLetters(numberLetters);
-                confirmation = DifferentFromYesOrNo(confirmation);
-                Console.Clear();
-            }
-            return numberLetters;
-        }
+        //    while (confirmation == "não".ToUpper())
+        //    {
+        //        Message.ErrorGeneric("Favor insira novamente as 3 letras");
+        //        GenerateLetters();
+        //        numberLetters = ConfirmNumberOfLetters(numberLetters);
+        //        confirmation = ConfirmationOfTheThreeLetters(numberLetters);
+        //        confirmation = DifferentFromYesOrNo(confirmation);
+        //        Console.Clear();
+        //    }
+        //    return numberLetters;
+        //}
         public string? ConfirmNumberOfLetters(string confirmQuantity)
         {
             if (confirmQuantity.Length < 3 || confirmQuantity.Length > 3)
@@ -40,20 +40,9 @@ namespace EasyBankWeb.Services
 
             return confirmQuantity;
         }
-        public string ConfirmationOfTheThreeLetters(string confirmationThreeLetters)
+        public BaseDto ConfirmationOfTheThreeLetters(string confirmationThreeLetters)
         {
-            Console.WriteLine($"Voce escolheu as Letras    '{confirmationThreeLetters}'  Digite sim para confirmar ou não para inserir novamente");
-            confirmationThreeLetters = Console.ReadLine().ToUpper();
-            return confirmationThreeLetters;
-        }
-        public string DifferentFromYesOrNo(string checkConfirmation)
-        {
-            while (checkConfirmation != "não".ToUpper() && checkConfirmation != "sim".ToUpper())
-            {
-                Message.ErrorGeneric("Favor escreva sim ou não corretamente");
-                Console.Clear();
-            }
-            return checkConfirmation;
+            return new BaseDto($"Voce escolheu as Letras    '{confirmationThreeLetters}", 200);
         }
         static void GenerateLetters()
         {
@@ -104,34 +93,20 @@ namespace EasyBankWeb.Services
                 Console.WriteLine(item);
             }
         }
-        public bool CheckLetters(List<UserEntity> users, int userID)
+        public BaseDto CheckLetters(List<UserEntity> users, int userID, string safetyKey)
         {
             var user = users.Find(x => x.Id == userID);
-            GenerateLetters();
 
-            for (int i = 3; i > -1;)
-            {
-                Console.WriteLine("Informe as suas letras de segurança");
-                var confirmPasswordLetter = Console.ReadLine().ToUpper();
-                Console.WriteLine();
+            var chances = 0;
 
-                if (user.SafetyKey == confirmPasswordLetter)
-                {
-                    Message.SuccessfulGeneric("Senha correta");
-                    return true;
-                    Environment.Exit(0);
-                }
-                else
-                {
-                    Message.ErrorGeneric($"Senha incorreta, você possui {i--} chances ");
-                }
-                if (i == -1)
-                {
-                    Console.Clear();
-                    Message.ErrorGeneric("Quantidade máxima de tentativas excedida! Você foi deslogado.");
-                }
-            }
-            return false;
+            if (user.SafetyKey == safetyKey)
+                return new BaseDto("Senha correta", 200);
+
+            else if (chances == 0)
+                return new BaseDto("Quantidade máxima de tentativas excedida! Você foi deslogado.", 406);
+
+            else
+                return new BaseDto($"Senha incorreta, você possui {chances--} chances ", 200);
         }
     }
 }
