@@ -12,7 +12,7 @@
         public string CPF { get; set; }
         public string RG { get; set; }
         public string PhoneNumber { get; set; }
-        public string PhoneCodeArea { get; set; } = "+55";
+        public string PhoneCodeArea { get; set; } = "55";
         public string Password { get; set; }
         public string SafetyKey { get; set; }
         public string DateBorn { get; set; }

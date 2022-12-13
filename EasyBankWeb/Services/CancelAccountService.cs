@@ -43,12 +43,12 @@ namespace EasyBankWeb.Services
         }
         private bool IsCorrectData(DeleteAccountDto deleteDto)
         {
-            return _userRepository.GetAll().Exists(x => x.Email == deleteDto.Email && x.CPF == deleteDto.CPF &&
+            return _userRepository.GetAll().Exists(x => x.Email.ToUpper() == deleteDto.Email.ToUpper() && x.CPF == deleteDto.CPF &&
             x.SafetyKey == deleteDto.SafetyPassword && x.Password == deleteDto.Password);
         }
         private UserEntity? GetUser(DeleteAccountDto deleteDto)
         {
-            return _userRepository.GetAll().Find(x => x.Email == deleteDto.Email && x.CPF == deleteDto.CPF && x.Name == deleteDto.Name);
+            return _userRepository.GetAll().Find(x => x.Email.ToUpper() == deleteDto.Email.ToUpper() && x.CPF == deleteDto.CPF && x.Name.ToUpper() == deleteDto.Name.ToUpper());
         }
     }
 }
