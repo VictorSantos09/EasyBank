@@ -22,8 +22,13 @@ namespace EasyBankWeb.Services
             var user = _userRepository.GetAll().Find(x => x.Id == userID);
             var creditCard = _creditCardRepository.GetAll().Find(x => x.OwnerID == userID);
 
-            return new BaseDto($"{user.Name} {user.Email} {user.PhoneNumber} {user.DateBorn} {user.Email}" +
-                $" {user.Password} {creditCard.Limit} {creditCard.ExpireDate} {creditCard.NameOwner}", 200);
+            if (user == null || creditCard == null)
+                return new BaseDto("Usuario nao encontrado", 404);
+
+            var userData = new SeeProfileDto(user.Name, creditCard.NameOwner, user.SafetyKey, user.Email, user.PhoneNumber, user.DateBorn.Substring(0, 10),
+                Convert.ToString(creditCard.ExpireDate).Substring(0, 10), user.Password, creditCard.Limit);
+
+            return new BaseDto(200, userData);
         }
     }
 }
