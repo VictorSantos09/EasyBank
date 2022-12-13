@@ -23,7 +23,7 @@ namespace EasyBankWeb.Controllers
         }
 
         [HttpPost]
-        [Route("PostLoan")]
+        [Route("RegisterLoan")]
         public IActionResult Post([FromBody] LoanDto loanDto)
         {
             var result = loan.LoanRequest(loanDto.OwnerID, loanDto, loanDto.Confirmed);
