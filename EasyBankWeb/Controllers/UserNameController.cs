@@ -21,7 +21,18 @@ namespace EasyBankWeb.Controllers
         {
             var result = GetName.SendUserName(userName.UserID);
 
-            return StatusCode(result._StatusCode, new { Successful = true, Name = result._Data });
+            return StatusCode(result._StatusCode, result._Data == null ? result._Message 
+                : new { Successful = true, Name = result._Data, MoneyAvaible = GetName.GetUserMoney(userName.UserID)._Data  });
+        }
+        [HttpPost]
+        [Route("GetDateNow")]
+        public IActionResult GetToday()
+        {
+            var today = DateTime.Today;
+
+            var format = $"{today.Day}/{today.Month}/{today.Year}";
+
+            return Ok(new { Today = format, Successful = true });
         }
     }
 }

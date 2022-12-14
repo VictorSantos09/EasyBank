@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EasyBankWeb.Controllers
 {
+    [ApiController]
+    [Route("[controller]")]
     public class TransferController : ControllerBase
     {
         private readonly Transfer _transfer;

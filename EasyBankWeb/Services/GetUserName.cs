@@ -14,7 +14,21 @@ namespace EasyBankWeb.Services
 
         public BaseDto SendUserName(int userID)
         {
-            return new BaseDto(200,_userRepository.GetById(userID).Name);
+            var user = _userRepository.GetById(userID);
+
+            if (user == null)
+                return new BaseDto("Usuario nao encontrado", 404);
+
+            return new BaseDto(200, user.Name);
+        }
+        public BaseDto GetUserMoney(int userID)
+        {
+            var user = _userRepository.GetById(userID);
+
+            if (user != null)
+                return new BaseDto(200, user.CurrentAccount);
+
+            return new BaseDto("Saldo encontrado", 404);
         }
     }
 }

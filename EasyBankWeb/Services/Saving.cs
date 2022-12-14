@@ -26,7 +26,7 @@ namespace EasyBankWeb.Services
 
             var j = c * i * n;
 
-            return j + c;
+            return j;
         }
         public void MonthlyAction(int userID)
         {
@@ -42,13 +42,13 @@ namespace EasyBankWeb.Services
         public (string, int, bool) NewSavingProcess(int userID, SavingsDto savingsDto)
         {
             if (!IsExistentUser(userID))
-                return ("Usuario não encontrado", 404,false);
+                return ("Usuario não encontrado", 404, false);
 
             if (HasExistentSaving(userID))
-                return ("Poupança já existente", 400,false);
+                return ("Poupança já existente", 400, false);
 
             if (CreateNewSaving(savingsDto))
-                return ("Poupança criada com sucesso", 200,true);
+                return ("Poupança criada com sucesso", 200, true);
 
             return ("Saldo insuficiente", 400, false);
         }
@@ -58,8 +58,10 @@ namespace EasyBankWeb.Services
         }
         public void DiscountMoneyFromUser(int userID, double investMoneyValue)
         {
-            var user = _userRepository.GetAll().Find(x => x.Id == userID);
+            var user = _userRepository.GetById(userID);
             user.CurrentAccount -= investMoneyValue;
+
+            _userRepository.Update(userID, user);
         }
         public (string, int) InsertMoneyProcess(int userID, int value)
         {
