@@ -39,18 +39,18 @@ namespace EasyBankWeb.Services
                 saving.Value += saving.TaxesValue;
             }
         }
-        public (string, int) NewSavingProcess(int userID, SavingsDto savingsDto)
+        public (string, int, bool) NewSavingProcess(int userID, SavingsDto savingsDto)
         {
             if (!IsExistentUser(userID))
-                return ("Usuario não encontrado", 404);
+                return ("Usuario não encontrado", 404,false);
 
             if (HasExistentSaving(userID))
-                return ("Poupança já existente", 400);
+                return ("Poupança já existente", 400,false);
 
             if (CreateNewSaving(savingsDto))
-                return ("Poupança criada com sucesso", 200);
+                return ("Poupança criada com sucesso", 200,true);
 
-            return ("Saldo insuficiente", 400);
+            return ("Saldo insuficiente", 400, false);
         }
         public bool HasExistentSaving(int userID)
         {
