@@ -9,7 +9,7 @@ namespace EasyBankWeb.Repository
 
         public BaseRepository(string pathFile)
         {
-            _pathFile = $@"C:\Users\victo\Desktop\EasyBank\EasyBankWeb\DataBase\{pathFile}.json";
+            _pathFile = $@"{Directory.GetCurrentDirectory()}\DataBase\{pathFile}.json";
         }
 
         public void Add(T entity)
