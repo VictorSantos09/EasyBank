@@ -31,6 +31,7 @@ builder.Services.AddSingleton<SafetyPassword>();
 builder.Services.AddSingleton<Saving>();
 builder.Services.AddSingleton<Transfer>();
 builder.Services.AddSingleton<CancelAccountService>();
+builder.Services.AddSingleton<GetUserName>();
 
 builder.Services.AddCors(p => p.AddPolicy("corsapp", builder =>
 {

@@ -26,9 +26,9 @@ namespace EasyBankWeb.Controllers
         [HttpPost]
         public IActionResult Post([FromBody] SavingsDto savingsDto)
         {
-            var (message, statusCode) = saving.NewSavingProcess(savingsDto.OwnerID, savingsDto);
+            var (message, statusCode, sucess) = saving.NewSavingProcess(savingsDto.OwnerID, savingsDto);
 
-            return StatusCode(statusCode, new { Message = message });
+            return StatusCode(statusCode, new { Message = message, Successful = sucess });
         }
 
         [Route("InsertIntoSaving")]
